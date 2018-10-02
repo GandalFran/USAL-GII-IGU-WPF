@@ -95,14 +95,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BasicIcons\checked.png" />
-    <Resource Include="Images\BasicIcons\checked_filled.png" />
-    <Resource Include="Images\BasicIcons\minus.png" />
-    <Resource Include="Images\BasicIcons\minus_filled.png" />
-    <Resource Include="Images\BasicIcons\plus.png" />
-    <Resource Include="Images\BasicIcons\plus_filled.png" />
-    <Resource Include="Images\BasicIcons\unchecked.png" />
-    <Resource Include="Images\BasicIcons\unchecked_filled.png" />
+    <Resource Include="Images\BasicIcons\add.png" />
+    <Resource Include="Images\BasicIcons\delete.png" />
+    <Resource Include="Images\BasicIcons\edit.png" />
+    <Resource Include="Images\BasicIcons\no-view.png" />
+    <Resource Include="Images\BasicIcons\settings.png" />
+    <Resource Include="Images\BasicIcons\view.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

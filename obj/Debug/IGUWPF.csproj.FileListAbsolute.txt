@@ -13,3 +13,6 @@ D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.GenerateResource.cache
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.CoreCompileInputs.cache
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.exe
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.pdb
+D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.dll
+D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.xml
+D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.CopyComplete

@@ -23,6 +23,17 @@ namespace IGUWPF
         public MainWindow()
         {
             InitializeComponent();
+
+            AddFuncionButton.Click += AddFuncionButton_Click;
+
+        }
+
+        private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            FunctionPanel FPanel = new FunctionPanel("Function");
+
+            FuncionListPanel.Children.Add( FPanel );
         }
     }
 }

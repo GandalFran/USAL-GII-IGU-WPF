@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Repos\IGU-WPF\App.xaml
-11151548125
+4-887246718
 
-14-1558864183
+17-2069205653
 141417680162
-MainWindow.xaml;
+MainWindow.xaml;src\view\ConfirmationWindow.xaml;src\view\ErrorWindow.xaml;src\view\FunctionForm.xaml;
 
 False
 

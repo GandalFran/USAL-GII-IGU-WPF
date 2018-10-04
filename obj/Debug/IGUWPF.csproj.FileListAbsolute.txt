@@ -16,3 +16,5 @@ D:\Repos\IGU-WPF\obj\Debug\IGUWPF.pdb
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.dll
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.xml
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.CopyComplete
+D:\Repos\IGU-WPF\obj\Debug\src\ErrorWindow.g.cs
+D:\Repos\IGU-WPF\obj\Debug\src\ErrorWindow.baml

@@ -17,7 +17,7 @@
                     VerticalAlignment="Center"
                     Background="LightGray" 
                     DockPanel.Dock="Top">
-            <Button Name="GraficConfiguracionButton" 
+            <Button Name="SettingsButton" 
                     Margin="3" 
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Grafic settings" >
@@ -25,7 +25,7 @@
                     <Image Source="Images\BasicIcons\settings.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
-            <Button Name="SaveFunctionsButton" 
+            <Button Name="SaveFileButton" 
                     Margin="3"
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Save functions" >
@@ -33,7 +33,7 @@
                     <Image Source="Images\BasicIcons\save.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
-            <Button Name="OpenFunctionsButton" 
+            <Button Name="OpenFileButton" 
                     Margin="3" 
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Load file" >
@@ -65,42 +65,7 @@
                     </Button>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel Name="FuncionListPanel">
-
-                            <Border 
-                                Margin="3"  CornerRadius="2"
-                                BorderThickness="1" BorderBrush="Black" >
-                                <WrapPanel>
-                                    <Label Content="Funcion" MinWidth="90"/>
-
-                                    <Button Margin="3" 
-                                            BorderThickness="0" Background="Transparent"
-                                            ToolTip="Hide/View function" >
-                                        <StackPanel>
-                                            <Image Source="Images\BasicIcons\view.png" Width="20" Height="20"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <Button Margin="3" 
-                                            BorderThickness="0" Background="Transparent"
-                                            ToolTip="Edit function" >
-                                        <StackPanel>
-                                            <Image Source="Images\BasicIcons\edit.png" Width="20" Height="20"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                    <Button Margin="3" 
-                                            BorderThickness="0" Background="Transparent"
-                                            ToolTip="Delete function" >
-                                        <StackPanel>
-                                            <Image Source="Images\BasicIcons\delete.png" Width="20" Height="20"/>
-                                        </StackPanel>
-                                    </Button>
-
-                                </WrapPanel>
-                            </Border>
-
-                        </StackPanel>
+                        <StackPanel Name="FuncionListPanel"/>
                     </ScrollViewer>
 
                 </StackPanel>

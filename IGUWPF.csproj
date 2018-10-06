@@ -58,6 +58,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="src\controllers\ControllersImpl\FunctionIControllerImpl.cs" />
+    <Compile Include="src\controllers\IController.cs" />
+    <Compile Include="src\controllers\ControllersImpl\PropertiesController.cs" />
+    <Compile Include="src\models\POJO\Properties.cs" />
+    <Compile Include="src\utils\Utils.cs" />
+    <Compile Include="test\DataModelTester.cs" />
+    <Compile Include="test\ITestable.cs" />
+    <Compile Include="test\JsonFileDatoTester.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -66,33 +74,37 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\controllers\DAO.cs" />
-    <Compile Include="src\controllers\JsonDAO.cs" />
-    <Compile Include="src\view\ConfirmationWindow.xaml.cs">
+    <Compile Include="src\IO\DAO.cs" />
+    <Compile Include="src\IO\JsonDAO.cs" />
+    <Compile Include="src\models\Model\IDataModel.cs" />
+    <Compile Include="src\models\Model\IDataModelImpl.cs" />
+    <Compile Include="src\models\Model\IModelable.cs" />
+    <Compile Include="src\models\POJO\MathematicalExpression.cs" />
+    <Compile Include="src\view\Windows\ConfirmationWindow.xaml.cs">
       <DependentUpon>ConfirmationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\models\Function.cs" />
-    <Compile Include="src\view\ErrorWindow.xaml.cs">
+    <Compile Include="src\models\POJO\Function.cs" />
+    <Compile Include="src\view\Windows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\view\FunctionForm.xaml.cs">
+    <Compile Include="src\view\Windows\FunctionForm.xaml.cs">
       <DependentUpon>FunctionForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\view\FunctionPanel.cs" />
+    <Compile Include="src\view\UIElements\UIFunctionPanel.cs" />
     <Compile Include="src\utils\Constants.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="src\view\ConfirmationWindow.xaml">
+    <Page Include="src\view\Windows\ConfirmationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="src\view\ErrorWindow.xaml">
+    <Page Include="src\view\Windows\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="src\view\FunctionForm.xaml">
+    <Page Include="src\view\Windows\FunctionForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,11 +127,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="data\Datos.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="data\Settings.properties" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

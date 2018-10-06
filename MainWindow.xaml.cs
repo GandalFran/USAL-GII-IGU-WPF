@@ -1,4 +1,8 @@
-﻿using System;
+﻿using IGUWPF.src.controllers;
+using IGUWPF.src.models;
+using IGUWPF.src.models.Model;
+using IGUWPF.test;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,15 +28,33 @@ namespace IGUWPF
         {
             InitializeComponent();
 
+            IController<Function> Controller = new FunctionIControllerImpl();
+
             AddFuncionButton.Click += AddFuncionButton_Click;
+            SaveFileButton.Click += SaveFileButton_Click;
+            OpenFileButton.Click += OpenFileButton_Click;
+            SettingsButton.Click += SettingsButton_Click;
+
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
-
-            FunctionPanel FPanel = new FunctionPanel("Function");
-
+            UIFunctionPanel FPanel = new UIFunctionPanel("Function");
             FuncionListPanel.Children.Add( FPanel );
         }
     }

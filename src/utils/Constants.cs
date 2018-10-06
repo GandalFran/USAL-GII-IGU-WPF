@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IGUWPF
 {
-    class Constants
+    public class Constants
     {
         private static String ImagesFolderPath = "Images\\BasicIcons";
         public static String ViewButtonIconPath =    ImagesFolderPath + "\\view.png";
@@ -23,7 +23,6 @@ namespace IGUWPF
         public static BitmapImage EditButtonIcon   = new BitmapImage(new Uri(EditButtonIconPath, UriKind.Relative));
         public static BitmapImage DeleteButtonIcon = new BitmapImage(new Uri(DeleteButtonIconPath, UriKind.Relative));
 
-
-
+        public static string DefaultDataSaveFile = "C:\\Users\\franp\\Desktop\\Datos.json";
     }
 }

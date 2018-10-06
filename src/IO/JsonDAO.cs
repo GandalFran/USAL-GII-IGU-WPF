@@ -10,31 +10,31 @@ using System.Threading.Tasks;
 
 namespace IGUWPF.src.controllers
 {
-    internal class JsonDAO: DAO <Function>
+    public class JsonDAO<T>: DAO <T>
     {
 
-        public Boolean ExportMultipleObject(string FilePath, List<Function> toExport)
+        public bool ExportMultipleObject(string FilePath, List<T> toExport)
         {
             try
             {
                 string output = JsonConvert.SerializeObject(toExport, Formatting.Indented);
                 File.WriteAllText(@FilePath, output);
             }
-            catch (Exception e) {
+            catch (Exception) {
                 return false;
             }
 
             return true;
         }
 
-        public Boolean ImportMultipleObject(string FilePath, List<Function> toFill)
+        public Boolean ImportMultipleObject(string FilePath, List<T> toFill)
         {
             try
             {
-                string JsonSerializedFunctionArray = File.ReadAllText(FilePath, Encoding.UTF8);
-                toFill.AddRange(JsonConvert.DeserializeObject<List<Function>>(@JsonSerializedFunctionArray));
+                string JsonSerializedArray = File.ReadAllText(FilePath, Encoding.UTF8);
+                toFill.AddRange(JsonConvert.DeserializeObject<List<T>>(@JsonSerializedArray));
             }
-            catch (Exception e) {
+            catch (Exception) {
                 return false;
             }
 

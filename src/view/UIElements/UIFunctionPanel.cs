@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 namespace IGUWPF
 
 {
-    class FunctionPanel : Border
+    public class UIFunctionPanel : Border
     {
 
         public int functionId { get; set; }
@@ -21,23 +21,16 @@ namespace IGUWPF
         public Button EditButton { get; set; }
         public Button DeleteButton { get; set; }
 
-        public FunctionPanel(String FunctionName) {
+        public UIFunctionPanel(String FunctionName) {
             PanelElement = new WrapPanel();
             FunctionNameLabel = new Label();
-            ViewButton = new Button();
-            EditButton = new Button();
-            DeleteButton = new Button();
 
             this.BorderThickness = new Thickness(1);
             this.CornerRadius = new CornerRadius(2);
             this.BorderBrush = Brushes.Black;
             this.Margin = new Thickness(3);
             this.Child = PanelElement;
-
-            PanelElement.Children.Add(FunctionNameLabel);
-            PanelElement.Children.Add(ViewButton);
-            PanelElement.Children.Add(EditButton);
-            PanelElement.Children.Add(DeleteButton);
+               //Add MinWidth to have a better view
 
             FunctionNameLabel.Content = FunctionName;
             FunctionNameLabel.MinWidth = 90;
@@ -45,6 +38,11 @@ namespace IGUWPF
             ViewButton = getButton( Constants.ViewButtonIcon );
             EditButton = getButton( Constants.EditButtonIcon );
             DeleteButton = getButton( Constants.DeleteButtonIcon );
+
+            PanelElement.Children.Add(FunctionNameLabel);
+            PanelElement.Children.Add(ViewButton);
+            PanelElement.Children.Add(EditButton);
+            PanelElement.Children.Add(DeleteButton);
 
         }
 
@@ -56,7 +54,7 @@ namespace IGUWPF
             DockPanel TempPanel = new DockPanel();
 
             TempButton.Margin = new Thickness(3);
-            TempButton.Background = Brushes.Blue;
+            TempButton.Background = Brushes.Transparent;
             TempButton.BorderThickness = new Thickness(0);
             TempButton.Content = TempPanel;
 

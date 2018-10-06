@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IGUWPF.src.view"
         mc:Ignorable="d"
-        Title="FunctionForm" Height="150" Width="150">
+        Title="FunctionForm" Height="150" Width="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

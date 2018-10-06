@@ -22,7 +22,7 @@
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Grafic settings" >
                 <StackPanel>
-                    <Image Source="Images\BasicIcons\settings.png" Width="20" Height="20"/>
+                    <Image Source="Images\Icons\settings.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
             <Button Name="SaveFileButton" 
@@ -30,7 +30,7 @@
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Save functions" >
                 <StackPanel>
-                    <Image Source="Images\BasicIcons\save.png" Width="20" Height="20"/>
+                    <Image Source="Images\Icons\save.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
             <Button Name="OpenFileButton" 
@@ -38,7 +38,7 @@
                     BorderThickness="0" Background="Transparent"
                     ToolTip="Load file" >
                 <StackPanel>
-                    <Image Source="Images\BasicIcons\open.png" Width="20" Height="20"/>
+                    <Image Source="Images\Icons\open.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
         </WrapPanel>
@@ -60,7 +60,7 @@
                             BorderThickness="0" Background="Transparent"
                             ToolTip="Add function" >
                         <StackPanel>
-                            <Image Source="Images\BasicIcons\add.png" Width="20" Height="20"/>
+                            <Image Source="Images\Icons\add.png" Width="20" Height="20"/>
                         </StackPanel>
                     </Button>
 

@@ -139,19 +139,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BasicIcons\add.png" />
-    <Resource Include="Images\BasicIcons\delete.png" />
-    <Resource Include="Images\BasicIcons\edit.png" />
-    <Resource Include="Images\BasicIcons\no-view.png" />
-    <Resource Include="Images\BasicIcons\settings.png" />
-    <Resource Include="Images\BasicIcons\view.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="lib\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BasicIcons\open.png" />
-    <Resource Include="Images\BasicIcons\save.png" />
+    <Resource Include="Images\Icons\add.png" />
+    <Resource Include="Images\Icons\delete.png" />
+    <Resource Include="Images\Icons\edit.png" />
+    <Resource Include="Images\Icons\no-view.png" />
+    <Resource Include="Images\Icons\open.png" />
+    <Resource Include="Images\Icons\open1.png" />
+    <Resource Include="Images\Icons\save.png" />
+    <Resource Include="Images\Icons\settings.png" />
+    <Resource Include="Images\Icons\view.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

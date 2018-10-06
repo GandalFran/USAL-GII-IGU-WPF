@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IGUWPF.src.controllers.Properties
 {
-    public class PropertiesController: IController<>
+    public class PropertiesController
     {
     }
 }

@@ -58,7 +58,7 @@ namespace IGUWPF.src.controllers
 
             if (result)
             {
-                FunctionModel = new DataModelImpl<Function>( toFill );
+                FunctionModel = new IDataModelImpl<Function>( toFill );
             }
 
             return result;

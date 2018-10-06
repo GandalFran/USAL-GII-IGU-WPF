@@ -9,7 +9,7 @@ namespace IGUWPF
 {
     public class Constants
     {
-        private static String ImagesFolderPath = "Images\\BasicIcons";
+        private static String ImagesFolderPath = "Images\\Icons";
         public static String ViewButtonIconPath =    ImagesFolderPath + "\\view.png";
         public static String NotViewButtonIconPath = ImagesFolderPath + "\\no-view.png";
         public static String AddButtonIconPath =     ImagesFolderPath + "\\add.png";

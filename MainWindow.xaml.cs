@@ -37,18 +37,65 @@ namespace IGUWPF
             InitializeComponent();
 
             AddFuncionButton.Click += AddFuncionButton_Click;
+            ReloadPanelFunction.Click += ReloadPanelFunction_Click;
+            SettingsButton.Click += SettingsButton_Click;
             SaveFileButton.Click += SaveFileButton_Click;
             OpenFileButton.Click += OpenFileButton_Click;
-            SettingsButton.Click += SettingsButton_Click;
 
             ITestable Test = new JsonFileDaoTester();
             Test.Test();
 
         }
 
+        private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
+        {
+            //ADD formulary
+            UIFunctionPanel FPanel = new UIFunctionPanel(-1, "Function");
+            FuncionListPanel.Children.Add(FPanel);
+        }
+
+        private void ReloadPanelFunction_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool ExportResult;
+
+            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
+            string FilePath = null;
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Title = "Save project";
+            sfd.FileName = "Desktop"; // Default file name
+            sfd.DefaultExt = ".maclab"; // Default file extension
+            sfd.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
+            sfd.AddExtension = true;
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                FilePath = sfd.FileName;
+            }
+            /*End of snipet*/
+
+            if (null != FilePath)
+            {
+                ExportResult = Controller.ExportAll(FilePath);
+                if (ExportResult == false)
+                {
+                    Console.WriteLine("Error Exportando");
+                    //LANZAR VENTANA DE ERORR
+                }
+            }
+
         }
 
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
@@ -88,47 +135,6 @@ namespace IGUWPF
                 FuncionListPanel.Children.Add( new UIFunctionPanel( Element.GetID(), Element.Name ) );
             }
 
-        }
-
-        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool ExportResult;
-
-            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
-            string FilePath = null;
-            SaveFileDialog sfd = new SaveFileDialog();
-
-            sfd.Title = "Save project";
-            sfd.FileName = "Desktop"; // Default file name
-            sfd.DefaultExt = ".maclab"; // Default file extension
-            sfd.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            sfd.AddExtension = true;
-
-            Nullable<bool> result = sfd.ShowDialog();
-
-            if (result == true)
-            {
-                FilePath = sfd.FileName;
-            }
-            /*End of snipet*/
-
-            if (null != FilePath)
-            {
-                ExportResult = Controller.ExportAll(FilePath);
-                if (ExportResult == false)
-                {
-                    Console.WriteLine("Error Exportando");
-                    //LANZAR VENTANA DE ERORR
-                }
-            }
-
-        }
-
-        private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
-        {
-            //ADD formulary
-            UIFunctionPanel FPanel = new UIFunctionPanel(-1,"Function");
-            FuncionListPanel.Children.Add( FPanel );
         }
 
         private void FunctionPanelEditButton_Click(object sender, RoutedEventArgs e)

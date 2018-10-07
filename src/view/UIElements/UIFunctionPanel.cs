@@ -34,11 +34,9 @@ namespace IGUWPF
             FunctionNameLabel = new Label();
 
             this.BorderThickness = new Thickness(1);
-            this.CornerRadius = new CornerRadius(2);
-            this.BorderBrush = Brushes.Black;
-            this.Margin = new Thickness(3);
+            this.BorderBrush = Brushes.DodgerBlue;
+            this.Margin = new Thickness(4,2,4,2);
             this.Child = PanelElement;
-               //Add MinWidth to have a better view
 
             FunctionNameLabel.Content = FunctionName;
             FunctionNameLabel.MinWidth = 90;

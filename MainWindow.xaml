@@ -55,14 +55,24 @@
                 Grid.Column="0">
                 <StackPanel>
 
-                    <Button Name="AddFuncionButton" 
+                    <WrapPanel>
+                        <Button Name="AddFuncionButton" 
                             Margin="3" HorizontalAlignment="Left" 
                             BorderThickness="0" Background="Transparent"
                             ToolTip="Add function" >
-                        <StackPanel>
-                            <Image Source="Images\Icons\add.png" Width="20" Height="20"/>
-                        </StackPanel>
-                    </Button>
+                            <StackPanel>
+                                <Image Source="Images\Icons\add.png" Width="20" Height="20"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Name="ReloadPanelFunction" 
+                            Margin="3" HorizontalAlignment="Left" 
+                            BorderThickness="0" Background="Transparent"
+                            ToolTip="Add function" >
+                            <StackPanel>
+                                <Image Source="Images\Icons\generate.png" Width="20" Height="20"/>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Name="FuncionListPanel"/>

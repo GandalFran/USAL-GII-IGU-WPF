@@ -15,7 +15,7 @@ namespace IGUWPF.test
 
         private String LogHeader = "[DataModelTester] ";
 
-        public bool Test() {
+        public void Test() {
             bool result;
             Function TempFunction = null;
             List<Function> TempFunctionList = null;
@@ -66,8 +66,6 @@ namespace IGUWPF.test
             FunctionModel = new IDataModelImpl<Function>( TempFunctionList );
             int InternalID = FunctionModel.CreateElement(new Function("Fi", Brushes.Red, new MathematicalExpression("")));
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions: 3- New internal ID=" + (InternalID+1) + " Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
- 
-            return true;
         }
     }
 }

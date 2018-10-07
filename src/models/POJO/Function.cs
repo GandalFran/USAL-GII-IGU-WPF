@@ -5,25 +5,37 @@ using System.Text;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using IGUWPF.src.models.Model;
+using Newtonsoft.Json;
 
 namespace IGUWPF.src.models
 {
     public class Function : IModelable<Function>
     {
         private int ID;
+        public bool IsHidden { get; set; }
         public String Name { get; set; }
         public Brush Color { get; set; }
         public MathematicalExpression MatheMaticalExpresion { get; set; }
 
-        public Function(String Name, Brush Color, MathematicalExpression MatheMaticalExpresion) {
+        public Function(String Name, Brush Color, MathematicalExpression MatheMaticalExpresion)
+        {
             this.Name = Name;
             this.Color = Color;
             this.MatheMaticalExpresion = MatheMaticalExpresion;
+            this.IsHidden = false;
+        }
+
+        [JsonConstructor]
+        public Function(String Name, Brush Color, MathematicalExpression MatheMaticalExpresion, bool IsHidden) {
+            this.Name = Name;
+            this.Color = Color;
+            this.MatheMaticalExpresion = MatheMaticalExpresion;
+            this.IsHidden = IsHidden;
         }
 
         public override string ToString()
         {
-            return "{ID=" + ID + ", Name= " + Name + ", Brush=" + Color + ", MatheMaticalExpresion=" + MatheMaticalExpresion + "}";
+            return "{ID=" + ID + ", Name= " + Name + ", IsHidden=" + IsHidden + ", Brush=" + Color + ", MatheMaticalExpresion=" + MatheMaticalExpresion + "}";
         }
 
         public override bool Equals(object obj)

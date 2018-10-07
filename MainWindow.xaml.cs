@@ -28,12 +28,12 @@ namespace IGUWPF
     public partial class MainWindow : Window
     {
 
-        IController<Function> Controller;
+        private int PrivateI=0;
+        private IFunctionController Controller;
 
         public MainWindow()
         {
-            Controller = new FunctionIControllerImpl();
-
+            InitialTasks();
             InitializeComponent();
 
             AddFuncionButton.Click += AddFuncionButton_Click;
@@ -41,22 +41,38 @@ namespace IGUWPF
             SettingsButton.Click += SettingsButton_Click;
             SaveFileButton.Click += SaveFileButton_Click;
             OpenFileButton.Click += OpenFileButton_Click;
+            ExportImageButton.Click += ExportImageButton_Click;
+            
+        }
 
-            ITestable Test = new JsonFileDaoTester();
-            Test.Test();
-
+        public void InitialTasks()
+        {
+            Controller = new FunctionIControllerImpl();
         }
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
-            //ADD formulary
-            UIFunctionPanel FPanel = new UIFunctionPanel(-1, "Function");
-            FuncionListPanel.Children.Add(FPanel);
+            string FunctionName = "Function" + PrivateI++;
+            Brush FunctionColor = Brushes.Red;
+            MathematicalExpression FunctionMathematicalExpression = new MathematicalExpression("h");
+
+            //ADD FORMULARY
+
+            Function TempFunction = new Function(FunctionName,FunctionColor, FunctionMathematicalExpression);
+            int ID = Controller.AddAndGetID( TempFunction );
+
+            UIFunctionPanel FunctionPanel = new UIFunctionPanel(ID , FunctionName, false);
+
+            FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
+            FunctionPanel.EditButtonClickHandler += FPanel_EditButtonClickHandler; ;
+            FunctionPanel.DeleteButtonClickHandler += FPanel_DeleteButtonClickHandler; ;
+
+            FuncionListPanel.Children.Add(FunctionPanel);
         }
 
         private void ReloadPanelFunction_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -101,8 +117,8 @@ namespace IGUWPF
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             bool ImportResult;
+            UIFunctionPanel FunctionPanel;
 
-            //Open File and import
             /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
             string FilePath = null;
             OpenFileDialog ofd = new OpenFileDialog();
@@ -132,23 +148,110 @@ namespace IGUWPF
             //Refresh window
             FuncionListPanel.Children.Clear();
             foreach (Function Element in Controller.GetAll()) {
-                FuncionListPanel.Children.Add( new UIFunctionPanel( Element.GetID(), Element.Name ) );
+                FunctionPanel = new UIFunctionPanel(Element.GetID(), Element.Name, Element.IsHidden);
+                FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
+                FunctionPanel.EditButtonClickHandler += FPanel_EditButtonClickHandler; ;
+                FunctionPanel.DeleteButtonClickHandler += FPanel_DeleteButtonClickHandler;
+                FuncionListPanel.Children.Add( FunctionPanel );
             }
 
         }
 
-        private void FunctionPanelEditButton_Click(object sender, RoutedEventArgs e)
+        private void ExportImageButton_Click(object sender, RoutedEventArgs e)
         {
+            bool ExportResult;
+            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
+            string FilePath = null;
+            SaveFileDialog sfd = new SaveFileDialog();
 
+            sfd.Title = "Export plot";
+            sfd.FileName = "Desktop"; // Default file name
+            sfd.DefaultExt = ".png"; // Default file extension
+            sfd.Filter = "PNG image (.png)|*.png";
+            sfd.AddExtension = true;
+
+            Nullable<bool> result = sfd.ShowDialog();
+
+            if (result == true)
+            {
+                FilePath = sfd.FileName;
+            }
+            /*End of snipet*/
+
+            if (null != FilePath)
+            {
+                ExportResult = Controller.ExportPlot(FilePath, PlotPanel);
+                if (ExportResult == false)
+                {
+                    Console.WriteLine("Error Exportando");
+                    //LANZAR VENTANA DE ERORR
+                }
+            }
         }
 
-        private void FunctionPanelDeleteButton_Click(object sender, RoutedEventArgs e)
+        private void FPanel_DeleteButtonClickHandler(object sender, FunctionPanelEventArgs e)
         {
+            bool result;
+            UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
 
+            //Delete funcion
+            result = Controller.Delete( FunctionPanel.FunctionID );
+            if (result == false) {
+                Console.WriteLine("ERROR: no se pudo borrar");
+                //LANZAR ERROR
+            }
+
+            //Delete panel
+            this.FuncionListPanel.Children.Remove( FunctionPanel );
         }
 
-        private void FunctionPanelViewButton_Click(object sender, RoutedEventArgs e)
+        private void FPanel_EditButtonClickHandler(object sender, FunctionPanelEventArgs e)
         {
+            bool result;
+            Function TempFunction = null;
+
+            TempFunction = Controller.GetById( e.FunctionId );
+            if (null == TempFunction)
+            {
+                Console.WriteLine("ERROR: No se pudo obtener la funcion");
+                //LANZAR VENTANA DE ERROR
+                return;
+            }
+
+            //LANZAR FORMULARIO
+
+            result = Controller.Update( TempFunction );
+            if (result == false)
+            {
+                Console.WriteLine("ERROR: no se pudo actualizar");
+                //LANZAR VENTANA DE ERROR
+            }
+        }
+
+        private void FPanel_ViewButtonClickHandler(object sender, FunctionPanelEventArgs e)
+        {
+            bool result;
+            Function TempFunction = null;
+
+            TempFunction = Controller.GetById(e.FunctionId);
+            if (null == TempFunction)
+            {
+                Console.WriteLine("ERROR: no se pudo obtener");
+                //LANZAR VENTANA DE ERROR
+                return;
+            }
+
+            TempFunction.IsHidden = !TempFunction.IsHidden;
+
+            result = Controller.Update(TempFunction);
+            if (result == false)
+            {
+                Console.WriteLine("ERROR: no se pudo actualizar");
+                //LANZAR VENTANA DE ERROR
+            }
+
+            UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
+            PanelSender.SwichViewButtonImage();
 
         }
     }

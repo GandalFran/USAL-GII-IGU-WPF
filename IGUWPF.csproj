@@ -61,11 +61,14 @@
     <Compile Include="src\controllers\ControllersImpl\FunctionIControllerImpl.cs" />
     <Compile Include="src\controllers\IController.cs" />
     <Compile Include="src\controllers\ControllersImpl\PropertiesController.cs" />
+    <Compile Include="src\controllers\IFunctionController.cs" />
+    <Compile Include="src\IO\DaoImpl\ImageDAOImpl.cs" />
     <Compile Include="src\models\POJO\Properties.cs" />
     <Compile Include="src\utils\Utils.cs" />
     <Compile Include="test\DataModelTester.cs" />
+    <Compile Include="test\ImageDaoTester.cs" />
     <Compile Include="test\ITestable.cs" />
-    <Compile Include="test\JsonFileDatoTester.cs" />
+    <Compile Include="test\JsonFileDaoTester.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,8 +77,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\IO\DAO.cs" />
-    <Compile Include="src\IO\JsonDAO.cs" />
+    <Compile Include="src\IO\IDAO.cs" />
+    <Compile Include="src\IO\DaoImpl\JsonDAOImpl.cs" />
     <Compile Include="src\models\Model\IDataModel.cs" />
     <Compile Include="src\models\Model\IDataModelImpl.cs" />
     <Compile Include="src\models\Model\IModelable.cs" />
@@ -132,7 +135,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="data\Settings.properties" />
+    <None Include="ApplicationFiles\Settings.properties" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -150,6 +153,12 @@
     <Resource Include="Images\Icons\save.png" />
     <Resource Include="Images\Icons\settings.png" />
     <Resource Include="Images\Icons\view.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\imageExport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icons\plot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

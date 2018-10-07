@@ -8,7 +8,7 @@ namespace IGUWPF.test
 {
     public interface ITestable
     {
-        bool Test();
+        void Test();
 
     }
 }

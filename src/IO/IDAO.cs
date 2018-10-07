@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace IGUWPF.src.models
 {
-    public interface DAO <T>
+    public interface IDAO <T>
     {
-        bool ExportMultipleObject(String FilePath, List<T> toExport);
+        bool ImportSingleObject(String FilePath, T toFill);
+        bool ExportSingleObject(String FilePath, T toExport);
         bool ImportMultipleObject(String FilePath, List<T> toFill);
+        bool ExportMultipleObject(String FilePath, List<T> toExport);
     }
 }

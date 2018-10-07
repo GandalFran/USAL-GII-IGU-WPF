@@ -15,17 +15,17 @@ namespace IGUWPF.test
     {
         private string DefaultTestDataSaveFile = "C:\\Users\\franp\\Desktop\\Project1.maclab";
         private string LogHeader = "[JsonFileDaoTester] ";
-        public bool Test()
+        public void Test()
         {
             bool result;
             List<Function> list = new List<Function>();
-            DAO<Function> JsonFileDao = new JsonDAO<Function>();
+            IDAO<Function> JsonFileDao = new JsonDAOImpl<Function>();
 
             Console.WriteLine(LogHeader + "TENER EN CUENTA QUE AQUI NO TRATAMOS IDS");
             Console.WriteLine(LogHeader + "Creating 3 functions"); 
             for (int i = 0; i < 3; i++)
             {
-               list.Add(new Function("F" + i, Brushes.Red, new MathematicalExpression("h")));
+               list.Add(new Function("F" + i, Brushes.Red, new MathematicalExpression("h"), i == 1));
             }
 
             Console.WriteLine(LogHeader + "Creation resuls: " + Utils.PrintFunctionList( list ) );
@@ -39,8 +39,6 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Importing functions");
             result = JsonFileDao.ImportMultipleObject( DefaultTestDataSaveFile, list);
             Console.WriteLine(LogHeader + "Importing functions: result: " + result + " - " + Utils.PrintFunctionList(list));
-
-            return true;
         }
     }
 }

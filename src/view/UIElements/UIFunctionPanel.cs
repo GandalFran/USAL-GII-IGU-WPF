@@ -12,23 +12,35 @@ namespace IGUWPF
 
 {
 
+    public class FunctionPanelEventArgs : EventArgs
+    {
+        public int FunctionId { get; set;  }
+
+        public FunctionPanelEventArgs(int FunctionId) {
+            this.FunctionId = FunctionId;
+        }
+    }
+
+    public delegate void FunctionPanelButtonClick(Object sender, FunctionPanelEventArgs e);
+
     public class UIFunctionPanel : Border
     {
-
         public int FunctionID { get; set; }
+        public bool isFunctionHiden { get; set; }
         public WrapPanel PanelElement { get; set; }
         public Label FunctionNameLabel { get; set; }
         public Button ViewButton { get; set; }
         public Button EditButton { get; set; }
         public Button DeleteButton { get; set; }
 
-        public event RoutedEventHandler ViewButtonClick;
-        public event RoutedEventHandler EditButtonClick;
-        public event RoutedEventHandler DeleteButtonClick;
+        public event FunctionPanelButtonClick ViewButtonClickHandler;
+        public event FunctionPanelButtonClick EditButtonClickHandler;
+        public event FunctionPanelButtonClick DeleteButtonClickHandler;
 
 
-        public UIFunctionPanel(int FunctionID, String FunctionName) {
+        public UIFunctionPanel(int FunctionID, String FunctionName, bool isFunctionHiden) {
             this.FunctionID = FunctionID;
+            this.isFunctionHiden = isFunctionHiden;
 
             PanelElement = new WrapPanel();
             FunctionNameLabel = new Label();
@@ -39,11 +51,19 @@ namespace IGUWPF
             this.Child = PanelElement;
 
             FunctionNameLabel.Content = FunctionName;
-            FunctionNameLabel.MinWidth = 90;
+            FunctionNameLabel.MaxWidth = 90;
 
-            ViewButton = getButton( Constants.ViewButtonIcon );
+            if ( isFunctionHiden)
+                ViewButton = getButton( Constants.NotViewButtonIcon);
+            else
+                ViewButton = getButton(Constants.ViewButtonIcon);
+
             EditButton = getButton( Constants.EditButtonIcon );
             DeleteButton = getButton( Constants.DeleteButtonIcon );
+
+            ViewButton.Click += ViewButton_Click;
+            EditButton.Click += EditButton_Click;
+            DeleteButton.Click += DeleteButton_Click;
 
             PanelElement.Children.Add(FunctionNameLabel);
             PanelElement.Children.Add(ViewButton);
@@ -52,6 +72,27 @@ namespace IGUWPF
 
         }
 
+        public void SwichViewButtonImage() {
+            Image TempImage = new Image();
+            DockPanel ButtonContent = (DockPanel) this.ViewButton.Content;
+
+            if (isFunctionHiden)
+            {
+                isFunctionHiden = false;
+                TempImage.Source = Constants.ViewButtonIcon;
+            }
+            else
+            {
+                isFunctionHiden = true;
+                TempImage.Source = Constants.NotViewButtonIcon;
+            }
+
+            TempImage.Width = 20;
+            TempImage.Height = 20;
+
+            ButtonContent.Children.Clear();
+            ButtonContent.Children.Add(TempImage);
+        }
 
         private Button getButton( BitmapImage image )
         {
@@ -75,6 +116,43 @@ namespace IGUWPF
             return TempButton;
         }
 
+        public void onViewButtonClick()
+        {
+            if (null != ViewButtonClickHandler) {
+                ViewButtonClickHandler(this, new FunctionPanelEventArgs(this.FunctionID));
+            }
+        }
+
+        public void onEditButtonClick()
+        {
+            if (null != EditButtonClickHandler)
+            {
+                EditButtonClickHandler(this, new FunctionPanelEventArgs(this.FunctionID));
+            }
+        }
+
+        public void onDeleteButtonClick()
+        {
+            if (null != DeleteButtonClickHandler)
+            {
+                DeleteButtonClickHandler(this, new FunctionPanelEventArgs(this.FunctionID));
+            }
+        }
+
+        private void ViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            onViewButtonClick();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            onEditButtonClick();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            onDeleteButtonClick();
+        }
 
 
     }

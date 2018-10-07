@@ -9,20 +9,15 @@ namespace IGUWPF
 {
     public class Constants
     {
-        private static String ImagesFolderPath = "Images\\Icons";
-        public static String ViewButtonIconPath =    ImagesFolderPath + "\\view.png";
-        public static String NotViewButtonIconPath = ImagesFolderPath + "\\no-view.png";
-        public static String AddButtonIconPath =     ImagesFolderPath + "\\add.png";
-        public static String EditButtonIconPath =    ImagesFolderPath + "\\edit.png";
-        public static String DeleteButtonIconPath =  ImagesFolderPath + "\\delete.png";
-
+        private static String IconsFolderPath = "Images\\Icons";
     
-        public static BitmapImage ViewButtonIcon   = new BitmapImage(new Uri(ViewButtonIconPath, UriKind.Relative));
-        public static BitmapImage NotViewButton    = new BitmapImage(new Uri(NotViewButtonIconPath, UriKind.Relative));
-        public static BitmapImage AddButtonIcon    = new BitmapImage(new Uri(AddButtonIconPath, UriKind.Relative));
-        public static BitmapImage EditButtonIcon   = new BitmapImage(new Uri(EditButtonIconPath, UriKind.Relative));
-        public static BitmapImage DeleteButtonIcon = new BitmapImage(new Uri(DeleteButtonIconPath, UriKind.Relative));
+        public static BitmapImage ViewButtonIcon    = new BitmapImage(new Uri(IconsFolderPath + "\\view.png", UriKind.Relative));
+        public static BitmapImage NotViewButtonIcon = new BitmapImage(new Uri(IconsFolderPath + "\\not-view.png", UriKind.Relative));
+        public static BitmapImage AddButtonIcon     = new BitmapImage(new Uri(IconsFolderPath + "\\add.png", UriKind.Relative));
+        public static BitmapImage EditButtonIcon    = new BitmapImage(new Uri(IconsFolderPath + "\\edit.png", UriKind.Relative));
+        public static BitmapImage DeleteButtonIcon  = new BitmapImage(new Uri(IconsFolderPath + "\\delete.png", UriKind.Relative));
 
         public static string ProjectFileExtension = "maclab";
+        public static string ApplicationName = "MacLab";
     }
 }

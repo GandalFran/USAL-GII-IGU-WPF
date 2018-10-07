@@ -1,21 +1,24 @@
-﻿using IGUWPF.src.models;
+﻿using IGUWPF.src.IO;
+using IGUWPF.src.models;
 using IGUWPF.src.models.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace IGUWPF.src.controllers
 {
-    public class FunctionIControllerImpl : IController<Function>
+    public class FunctionIControllerImpl : IFunctionController
     {
-        private DAO<Function> FunctionDAO;
+        private IDAO<Canvas> PlotDAO;
+        private IDAO<Function> FunctionDAO;
         private IDataModel<Function> FunctionModel;
-        private string OpenedProjectFilePath = null;
 
         public FunctionIControllerImpl() {
-            FunctionDAO = new JsonDAO<Function>();
+            PlotDAO = new ImageDAOImpl();
+            FunctionDAO = new JsonDAOImpl<Function>();
             FunctionModel = new IDataModelImpl<Function>();
         }
 
@@ -61,8 +64,13 @@ namespace IGUWPF.src.controllers
             {
                 FunctionModel = new IDataModelImpl<Function>( toFill );
             }
-
+            
             return result;
+        }
+
+        public bool ExportPlot(string FilePath,Canvas PlotPanel)
+        {
+           return  PlotDAO.ExportSingleObject(FilePath,PlotPanel);
         }
     }
 }

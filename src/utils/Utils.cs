@@ -21,5 +21,42 @@ namespace IGUWPF.src.utils
             return s;
         }
 
+        public static void CreateFileTypeAssociation() {
+           /* /*Snipet taken from https://www.codeproject.com/Articles/17023/System-File-Association 
+
+            FileAssociationInfo fai = new FileAssociationInfo("." + Constants.ProjectFileExtension);
+            if (!fai.Exists)
+            {
+                fai.Create(Constants.ApplicationName);
+
+                //Specify MIME type (optional)
+                fai.ContentType = "application/myfile";
+
+                //Programs automatically displayed in open with list
+                fai.OpenWithList = new string[]
+               { Constants.ApplicationName + ".exe", "sublime_text.exe.exe"};
+            }
+
+            ProgramAssociationInfo pai = new ProgramAssociationInfo(fai.ProgID);
+            if (!pai.Exists)
+            {
+                pai.Create
+                (
+                //Description of program/file type
+                "MacLab Project",
+
+                new ProgramVerb
+                     (null,
+                     //Path and arguments to use
+                     @"C:\SomePath\MyApp.exe %1"
+                     )
+                   );
+
+                //optional
+                pai.DefaultIcon = new ProgramIcon(@"Images\\ApplicationIcon.png");
+            }*/
+
+        }
+
     }
 }

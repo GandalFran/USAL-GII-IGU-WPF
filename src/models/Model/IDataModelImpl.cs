@@ -18,15 +18,17 @@ namespace IGUWPF.src.models.Model
 
         public IDataModelImpl( List<T> ElementList )
         {
-            this.LastAssignedID = 1 + GetBiggestId(ElementList);
-            this.ElementList = ElementList;
+            this.ElementList = new List<T>();
+            foreach (T Element in ElementList) {
+                CreateElement(Element);
+            }
         }
 
-        public int CreateElement(T element)
+        public int CreateElement(T Element)
         {
             int ID = GetLastAssignedIDAndIncrement();
-            element.SetId( ID );
-            this.ElementList.Add( element );
+            Element.SetID( ID );
+            this.ElementList.Add(Element);
 
             return ID;
         }
@@ -56,7 +58,7 @@ namespace IGUWPF.src.models.Model
 
         public List<T> GetAllElements()
         {
-            return this.ElementList;
+            return new List<T>( this.ElementList );
         }
 
         public void DeleteAllElementsAndResetIDs()
@@ -70,18 +72,6 @@ namespace IGUWPF.src.models.Model
             int IDtoReturn = this.LastAssignedID;
             this.LastAssignedID = this.LastAssignedID + 1;
             return IDtoReturn;
-        }
-
-        private int GetBiggestId( List<T> ElementList ) {
-            int BiggestId = 0;
-
-            foreach (T Element in ElementList) {
-                if (Element.GetID() > BiggestId) {
-                    BiggestId = Element.GetID();
-                }
-            }
-
-            return BiggestId;
         }
     }
 }

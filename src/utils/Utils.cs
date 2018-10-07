@@ -1,4 +1,5 @@
 ﻿using IGUWPF.src.models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,10 @@ namespace IGUWPF.src.utils
             string s = "";
             foreach (Function f in list)
             {
-                s = s + " " + f.GetID();
+                s = s + " " + f.ToString();
             }
             return s;
         }
+
     }
 }

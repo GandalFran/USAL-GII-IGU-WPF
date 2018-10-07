@@ -10,8 +10,9 @@ namespace IGUWPF.src.controllers
 {
     public class FunctionIControllerImpl : IController<Function>
     {
-        private IDataModel<Function> FunctionModel;
         private DAO<Function> FunctionDAO;
+        private IDataModel<Function> FunctionModel;
+        private string OpenedProjectFilePath = null;
 
         public FunctionIControllerImpl() {
             FunctionDAO = new JsonDAO<Function>();
@@ -46,6 +47,7 @@ namespace IGUWPF.src.controllers
 
         public bool ExportAll(string DataPath)
         {
+            Console.WriteLine( "TOEXPORT -" + FunctionModel.GetAllElements() ); 
             return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
         }
 
@@ -60,6 +62,9 @@ namespace IGUWPF.src.controllers
             {
                 FunctionModel = new IDataModelImpl<Function>( toFill );
             }
+
+
+            Console.WriteLine("IMPORTED -" + FunctionModel.GetAllElements());
 
             return result;
         }

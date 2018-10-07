@@ -20,7 +20,7 @@ namespace IGUWPF.test
             Function TempFunction = null;
             List<Function> TempFunctionList = null;
 
-            IDataModel<Function> FunctionModel = new IDataModelImpl<Function>();
+            IDataModelImpl<Function> FunctionModel = new IDataModelImpl<Function>();
             Console.WriteLine(LogHeader + "Instanced");
 
 
@@ -52,7 +52,7 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Updating test:");
             result = FunctionModel.UpdateElement(TempFunction);
             Console.WriteLine(LogHeader + "Updating test: Updating ID 1 Results true(" + result + "): ");
-            TempFunction.SetId(0);
+            TempFunction.SetID(0);
             result = FunctionModel.UpdateElement(TempFunction);
             Console.WriteLine(LogHeader + "Updating test: Trying to update ID 0 Results false(" + result + "): " + Utils.PrintFunctionList(FunctionModel.GetAllElements()));
 
@@ -65,7 +65,7 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions");
             FunctionModel = new IDataModelImpl<Function>( TempFunctionList );
             int InternalID = FunctionModel.CreateElement(new Function("Fi", Brushes.Red, new MathematicalExpression("")));
-            Console.WriteLine(LogHeader + "Instancing new Model since the last functions: 3- New internal ID=" + (InternalID) + " Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
+            Console.WriteLine(LogHeader + "Instancing new Model since the last functions: 3- New internal ID=" + (InternalID+1) + " Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
  
             return true;
         }

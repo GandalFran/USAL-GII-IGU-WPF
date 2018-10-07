@@ -15,6 +15,11 @@ namespace IGUWPF.src.models
             this.Expression = Expression;
         }
 
+        public override string ToString()
+        {
+            return Expression;
+        }
+
         public override bool Equals(Object obj)
         {
 

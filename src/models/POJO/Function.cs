@@ -10,7 +10,7 @@ namespace IGUWPF.src.models
 {
     public class Function : IModelable<Function>
     {
-        public int ID { get; set; }
+        private int ID;
         public String Name { get; set; }
         public Brush Color { get; set; }
         public MathematicalExpression MatheMaticalExpresion { get; set; }
@@ -23,7 +23,7 @@ namespace IGUWPF.src.models
 
         public override string ToString()
         {
-            return Name;
+            return "{ID=" + ID + ", Name= " + Name + ", Brush=" + Color + ", MatheMaticalExpresion=" + MatheMaticalExpresion + "}";
         }
 
         public override bool Equals(object obj)
@@ -70,14 +70,14 @@ namespace IGUWPF.src.models
         {
             return ID;
         }
-        public void SetId(int ID)
+        public void SetID(int ID)
         {
             this.ID = ID;
         }
         public Function Clone()
         {
             Function ClonedFunction = new Function( this.Name, this.Color, this.MatheMaticalExpresion );
-            ClonedFunction.SetId(ID);
+            ClonedFunction.SetID(ID);
             return ClonedFunction;
         }
     }

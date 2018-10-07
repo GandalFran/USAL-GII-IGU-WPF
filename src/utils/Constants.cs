@@ -23,6 +23,6 @@ namespace IGUWPF
         public static BitmapImage EditButtonIcon   = new BitmapImage(new Uri(EditButtonIconPath, UriKind.Relative));
         public static BitmapImage DeleteButtonIcon = new BitmapImage(new Uri(DeleteButtonIconPath, UriKind.Relative));
 
-        public static string DefaultDataSaveFile = "C:\\Users\\franp\\Desktop\\Datos.json";
+        public static string ProjectFileExtension = "maclab";
     }
 }

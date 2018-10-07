@@ -41,6 +41,9 @@ namespace IGUWPF
             OpenFileButton.Click += OpenFileButton_Click;
             SettingsButton.Click += SettingsButton_Click;
 
+            ITestable Test = new JsonFileDaoTester();
+            Test.Test();
+
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -51,6 +54,8 @@ namespace IGUWPF
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             bool ImportResult;
+
+            //Open File and import
             /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
             string FilePath = null;
             OpenFileDialog ofd = new OpenFileDialog();
@@ -75,6 +80,12 @@ namespace IGUWPF
                     Console.WriteLine("Error Importando");
                     //LANZAR VENTANA DE ERORR
                 }
+            }
+
+            //Refresh window
+            FuncionListPanel.Children.Clear();
+            foreach (Function Element in Controller.GetAll()) {
+                FuncionListPanel.Children.Add( new UIFunctionPanel( Element.GetID(), Element.Name ) );
             }
 
         }
@@ -115,8 +126,24 @@ namespace IGUWPF
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
-            UIFunctionPanel FPanel = new UIFunctionPanel("Function");
+            //ADD formulary
+            UIFunctionPanel FPanel = new UIFunctionPanel(-1,"Function");
             FuncionListPanel.Children.Add( FPanel );
+        }
+
+        private void FunctionPanelEditButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FunctionPanelDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FunctionPanelViewButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

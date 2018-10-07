@@ -11,17 +11,25 @@ using System.Windows.Media.Imaging;
 namespace IGUWPF
 
 {
+
     public class UIFunctionPanel : Border
     {
 
-        public int functionId { get; set; }
+        public int FunctionID { get; set; }
         public WrapPanel PanelElement { get; set; }
         public Label FunctionNameLabel { get; set; }
         public Button ViewButton { get; set; }
         public Button EditButton { get; set; }
         public Button DeleteButton { get; set; }
 
-        public UIFunctionPanel(String FunctionName) {
+        public event RoutedEventHandler ViewButtonClick;
+        public event RoutedEventHandler EditButtonClick;
+        public event RoutedEventHandler DeleteButtonClick;
+
+
+        public UIFunctionPanel(int FunctionID, String FunctionName) {
+            this.FunctionID = FunctionID;
+
             PanelElement = new WrapPanel();
             FunctionNameLabel = new Label();
 

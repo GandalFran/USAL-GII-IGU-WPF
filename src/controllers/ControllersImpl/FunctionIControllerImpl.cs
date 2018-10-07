@@ -47,7 +47,6 @@ namespace IGUWPF.src.controllers
 
         public bool ExportAll(string DataPath)
         {
-            Console.WriteLine( "TOEXPORT -" + FunctionModel.GetAllElements() ); 
             return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
         }
 
@@ -62,9 +61,6 @@ namespace IGUWPF.src.controllers
             {
                 FunctionModel = new IDataModelImpl<Function>( toFill );
             }
-
-
-            Console.WriteLine("IMPORTED -" + FunctionModel.GetAllElements());
 
             return result;
         }

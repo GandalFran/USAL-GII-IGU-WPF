@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using static IGUWPF.src.utils.Enumerations;
 
-namespace IGUWPF.src.controllers.ControllersImpl
+namespace IGUWPF.src.controllers
 {
-    public interface IPlotController
+    interface IPlotController
     {
-        Line[] GetAxys();
-        PointCollection CalculatePlotPoints( PlotData Plot);
-        void ConfigurePolyLine(Function DataSource, Polyline ToConfigure, PointCollection Points);
+        int Add(Function Element);
+        bool Delete(Function Element);
+        bool Update(Function Element, params PlotUpdateType[] Type);
+        void Clear();
 
-        bool ExportPlot( string FilePath, Panel ToExport);
+        void UpdateAxys();
+        bool ExportPlot(string DataPath);
     }
 }

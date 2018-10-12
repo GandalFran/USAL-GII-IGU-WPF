@@ -27,7 +27,7 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Creating test: Create 3 functions");
             for (int i = 0; i < 3; i++)
             {
-                int ID = FunctionModel.CreateElement(new Function("F" + i, Color.FromRgb(255, 0, 0), new PlotData("x")));
+                int ID = FunctionModel.CreateElement(new Function("F" + i, Color.FromRgb(255, 0, 0), "x"));
                 if(ID != i)
                 {
                     Console.WriteLine("\t" + LogHeader + "ERROR Creating test: ID" + ID);
@@ -64,7 +64,7 @@ namespace IGUWPF.test
 
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions");
             FunctionModel = new IDataModelImpl<Function>( TempFunctionList );
-            int InternalID = FunctionModel.CreateElement(new Function("Fi", Color.FromRgb(255, 0, 0), new PlotData("x")));
+            int InternalID = FunctionModel.CreateElement(new Function("Fi", Color.FromRgb(255, 0, 0),"x"));
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions: 3- New internal ID=" + (InternalID+1) + " Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
         }
     }

@@ -25,7 +25,7 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Creating 3 functions"); 
             for (int i = 0; i < 3; i++)
             {
-               list.Add(new Function("F" + i, Color.FromRgb(255, 0, 0), new PlotData("x"), i == 1));
+               list.Add(new Function("F" + i, Color.FromRgb(255, 0, 0), "x", i == 1));
             }
 
             Console.WriteLine(LogHeader + "Creation resuls: " + Utils.PrintFunctionList( list ) );

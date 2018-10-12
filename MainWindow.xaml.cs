@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IGUWPF.src.view;
 using IGUWPF.src.controllers.ControllersImpl;
+using static IGUWPF.src.utils.Enumerations;
 
 namespace IGUWPF
 {
@@ -35,35 +36,45 @@ namespace IGUWPF
 
         public MainWindow()
         {
-            InitialTasks();
             InitializeComponent();
+            InitialTasks();
 
             AddFuncionButton.Click += AddFuncionButton_Click;
-            ReloadPanelFunction.Click += ReloadPanelFunction_Click;
             SettingsButton.Click += SettingsButton_Click;
             SaveFileButton.Click += SaveFileButton_Click;
             OpenFileButton.Click += OpenFileButton_Click;
             ExportImageButton.Click += ExportImageButton_Click;
-            
+
+            this.SizeChanged += ReloadFunctionSize;
         }
 
         public void InitialTasks()
         {
             Controller = new FunctionIControllerImpl();
-            PlotController = new PlotControllerImpl();
+            PlotController = new PlotControllerImpl( PlotPanel );
+
+            PlotController.RealXMin = -10;
+            PlotController.RealXMax = 10;
+            PlotController.RealYMin = -10;
+            PlotController.RealYMax = 10;
+
+            PlotController.UpdateAxys();
         }
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
             string FunctionName = "Function";
             Color FunctionColor = Color.FromRgb(255, 0, 0);
-            PlotData FunctionMathematicalExpression = new PlotData("cos(x)");
+            string Expression = "cos(x)";
 
             //ADD FORMULARY
 
-            Function TempFunction = new Function(FunctionName,FunctionColor, FunctionMathematicalExpression);
+            //Create and save function
+            Function TempFunction = new Function(FunctionName,FunctionColor, Expression);
             int ID = Controller.AddAndGetID( TempFunction );
-
+            //Draw plot
+            PlotController.Add(TempFunction);
+            //Add plot panel to the left plot list
             UIFunctionPanel FunctionPanel = new UIFunctionPanel(ID , FunctionName, false);
 
             FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
@@ -73,37 +84,11 @@ namespace IGUWPF
             FuncionListPanel.Children.Add(FunctionPanel);
         }
 
-        private void ReloadPanelFunction_Click(object sender, RoutedEventArgs e)
+        private void ReloadFunctionSize(object sender, EventArgs e)
         {
-            Line[] Axys = null;
-            Polyline Plot = null;
-            PointCollection PlotPointCollection = null;
-
-            PlotController.RealXMin = -10;
-            PlotController.RealXMax = 10;
-            PlotController.RealYMin = -10;
-            PlotController.RealYMax = 10;
-            PlotController.PanelWidth = PlotPanel.ActualWidth;
-            PlotController.PanelHeight = PlotPanel.ActualHeight;
-
-            PlotPanel.Children.Clear();
-
-            Axys = PlotController.GetAxys();
-            if (null != Axys[0]) 
-                PlotPanel.Children.Add(Axys[0]);
-            if (null != Axys[1])
-                PlotPanel.Children.Add(Axys[1]);
-            
-            foreach (Function f in Controller.GetAll()) {
-                if (false == f.IsHidden)
-                {
-                    Plot = new Polyline();
-                    PlotPointCollection = PlotController.CalculatePlotPoints(f.PlotData);
-                    PlotController.ConfigurePolyLine(f, Plot, PlotPointCollection);
-                    PlotPanel.Children.Add( Plot );
-                }
-            }
-
+            PlotController.UpdateAxys();   
+            foreach (Function Plot in Controller.GetAll()) 
+                PlotController.Update(Plot, PlotUpdateType.RECALCULATION);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -176,9 +161,13 @@ namespace IGUWPF
                 }
             }
 
-            //Refresh window
+            //Redraw the window
             FuncionListPanel.Children.Clear();
+            PlotController.Clear();
             foreach (Function Element in Controller.GetAll()) {
+                //Draw plot
+                PlotController.Add(Element);
+                //Draw the function panel in the left function list
                 FunctionPanel = new UIFunctionPanel(Element.GetID(), Element.Name, Element.IsHidden);
                 FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
                 FunctionPanel.EditButtonClickHandler += FPanel_EditButtonClickHandler; ;
@@ -211,7 +200,7 @@ namespace IGUWPF
 
             if (null != FilePath)
             {
-                ExportResult = PlotController.ExportPlot(FilePath, PlotPanel);
+                ExportResult = PlotController.ExportPlot(FilePath);
                 if (ExportResult == false)
                 {
                     Console.WriteLine("Error Exportando");
@@ -223,13 +212,28 @@ namespace IGUWPF
         private void FPanel_DeleteButtonClickHandler(object sender, FunctionPanelEventArgs e)
         {
             bool result;
+            Function ToDelete = null;
             UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
 
-            //Delete funcion
+            //Delete the plot(draw)
+            ToDelete = Controller.GetById(FunctionPanel.FunctionID);
+            if (null == ToDelete)
+            {
+                Console.WriteLine("ERROR: no se pudo borrar");
+                //LANZAR ERROR
+                return;
+            }
+            else
+            {
+                PlotController.Delete(ToDelete);
+            }
+
+            //Delete funcion (model)
             result = Controller.Delete( FunctionPanel.FunctionID );
             if (result == false) {
                 Console.WriteLine("ERROR: no se pudo borrar");
                 //LANZAR ERROR
+                return;
             }
 
             //Delete panel
@@ -240,6 +244,8 @@ namespace IGUWPF
         {
             bool result;
             Function TempFunction = null;
+            PlotUpdateType [] Updates = new PlotUpdateType[2]{ PlotUpdateType.RECALCULATION , PlotUpdateType.COLOR };
+            
 
             TempFunction = Controller.GetById( e.FunctionId );
             if (null == TempFunction)
@@ -251,7 +257,16 @@ namespace IGUWPF
 
             //LANZAR FORMULARIO
 
+            //Update(model)
             result = Controller.Update( TempFunction );
+            if (result == false)
+            {
+                Console.WriteLine("ERROR: no se pudo actualizar");
+                //LANZAR VENTANA DE ERROR
+            }
+
+            //Update(draw)
+            result = PlotController.Update(TempFunction, PlotUpdateType.RECALCULATION);
             if (result == false)
             {
                 Console.WriteLine("ERROR: no se pudo actualizar");
@@ -284,6 +299,13 @@ namespace IGUWPF
             UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
             PanelSender.SwichViewButtonImage();
 
+            //Update(draw)
+            result = PlotController.Update(TempFunction, PlotUpdateType.VISIBILITY);
+            if (result == false)
+            {
+                Console.WriteLine("ERROR: no se pudo actualizar");
+                //LANZAR VENTANA DE ERROR
+            }
         }
     }
 }

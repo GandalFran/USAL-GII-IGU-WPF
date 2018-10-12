@@ -61,13 +61,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\controllers\IPlotController.cs" />
     <Compile Include="src\controllers\ControllersImpl\FunctionIControllerImpl.cs" />
     <Compile Include="src\controllers\ControllersImpl\PlotControllerImpl.cs" />
     <Compile Include="src\controllers\IController.cs" />
     <Compile Include="src\controllers\ControllersImpl\PropertiesController.cs" />
+    <Compile Include="src\controllers\IPlotController.cs" />
     <Compile Include="src\IO\DaoImpl\ImageDAOImpl.cs" />
     <Compile Include="src\models\POJO\Properties.cs" />
+    <Compile Include="src\utils\Enumerations.cs" />
     <Compile Include="src\utils\Utils.cs" />
     <Compile Include="test\DataModelTester.cs" />
     <Compile Include="test\ImageDaoTester.cs" />

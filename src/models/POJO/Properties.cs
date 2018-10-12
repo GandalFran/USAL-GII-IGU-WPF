@@ -8,6 +8,5 @@ namespace IGUWPF.src.models.POJO
 {
     class Properties
     {
-        int Definition;
     }
 }

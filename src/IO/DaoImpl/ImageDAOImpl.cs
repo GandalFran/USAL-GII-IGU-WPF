@@ -12,15 +12,15 @@ using System.Windows.Media.Imaging;
 
 namespace IGUWPF.src.IO
 {
-    public class ImageDAOImpl : IDAO<Canvas>
+    public class ImageDAOImpl : IDAO<Panel>
     {
 
-        public bool ImportSingleObject(string FilePath, Canvas toFill)
+        public bool ImportSingleObject(string FilePath, Panel toFill)
         {
             throw new NotImplementedException();
         }
 
-        public bool ExportSingleObject(string FilePath, Canvas toExport)
+        public bool ExportSingleObject(string FilePath, Panel toExport)
         {
             try
             {
@@ -44,12 +44,12 @@ namespace IGUWPF.src.IO
             return true;
         }
 
-        public bool ImportMultipleObject(string FilePath, List<Canvas> toFill)
+        public bool ImportMultipleObject(string FilePath, List<Panel> toFill)
         {
             throw new NotImplementedException();
         }
 
-        public bool ExportMultipleObject(string FilePath, List<Canvas> toExport)
+        public bool ExportMultipleObject(string FilePath, List<Panel> toExport)
         {
             throw new NotImplementedException();
         }

@@ -97,8 +97,8 @@
                     Margin="3" 
                     BorderThickness="1" BorderBrush="DodgerBlue"  
                     Grid.Column="1">
-                <Canvas Name="PlotPanel">
-
+                <Canvas Name="PlotPanel"
+                        Background="White">
                     <WrapPanel 
                         Canvas.Bottom="0" Canvas.Right="0">
                         <Label Name="XAxisValueLabel" Content="X:" Foreground="DodgerBlue"/>

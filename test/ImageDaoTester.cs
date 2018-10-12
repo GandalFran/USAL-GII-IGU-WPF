@@ -18,7 +18,7 @@ namespace IGUWPF.test
 
         public void Test()
         {
-            IDAO<Canvas> ImageDao = new ImageDAOImpl();
+            IDAO<Panel> ImageDao = new ImageDAOImpl();
 
             bool result = ImageDao.ExportSingleObject(FilePath, ToExport);
 

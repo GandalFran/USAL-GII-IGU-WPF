@@ -6,18 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace IGUWPF.src.controllers
 {
-    public class FunctionIControllerImpl : IFunctionController
+    public class FunctionIControllerImpl : IController<Function>
     {
-        private IDAO<Canvas> PlotDAO;
+
         private IDAO<Function> FunctionDAO;
         private IDataModel<Function> FunctionModel;
 
         public FunctionIControllerImpl() {
-            PlotDAO = new ImageDAOImpl();
             FunctionDAO = new JsonDAOImpl<Function>();
             FunctionModel = new IDataModelImpl<Function>();
         }
@@ -47,7 +48,6 @@ namespace IGUWPF.src.controllers
             return FunctionModel.GetAllElements();
         }
 
-
         public bool ExportAll(string DataPath)
         {
             return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
@@ -68,9 +68,5 @@ namespace IGUWPF.src.controllers
             return result;
         }
 
-        public bool ExportPlot(string FilePath,Canvas PlotPanel)
-        {
-           return  PlotDAO.ExportSingleObject(FilePath,PlotPanel);
-        }
     }
 }

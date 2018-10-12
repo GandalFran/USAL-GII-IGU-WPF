@@ -19,6 +19,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IGUWPF.src.view;
+using IGUWPF.src.controllers.ControllersImpl;
 
 namespace IGUWPF
 {
@@ -28,8 +30,8 @@ namespace IGUWPF
     public partial class MainWindow : Window
     {
 
-        private int PrivateI=0;
-        private IFunctionController Controller;
+        private IController<Function> Controller;
+        private PlotControllerImpl PlotController;
 
         public MainWindow()
         {
@@ -48,13 +50,14 @@ namespace IGUWPF
         public void InitialTasks()
         {
             Controller = new FunctionIControllerImpl();
+            PlotController = new PlotControllerImpl();
         }
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
-            string FunctionName = "Function" + PrivateI++;
-            Brush FunctionColor = Brushes.Red;
-            MathematicalExpression FunctionMathematicalExpression = new MathematicalExpression("h");
+            string FunctionName = "Function";
+            Color FunctionColor = Color.FromRgb(255, 0, 0);
+            PlotData FunctionMathematicalExpression = new PlotData("x^2");
 
             //ADD FORMULARY
 
@@ -72,6 +75,34 @@ namespace IGUWPF
 
         private void ReloadPanelFunction_Click(object sender, RoutedEventArgs e)
         {
+            Line[] Axys = null;
+            Polyline Plot = null;
+            PointCollection PlotPointCollection = null;
+
+            PlotController.RealXMin = -10;
+            PlotController.RealXMax = 10;
+            PlotController.RealYMin = -10;
+            PlotController.RealYMax = 10;
+            PlotController.PanelWidth = PlotPanel.ActualWidth;
+            PlotController.PanelHeight = PlotPanel.ActualHeight;
+
+            PlotPanel.Children.Clear();
+
+            Axys = PlotController.GetAxys();
+            if (null != Axys[0]) 
+                PlotPanel.Children.Add(Axys[0]);
+            if (null != Axys[1])
+                PlotPanel.Children.Add(Axys[1]);
+            
+            foreach (Function f in Controller.GetAll()) {
+                if (false == f.IsHidden)
+                {
+                    Plot = new Polyline();
+                    PlotPointCollection = PlotController.CalculatePlotPoints(f.PlotData);
+                    PlotController.ConfigurePolyLine(f, Plot, PlotPointCollection);
+                    PlotPanel.Children.Add( Plot );
+                }
+            }
 
         }
 
@@ -180,7 +211,7 @@ namespace IGUWPF
 
             if (null != FilePath)
             {
-                ExportResult = Controller.ExportPlot(FilePath, PlotPanel);
+                ExportResult = PlotController.ExportPlot(FilePath, PlotPanel);
                 if (ExportResult == false)
                 {
                     Console.WriteLine("Error Exportando");

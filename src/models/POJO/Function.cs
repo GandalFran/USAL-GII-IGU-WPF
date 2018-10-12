@@ -14,28 +14,28 @@ namespace IGUWPF.src.models
         private int ID;
         public bool IsHidden { get; set; }
         public String Name { get; set; }
-        public Brush Color { get; set; }
-        public MathematicalExpression MatheMaticalExpresion { get; set; }
+        public Color Color { get; set; }
+        public PlotData PlotData { get; set; }
 
-        public Function(String Name, Brush Color, MathematicalExpression MatheMaticalExpresion)
+        public Function(String Name, Color Color, PlotData PlotData)
         {
             this.Name = Name;
             this.Color = Color;
-            this.MatheMaticalExpresion = MatheMaticalExpresion;
+            this.PlotData = PlotData;
             this.IsHidden = false;
         }
 
         [JsonConstructor]
-        public Function(String Name, Brush Color, MathematicalExpression MatheMaticalExpresion, bool IsHidden) {
+        public Function(String Name, Color Color, PlotData PlotData, bool IsHidden) {
             this.Name = Name;
             this.Color = Color;
-            this.MatheMaticalExpresion = MatheMaticalExpresion;
+            this.PlotData = PlotData;
             this.IsHidden = IsHidden;
         }
 
         public override string ToString()
         {
-            return "{ID=" + ID + ", Name= " + Name + ", IsHidden=" + IsHidden + ", Brush=" + Color + ", MatheMaticalExpresion=" + MatheMaticalExpresion + "}";
+            return "{ID=" + ID + ", Name= " + Name + ", IsHidden=" + IsHidden + ", Brush=" + Color + ", PlotData=" + PlotData + "}";
         }
 
         public override bool Equals(object obj)
@@ -60,7 +60,7 @@ namespace IGUWPF.src.models
             } else if (!other.Color.Equals(this.Color))
             {
                 return false;
-            } else if (!other.MatheMaticalExpresion.Equals( this.MatheMaticalExpresion)) {
+            } else if (!other.PlotData.Equals( this.PlotData)) {
                 return false;
             }else
             {
@@ -72,8 +72,8 @@ namespace IGUWPF.src.models
         {
             var hashCode = 783144234;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Brush>.Default.GetHashCode(Color);
-            hashCode = hashCode * -1521134295 + EqualityComparer<MathematicalExpression>.Default.GetHashCode(MatheMaticalExpresion);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(Color);
+            hashCode = hashCode * -1521134295 + EqualityComparer<PlotData>.Default.GetHashCode(PlotData);
             return hashCode;
         }
 
@@ -88,7 +88,7 @@ namespace IGUWPF.src.models
         }
         public Function Clone()
         {
-            Function ClonedFunction = new Function( this.Name, this.Color, this.MatheMaticalExpresion );
+            Function ClonedFunction = new Function( this.Name, this.Color, this.PlotData);
             ClonedFunction.SetID(ID);
             return ClonedFunction;
         }

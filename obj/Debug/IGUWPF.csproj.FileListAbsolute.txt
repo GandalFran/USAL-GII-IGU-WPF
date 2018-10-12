@@ -22,3 +22,5 @@ D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionForm.g.cs
 D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\ConfirmationWindow.baml
 D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\ErrorWindow.baml
 D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionForm.baml
+D:\Repos\IGU-WPF\bin\Debug\MathParser.org-mXparser.dll
+D:\Repos\IGU-WPF\obj\Debug\IGUWPF_Content.g.cs

@@ -28,6 +28,7 @@ namespace IGUWPF.src.controllers
             try
             {
                 string JsonSerializedArray = File.ReadAllText(FilePath, Encoding.UTF8);
+                /*The following line has been taken from Json.net samples https://www.newtonsoft.com/json/help/html/Samples.htm*/
                 toFill.AddRange(JsonConvert.DeserializeObject<List<T>>(@JsonSerializedArray));
             }
             catch (Exception) {
@@ -37,10 +38,12 @@ namespace IGUWPF.src.controllers
             return true;
         }
 
+
         public bool ExportMultipleObject(string FilePath, List<T> toExport)
         {
             try
             {
+                /*The following line has been taken from Json.net samples https://www.newtonsoft.com/json/help/html/Samples.htm*/
                 string output = JsonConvert.SerializeObject(toExport, Formatting.Indented);
                 File.WriteAllText(@FilePath, output);
             }

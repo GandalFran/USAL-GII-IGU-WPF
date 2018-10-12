@@ -57,7 +57,7 @@ namespace IGUWPF
         {
             string FunctionName = "Function";
             Color FunctionColor = Color.FromRgb(255, 0, 0);
-            PlotData FunctionMathematicalExpression = new PlotData("x^2");
+            PlotData FunctionMathematicalExpression = new PlotData("cos(x)");
 
             //ADD FORMULARY
 

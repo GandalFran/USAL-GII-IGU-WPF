@@ -37,7 +37,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
             //X Axys
             if (RealXMin < 0 && RealXMax > 0) {
-                double PosY = RealYMax * (RealYMax - RealYMin) / PanelHeight;
+                double PosY = ParseYRealPointToScreenPoint(0);
                 Axys[0] = new Line() {
                     Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
                     X1 = 0,
@@ -52,7 +52,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
             //Y Axys
             if (RealYMin < 0 && RealYMax > 0)
             {
-                double PosX = RealXMax * (RealXMax - RealXMin) / PanelWidth;
+                double PosX = ParseXRealPointToScreenPoint(0);
                 Axys[1] = new Line()
                 {
                     Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
@@ -68,7 +68,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
         public PointCollection CalculatePlotPoints(PlotData Plot)
         {
-            double x, y, Increment;
+            double x, y;
             PointCollection ToReturn = null;
             List<Point> PointDataList = new List<Point>();
 
@@ -76,18 +76,15 @@ namespace IGUWPF.src.controllers.ControllersImpl
             MathParser.Expression ParserExpression = new MathParser.Expression(Plot.Expression);
             ParserExpression.addArguments( xArg );
 
-            Increment = (RealXMax - RealXMin) / PanelWidth;
-
             for (int i = 0; i < PanelWidth; i++) {
-                xArg.setArgumentValue(i * Increment + RealXMin);
+                xArg.setArgumentValue( ParseXScreenPointToRealPoint(i) );
 
                 x = i;
-                y = ParserExpression.calculate();
+                y = ParseYRealPointToScreenPoint( ParserExpression.calculate() );
                 PointDataList.Add( new Point(x,y));
             }
 
             DeletePointsDontFit(PointDataList);
-            ParsePointsToScreenPoints( PointDataList );
 
             ToReturn = new PointCollection( PointDataList );
 
@@ -108,19 +105,28 @@ namespace IGUWPF.src.controllers.ControllersImpl
         }
 
 
-        private void ParsePointsToScreenPoints(List<Point> ToParse)
-        {
-            ToParse.ForEach((Point p) =>
-            {
-                p.Y = PanelHeight*(1 - ((p.Y - RealYMin) / (RealYMax - RealYMin)));
-            });
-        }
-
 
         private void DeletePointsDontFit(List<Point> ToParse)
         {
             ToParse.RemoveAll((Point p) => p.Y > PanelHeight);
         }
 
+
+        private double ParseXRealPointToScreenPoint(double x)
+        {
+            return PanelWidth * (1 - ((x - RealXMin) / (RealXMax - RealXMin)));
+        }
+        private double ParseYRealPointToScreenPoint(double y)
+        {
+            return PanelHeight * (1 - ((y - RealYMin) / (RealYMax - RealYMin)));
+        }
+        private double ParseXScreenPointToRealPoint(double x)
+        {
+            return ((RealXMax-RealXMin) * x / PanelWidth) + RealXMin;
+        }
+        private double ParseYScreenPointToRealPoint(double y)
+        {
+            return - (((RealYMax - RealYMin) * y / PanelHeight) + RealYMin);
+        }
     }
 }

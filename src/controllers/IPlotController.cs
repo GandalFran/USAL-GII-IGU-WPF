@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 using static IGUWPF.src.utils.Enumerations;
 
 namespace IGUWPF.src.controllers
@@ -16,6 +17,7 @@ namespace IGUWPF.src.controllers
         bool Update(Function Element, params PlotUpdateType[] Type);
         void Clear();
 
+        void AddAxys();
         void UpdateAxys();
         bool ExportPlot(string DataPath);
     }

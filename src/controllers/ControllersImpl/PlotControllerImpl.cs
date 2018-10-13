@@ -24,8 +24,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
         public double RealYMin { get; set; }
         public double RealYMax { get; set; }
 
-        private Line[] Axys;
-
+        private Line[] Axys = null;
         private Panel PlotPanel;
         private IDAO<Panel> PlotDAO;
         private Dictionary<Function,Polyline> PlotModel;
@@ -33,9 +32,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
         public PlotControllerImpl(Panel PlotPanel)
         {
             this.PlotPanel = PlotPanel;
-
-            this.Axys = new Line[2];
-            PlotDAO = new ImageDAOImpl();
+            this.PlotDAO = new ImageDAOImpl();
             this.PlotModel = new Dictionary<Function, Polyline>();
         }
 
@@ -100,8 +97,10 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
         public void Clear()
         {
-            this.PlotPanel.Children.Clear();
             this.PlotModel.Clear();
+            this.PlotPanel.Children.Clear();
+            this.PlotPanel.Children.Add(Axys[0]);
+            this.PlotPanel.Children.Add(Axys[1]);
         }
 
         public bool ExportPlot(string DataPath)
@@ -111,57 +110,84 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
         public void UpdateAxys()
         {
+            //This line is because when the window is thrown, the resize event is triggered and this function is called, and the Axys aren't instanced yet
+            if (null == Axys)
+                return;
+
             //X Axys
             if (RealXMin < 0 && RealXMax > 0)
             {
                 double PosY = ParseYRealPointToScreenPoint(0);
-                if (null == Axys[0])
-                {
-                    Axys[0] = new Line()
-                    {
-                        Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
-                        X1 = 0,
-                        X2 = PlotPanel.ActualWidth,
-                        Y1 = PosY,
-                        Y2 = PosY,
-                        Name = "FX"
-                    };
-                }
-                else
-                {
-                    Axys[0].Y1 = PosY;
-                    Axys[0].Y2 = PosY;
-                }
+                Axys[0].Y1 = PosY;
+                Axys[0].Y2 = PosY;
+                Axys[0].Visibility = Visibility.Visible;
             }
-            else if (null != Axys[0]) {
-                Axys[0] = null;
+            else
+            {
+                Axys[0].Visibility = Visibility.Hidden;
             }
             //Y Axys
             if (RealYMin < 0 && RealYMax > 0)
             {
                 double PosX = ParseXRealPointToScreenPoint(0);
-                if (null == Axys[1])
-                {
-                    Axys[1] = new Line()
-                    {
-                        Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
-                        Y1 = 0,
-                        Y2 = PlotPanel.ActualHeight,
-                        X1 = PosX,
-                        X2 = PosX,
-                        Name = "FY"
-                    };
-                }
-                else
-                {
-                    Axys[1].X1 = PosX;
-                    Axys[1].X2 = PosX;
-                }
+                Axys[1].X1 = PosX;
+                Axys[1].X2 = PosX;
+                Axys[1].Visibility = Visibility.Visible;
             }
-            else if (null != Axys[1])
+            else
             {
-                Axys[1] = null;
+                Axys[1].Visibility = Visibility.Hidden;
             }
+        }
+
+        public void AddAxys() {
+            Console.WriteLine(PlotPanel.ActualHeight + "   " + PlotPanel.ActualWidth);
+
+            Line[] Axys = new Line[2];
+            //X Axys
+            Axys[0] = new Line()
+            {
+                Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                X1 = 0,
+                X2 = PlotPanel.ActualWidth,
+                Name = "FX"
+            };
+
+            if (RealXMin < 0 && RealXMax > 0)
+            {
+                double PosY = ParseYRealPointToScreenPoint(0);
+                Axys[0].Y1 = PosY;
+                Axys[0].Y2 = PosY;
+            }
+            else
+            {
+                Axys[0].Visibility = Visibility.Hidden;
+            }
+
+            //Y Axys
+            Axys[1] = new Line()
+            {
+                Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                Y1 = 0,
+                Y2 = PlotPanel.ActualWidth,
+                Name = "FY"
+            };
+
+            if (RealYMin < 0 && RealYMax > 0)
+            {
+                double PosX = ParseXRealPointToScreenPoint(0);
+                Axys[1].X1 = PosX;
+                Axys[1].X2 = PosX;
+            }
+            else
+            {
+                Axys[1].Visibility = Visibility.Hidden;
+            }
+
+            this.Axys = Axys;
+            this.PlotPanel.Children.Add(Axys[0]);
+            this.PlotPanel.Children.Add(Axys[1]);
+
         }
 
         private PointCollection CalculatePlotPoints(Function Element)
@@ -185,23 +211,26 @@ namespace IGUWPF.src.controllers.ControllersImpl
             return new PointCollection( PointDataList );
         }
 
+
         private double ParseXRealPointToScreenPoint(double x)
         {
-            return PlotPanel.ActualWidth * (1 - ((x - RealXMin) / (RealXMax - RealXMin)));
+            double Width = PlotPanel.ActualWidth;
+            return Width * (1 - ((x - RealXMin) / (RealXMax - RealXMin)));
         }
         private double ParseYRealPointToScreenPoint(double y)
         {
-            return PlotPanel.ActualHeight * (1 - ((y - RealYMin) / (RealYMax - RealYMin)));
+            double Height = PlotPanel.ActualHeight;
+            return Height * (1 - ((y - RealYMin) / (RealYMax - RealYMin)));
         }
         private double ParseXScreenPointToRealPoint(double x)
         {
-            return ((RealXMax-RealXMin) * x / PlotPanel.ActualWidth) + RealXMin;
+            double Width = PlotPanel.ActualWidth;
+            return ((RealXMax-RealXMin) * x / Width) + RealXMin;
         }
         private double ParseYScreenPointToRealPoint(double y)
         {
-            return - (((RealYMax - RealYMin) * y / PlotPanel.ActualHeight) + RealYMin);
+            double Height = PlotPanel.ActualHeight;
+            return - (((RealYMax - RealYMin) * y / Height) + RealYMin);
         }
-
-
     }
 }

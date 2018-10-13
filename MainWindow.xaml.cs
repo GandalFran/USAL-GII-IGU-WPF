@@ -38,6 +38,17 @@ namespace IGUWPF
         {
             InitializeComponent();
             InitialTasks();
+        }
+
+        private void InitialTasks()
+        {
+            Controller = new FunctionIControllerImpl();
+            PlotController = new PlotControllerImpl(PlotPanel);
+
+            PlotController.RealXMin = -10;
+            PlotController.RealXMax = 10;
+            PlotController.RealYMin = -10;
+            PlotController.RealYMax = 10;
 
             AddFuncionButton.Click += AddFuncionButton_Click;
             SettingsButton.Click += SettingsButton_Click;
@@ -46,26 +57,22 @@ namespace IGUWPF
             ExportImageButton.Click += ExportImageButton_Click;
 
             this.SizeChanged += ReloadFunctionSize;
+            this.PlotPanel.Loaded += PlotPanel_Loaded;
         }
 
-        public void InitialTasks()
+        private void PlotPanel_Loaded(object sender, RoutedEventArgs e)
         {
-            Controller = new FunctionIControllerImpl();
-            PlotController = new PlotControllerImpl( PlotPanel );
-
-            PlotController.RealXMin = -10;
-            PlotController.RealXMax = 10;
-            PlotController.RealYMin = -10;
-            PlotController.RealYMax = 10;
-
-            PlotController.UpdateAxys();
+            PlotController.AddAxys();
         }
 
         private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
         {
+            Random r = new Random();
+            string[] ExpressionArray = new string[] {"x","n*cos(x)","n*sin(x)", "x^n","x+n", "x*n"};
+
             string FunctionName = "Function";
-            Color FunctionColor = Color.FromRgb(255, 0, 0);
-            string Expression = "cos(x)";
+            Color FunctionColor = Color.FromRgb((byte)r.Next(0,255), (byte)r.Next(0, 255), (byte)r.Next(0, 255));
+            string Expression = ExpressionArray[(byte)r.Next(0, ExpressionArray.Length)].Replace("n", ""+r.Next(1,10));
 
             //ADD FORMULARY
 
@@ -86,14 +93,27 @@ namespace IGUWPF
 
         private void ReloadFunctionSize(object sender, EventArgs e)
         {
-            PlotController.UpdateAxys();   
-            foreach (Function Plot in Controller.GetAll()) 
+            PlotController.UpdateAxys();
+            foreach (Function Plot in Controller.GetAll())
                 PlotController.Update(Plot, PlotUpdateType.RECALCULATION);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-           
+            bool propertyChanged = true;
+
+            //Add formulary
+
+            //UpdateAxys
+            if (propertyChanged)
+            {
+                PlotController.UpdateAxys();
+                //Update plots
+                foreach (Function Element in Controller.GetAll())
+                {
+                    PlotController.Update(Element, PlotUpdateType.RECALCULATION);
+                }
+            }
         }
 
         private void SaveFileButton_Click(object sender, RoutedEventArgs e)
@@ -122,10 +142,7 @@ namespace IGUWPF
             {
                 ExportResult = Controller.ExportAll(FilePath);
                 if (ExportResult == false)
-                {
-                    Console.WriteLine("Error Exportando");
-                    //LANZAR VENTANA DE ERORR
-                }
+                    Utils.ThrowErrorWindow("No se pudo abrir el fichero");
             }
 
         }
@@ -155,14 +172,11 @@ namespace IGUWPF
 
             if (null != FilePath) {
                 ImportResult = Controller.ImportAll( FilePath );
-                if (ImportResult == false) {
-                    Console.WriteLine("Error Importando");
-                    //LANZAR VENTANA DE ERORR
-                }
+                if (ImportResult == false)
+                    Utils.ThrowErrorWindow("No se pudo guardar el fichero");
             }
 
             //Redraw the window
-            FuncionListPanel.Children.Clear();
             PlotController.Clear();
             foreach (Function Element in Controller.GetAll()) {
                 //Draw plot
@@ -202,10 +216,7 @@ namespace IGUWPF
             {
                 ExportResult = PlotController.ExportPlot(FilePath);
                 if (ExportResult == false)
-                {
-                    Console.WriteLine("Error Exportando");
-                    //LANZAR VENTANA DE ERORR
-                }
+                    Utils.ThrowErrorWindow("No se pudo exportar la imagen");
             }
         }
 
@@ -218,23 +229,13 @@ namespace IGUWPF
             //Delete the plot(draw)
             ToDelete = Controller.GetById(FunctionPanel.FunctionID);
             if (null == ToDelete)
-            {
-                Console.WriteLine("ERROR: no se pudo borrar");
-                //LANZAR ERROR
-                return;
-            }
+                Utils.ThrowErrorWindow("No se pudo eliminar la funcion");
             else
-            {
                 PlotController.Delete(ToDelete);
-            }
-
             //Delete funcion (model)
             result = Controller.Delete( FunctionPanel.FunctionID );
-            if (result == false) {
-                Console.WriteLine("ERROR: no se pudo borrar");
-                //LANZAR ERROR
-                return;
-            }
+            if (result == false)
+                Utils.ThrowErrorWindow("No se pudo eliminar la funcion");
 
             //Delete panel
             this.FuncionListPanel.Children.Remove( FunctionPanel );
@@ -246,32 +247,20 @@ namespace IGUWPF
             Function TempFunction = null;
             PlotUpdateType [] Updates = new PlotUpdateType[2]{ PlotUpdateType.RECALCULATION , PlotUpdateType.COLOR };
             
-
             TempFunction = Controller.GetById( e.FunctionId );
             if (null == TempFunction)
-            {
-                Console.WriteLine("ERROR: No se pudo obtener la funcion");
-                //LANZAR VENTANA DE ERROR
-                return;
-            }
+                Utils.ThrowErrorWindow("No se pudo editar la funcion");
 
             //LANZAR FORMULARIO
 
             //Update(model)
             result = Controller.Update( TempFunction );
             if (result == false)
-            {
-                Console.WriteLine("ERROR: no se pudo actualizar");
-                //LANZAR VENTANA DE ERROR
-            }
-
+                Utils.ThrowErrorWindow("No se pudo editar la funcion");
             //Update(draw)
             result = PlotController.Update(TempFunction, PlotUpdateType.RECALCULATION);
             if (result == false)
-            {
-                Console.WriteLine("ERROR: no se pudo actualizar");
-                //LANZAR VENTANA DE ERROR
-            }
+                Utils.ThrowErrorWindow("No se pudo editar la funcion");
         }
 
         private void FPanel_ViewButtonClickHandler(object sender, FunctionPanelEventArgs e)
@@ -281,31 +270,20 @@ namespace IGUWPF
 
             TempFunction = Controller.GetById(e.FunctionId);
             if (null == TempFunction)
-            {
-                Console.WriteLine("ERROR: no se pudo obtener");
-                //LANZAR VENTANA DE ERROR
-                return;
-            }
+                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
 
             TempFunction.IsHidden = !TempFunction.IsHidden;
 
             result = Controller.Update(TempFunction);
             if (result == false)
-            {
-                Console.WriteLine("ERROR: no se pudo actualizar");
-                //LANZAR VENTANA DE ERROR
-            }
-
-            UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
-            PanelSender.SwichViewButtonImage();
-
+                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
             //Update(draw)
             result = PlotController.Update(TempFunction, PlotUpdateType.VISIBILITY);
             if (result == false)
-            {
-                Console.WriteLine("ERROR: no se pudo actualizar");
-                //LANZAR VENTANA DE ERROR
-            }
+                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
+            //update panel
+            UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
+            PanelSender.SwichViewButtonImage();
         }
     }
 }

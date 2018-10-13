@@ -21,6 +21,13 @@ namespace IGUWPF.src.utils
             return s;
         }
 
+        public static void ThrowErrorWindow(string msg)
+        {
+            //Lanzar ventana de error
+            Console.WriteLine("Error: " + msg );
+
+        }
+
         public static void CreateFileTypeAssociation() {
            /* /*Snipet taken from https://www.codeproject.com/Articles/17023/System-File-Association 
 

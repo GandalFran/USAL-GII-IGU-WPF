@@ -40,6 +40,9 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
                 CalculationResult.Add(new Point(x, y));
             }
+
+            //Filter results to avoid unwished lines
+            //TODO -- buscar manera mejor
            
             //Add the points to the plot
             Element.Plot.PlotPoints.Points = CalculationResult;

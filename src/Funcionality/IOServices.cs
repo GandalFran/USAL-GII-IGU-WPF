@@ -18,7 +18,7 @@ namespace IGUWPF.src.controllers
 
         public static bool ExportModel(string DataPath, IDataModel<Function> FunctionModel)
         {
-            IDAO<Function> FunctionDAO = new JsonDAOImpl<Function>();
+            IDAO<Function> FunctionDAO = new SerialDAOImpl<Function>();
             return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
         }
 
@@ -26,7 +26,7 @@ namespace IGUWPF.src.controllers
         {
             bool result;
             List<Function> toFill = new List<Function>();
-            IDAO<Function> FunctionDAO = new JsonDAOImpl<Function>();
+            IDAO<Function> FunctionDAO = new SerialDAOImpl<Function>();
 
             result = FunctionDAO.ImportMultipleObject( DataPath, toFill );
 

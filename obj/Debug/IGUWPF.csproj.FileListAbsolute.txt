@@ -16,7 +16,6 @@ D:\Repos\IGU-WPF\obj\Debug\IGUWPF.pdb
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.dll
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.xml
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.CopyComplete
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionAddForm.g.cs
 D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\SettingsForm.g.cs
 D:\Repos\IGU-WPF\bin\Debug\Xceed.Wpf.AvalonDock.dll
 D:\Repos\IGU-WPF\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
@@ -34,5 +33,6 @@ D:\Repos\IGU-WPF\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionAddForm.baml
 D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\SettingsForm.baml
+D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionAddAndEditForm.g.cs
+D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionAddAndEditForm.baml

@@ -44,13 +44,13 @@ namespace IGUWPF.src.view.Windows
             if (!double.TryParse(XMinTextBox.Text, out toTest) ||
                 !double.TryParse(XMaxTextBox.Text, out toTest) ||
                 !double.TryParse(YMinTextBox.Text, out toTest) ||
-                !double.TryParse(YMaxTextBox.Text, out toTest)) {
-                //TODO Lanzar error
+                !double.TryParse(YMaxTextBox.Text, out toTest) ||
+                Xmin >= Xmax || Ymin >= Ymax ) {
 
+                MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            }
-
-            this.DialogResult = true;
+            }else
+                this.DialogResult = true;
         }
     }
 }

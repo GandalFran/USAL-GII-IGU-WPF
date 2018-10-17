@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IGUWPF.src.view.Windows"
         mc:Ignorable="d"
-        Title="SettingsForm" Height="200" Width="200">
+        Title="SettingsForm" Height="200" Width="200"
+        Icon="/IGUWPF;component/Images/Icons/plot.png"
+        ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

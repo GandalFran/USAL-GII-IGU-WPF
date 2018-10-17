@@ -8,162 +8,136 @@ namespace IGUWPF.src.controller.calculator
 {
     public class CosXCalculator : ICalculator
     {
-        private double a, b;
-
-        public CosXCalculator(double a, double b) {
-            this.a = a;
-            this.b = b;
+        public CosXCalculator(double a, double b) 
+        {
+            this.A = a;
+            this.B = b;
+            this.C = 0;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return a * Math.Cos(b*x);
+            return A * Math.Cos(B*x);
         }
 
         public override string ToString()
         {
-            return a + "cos(" + b + "*x)";
+            return A + "cos(" + B + "*x)";
         }
+
     }
 
     public class SinXCalculator : ICalculator
     {
-        private double a, b;
-
         public SinXCalculator(double a, double b)
         {
-            this.a = a;
-            this.b = b;
+            this.A = a;
+            this.B = b;
+            this.C = 0;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return a * Math.Sin(b * x);
-        }
-
-        public override string ToString()
-        {
-            return a + "sin(" + b + "*x)";
-        }
-    }
-
-    public class TanXCalculator : ICalculator
-    {
-        private double a, b;
-
-        public TanXCalculator(double a, double b)
-        {
-            this.a = a;
-            this.b = b;
-        }
-
-        public double Calculate(double x)
-        {
-            return a * Math.Tan(b * x);
+            return A * Math.Sin(B * x);
         }
 
         public override string ToString()
         {
-            return a + "tan(" + b + "*x)";
+            return A + "sin(" + B + "*x)";
         }
     }
 
     public class XExpNCalculator : ICalculator
     {
-        private double a, b;
-
         public XExpNCalculator(double a, double b)
         {
-            this.a = a;
-            this.b = b;
+            this.A = a;
+            this.B = b;
+            this.C = 0;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return a * Math.Pow(x,b);
+            return A * Math.Pow(x,B);
         }
 
         public override string ToString()
         {
-            return a + "*x^" + b;
+            return A + "*x^" + B;
         }
     }
 
     public class NExpXCalculator : ICalculator
     {
-        private double a, b;
-
         public NExpXCalculator(double a, double b)
         {
-            this.a = a;
-            this.b = b;
+            this.A = a;
+            this.B = b;
+            this.C = 0;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return a * Math.Pow(b,x);
+            return A * Math.Pow(B,x);
         }
 
         public override string ToString()
         {
-            return a + "*" + b + "^x";
+            return A + "*" + B + "^x";
         }
     }
 
     public class NDividedXCalculator : ICalculator
     {
-        private double a, b;
-
         public NDividedXCalculator(double a, double b)
         {
-            this.a = a;
-            this.b = b;
+            this.A = a;
+            this.B = b;
+            this.C = C;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return a /b*x;
+            return A /B*x;
         }
 
         public override string ToString()
         {
-            return a + "/(x*" + b + ")";
+            return A + "/(x*" + B + ")";
         }
     }
 
     public class X2Calculator : ICalculator
     {
-        private double a, b,c;
-
         public X2Calculator(double a, double b, double c)
         {
-            this.a = a;
-            this.b = b;
-            this.c = c;
+            this.A = a;
+            this.B = b;
+            this.C = C;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
-            return (a*x*x) + (b*x) + c;
+            return (A*x*x) + (B*x) + C;
         }
 
         public override string ToString()
         {
-            return a + "x^2 + " + b + "x + " + c + ")";
+            return A + "x^2 + " + B + "x + " + C + ")";
         }
     }
 
 
     public class MultipleOperationCalculator : ICalculator
     {
-        private ICalculator[] OperationArray;
+        public ICalculator[] OperationArray { get; set; }
 
         public MultipleOperationCalculator(params ICalculator[] OperationArray)
         {
             this.OperationArray = OperationArray;
         }
 
-        public double Calculate(double x)
+        public override double Calculate(double x)
         {
             double result = x;
 

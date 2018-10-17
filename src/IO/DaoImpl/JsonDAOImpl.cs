@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IGUWPF.src.controllers
 {
-    public class JsonDAOImpl<T>: IDAO <T>
+    public class SerialDAOImpl<T>: IDAO <T>
     {
 
         public bool ImportSingleObject(string FilePath, T toFill)

@@ -43,7 +43,7 @@ namespace IGUWPF
             InitializeComponent();
 
             Model = new IDataModelImpl<Function>();
-            FunctionDAO = new JsonDAOImpl<Function>();
+            FunctionDAO = new SerialDAOImpl<Function>();
 
             //Give defect values
             PlotSettings.XMin = PlotSettings.YMin = -10;
@@ -61,7 +61,10 @@ namespace IGUWPF
         private void AddFunction(object sender, RoutedEventArgs e)
         {
             //Display the formulary
-            FunctionAddForm Form = new FunctionAddForm();
+            FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
+            Form.Title = "Anadir funcion";
+            Form.A = Form.B = Form.C = 0;
+            Form.Color = Color.FromRgb(0,0,0);
             Form.ShowDialog();
             if (false == Form.DialogResult)
                 return;
@@ -150,7 +153,10 @@ namespace IGUWPF
             //Export the file
             result = IOServices.ExportModel(SaveFileForm.FileName,Model);
             if (result == false)
-                Utils.ThrowErrorWindow("No se pudo abrir el fichero");
+            {
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         private void OpenProject(object sender, RoutedEventArgs e)
@@ -172,7 +178,10 @@ namespace IGUWPF
             //Import the project
             result = IOServices.ImportModel(OpenFileForm.FileName, Model);
             if (result == false)
-                Utils.ThrowErrorWindow("No se pudo guardar el fichero");
+            {
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             //Redraw the window
 
@@ -218,7 +227,10 @@ namespace IGUWPF
             //Export the image
             result = IOServices.ExportPlot(SaveFileForm.FileName, PlotPanel);
             if (result == false)
-                Utils.ThrowErrorWindow("No se pudo exportar la imagen");
+            {
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
 
         
@@ -232,7 +244,7 @@ namespace IGUWPF
             Function = Model.GetElementByID(e.FunctionId);
             if (null == Function)
             {
-                Utils.ThrowErrorWindow("No se pudo eliminar la funcion");
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else
@@ -256,23 +268,43 @@ namespace IGUWPF
             Function = Model.GetElementByID( e.FunctionId );
             if (null == Function)
             {
-                Utils.ThrowErrorWindow("No se pudo editar la funcion");
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            //LANZAR FORMULARIO
+            //Display the formulary
+            FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
+            Form.Title = "Editar funcion";
+            Form.A = Function.Calculator.A;
+            Form.B = Function.Calculator.B;
+            Form.C = Function.Calculator.C;
+            Form.Color = Function.Plot.Color;
+            Form.FunctionName = Function.Name;
+            //TODO -- METER CALCULATOR Form.Calculator = ;
+
+            Form.ShowDialog();
+            if (false == Form.DialogResult)
+                return;
+            Function.Name = Form.FunctionName;
+            Function.Plot.Color = Form.Color;
+            Function.Calculator = Form.Calculator;
 
             //Update(model)
             result = Model.UpdateElement(Function);
             if (result == false)
             {
-                Utils.ThrowErrorWindow("No se pudo editar la funcion");
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
 
             //Update(draw)
             PlotPanel.Children.Remove(Function.Plot.PlotPoints);
             PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
             PlotPanel.Children.Add(Function.Plot.PlotPoints);
+
+            //Update(panel)
+            UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
+            FunctionPanel.FunctionNameLabel.Content = Function.Name;
         }
 
         private void HideButtonFunction(object sender, FunctionPanelEventArgs e)
@@ -284,7 +316,7 @@ namespace IGUWPF
             Function = Model.GetElementByID(e.FunctionId);
             if (null == Function)
             {
-                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -295,7 +327,7 @@ namespace IGUWPF
             result = Model.UpdateElement(Function);
             if (result == false)
             {
-                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

@@ -21,7 +21,7 @@ namespace IGUWPF.test
         {
             bool result;
             List<Function> list = new List<Function>();
-            IDAO<Function> JsonFileDao = new JsonDAOImpl<Function>();
+            IDAO<Function> JsonFileDao = new SerialDAOImpl<Function>();
 
             Console.WriteLine(LogHeader + "TENER EN CUENTA QUE AQUI NO TRATAMOS IDS");
             Console.WriteLine(LogHeader + "Creating 3 functions"); 

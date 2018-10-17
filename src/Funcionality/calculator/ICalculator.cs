@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace IGUWPF.src.controller.calculator
 {
-    public interface ICalculator
+    public abstract class ICalculator
     {
-        double Calculate(double x);
+        public double A { get; set; }
+        public double B { get; set; }
+        public double C { get; set; }
+
+        abstract public double Calculate(double x);
     }
 }

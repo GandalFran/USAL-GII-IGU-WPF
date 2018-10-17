@@ -84,8 +84,8 @@
     <Compile Include="src\models\POJO\Plot.cs" />
     <Compile Include="src\utils\Enumerations.cs" />
     <Compile Include="src\utils\Utils.cs" />
-    <Compile Include="src\view\Windows\FunctionAddForm.xaml.cs">
-      <DependentUpon>FunctionAddForm.xaml</DependentUpon>
+    <Compile Include="src\view\Windows\FunctionAddAndEditForm.xaml.cs">
+      <DependentUpon>FunctionAddAndEditForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="src\view\Windows\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
@@ -114,7 +114,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="src\view\Windows\FunctionAddForm.xaml">
+    <Page Include="src\view\Windows\FunctionAddAndEditForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

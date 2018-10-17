@@ -12,9 +12,9 @@
 
     <DockPanel>
 
-        <WrapPanel  
+        <ToolBar  
                     VerticalAlignment="Center"
-                    Background="LightGray" 
+                Background="LightGray"
                     DockPanel.Dock="Top">
             <Button Name="SettingsButton" 
                     Margin="3" 
@@ -48,7 +48,7 @@
                     <Image Source="Images\Icons\imageExport.png" Width="20" Height="20"/>
                 </StackPanel>
             </Button>
-        </WrapPanel>
+        </ToolBar>
 
         <Grid Margin="3" Name="GridToUpdate">
             <Grid.ColumnDefinitions>

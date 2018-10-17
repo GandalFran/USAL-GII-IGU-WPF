@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace IGUWPF
 {
@@ -19,5 +20,9 @@ namespace IGUWPF
 
         public static string ProjectFileExtension = "maclab";
         public static string ApplicationName = "MacLab";
+
+        public static string ErrorWindowTitle = "ERROR";
+        public static string IncorrectDataMsg = "Los datos no son correctos";
+        public static string FunctionModelErrorMsg = "Hubo un problema interno con la funcion solicitada.";
     }
 }

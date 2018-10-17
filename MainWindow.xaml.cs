@@ -20,267 +20,285 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IGUWPF.src.view;
+using IGUWPF.src.view.Windows;
+using IGUWPF.src.models.POJO;
 using IGUWPF.src.controllers.ControllersImpl;
 using static IGUWPF.src.utils.Enumerations;
+using IGUWPF.src.controller.calculator;
 
 namespace IGUWPF
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
-
-        private IController<Function> Controller;
-        private PlotControllerImpl PlotController;
+        private double PlotWidth { get => PlotPanel.ActualWidth; }
+        private double PlotHeight { get => PlotPanel.ActualHeight; }
+        
+        private IDataModel<Function> Model;
+        private IDAO<Function> FunctionDAO;
+        private PlotRepresentationSettings PlotSettings;
 
         public MainWindow()
         {
             InitializeComponent();
-            InitialTasks();
+
+            Model = new IDataModelImpl<Function>();
+            FunctionDAO = new JsonDAOImpl<Function>();
+
+            //Give defect values
+            PlotSettings.XMin = PlotSettings.YMin = -10;
+            PlotSettings.XMax = PlotSettings.YMax = 10;
+
+            //Add event handlers
+            AddFuncionButton.Click += AddFunction;
+            SettingsButton.Click += EdditSettings;
+            SaveFileButton.Click += SaveProject;
+            OpenFileButton.Click += OpenProject;
+            ExportImageButton.Click += ExportImage;
+            PlotPanel.SizeChanged += ReloadPlotPanel;
         }
 
-        private void InitialTasks()
+        private void AddFunction(object sender, RoutedEventArgs e)
         {
-            Controller = new FunctionIControllerImpl();
-            PlotController = new PlotControllerImpl(PlotPanel);
-
-            PlotController.RealXMin = -10;
-            PlotController.RealXMax = 10;
-            PlotController.RealYMin = -10;
-            PlotController.RealYMax = 10;
-
-            AddFuncionButton.Click += AddFuncionButton_Click;
-            SettingsButton.Click += SettingsButton_Click;
-            SaveFileButton.Click += SaveFileButton_Click;
-            OpenFileButton.Click += OpenFileButton_Click;
-            ExportImageButton.Click += ExportImageButton_Click;
-
-            this.SizeChanged += ReloadFunctionSize;
-            this.PlotPanel.Loaded += PlotPanel_Loaded;
-        }
-
-        private void PlotPanel_Loaded(object sender, RoutedEventArgs e)
-        {
-            PlotController.AddAxys();
-        }
-
-        private void AddFuncionButton_Click(object sender, RoutedEventArgs e)
-        {
-            Random r = new Random();
-            string[] ExpressionArray = new string[] {"x","n*cos(x)","n*sin(x)", "x^n","x+n", "x*n"};
-
-            string FunctionName = "Function";
-            Color FunctionColor = Color.FromRgb((byte)r.Next(0,255), (byte)r.Next(0, 255), (byte)r.Next(0, 255));
-            string Expression = ExpressionArray[(byte)r.Next(0, ExpressionArray.Length)].Replace("n", ""+r.Next(1,10));
-
-            //ADD FORMULARY
+            //Display the formulary
+            FunctionAddForm Form = new FunctionAddForm();
+            Form.ShowDialog();
+            if (false == Form.DialogResult)
+                return;
+            string FunctionName = Form.FunctionName;
+            Color FunctionColor = Form.Color;
+            ICalculator FunctionCalculator = Form.Calculator;
 
             //Create and save function
-            Function TempFunction = new Function(FunctionName,FunctionColor, Expression);
-            int ID = Controller.AddAndGetID( TempFunction );
+            Plot Plot = new Plot(FunctionColor);
+            Function Function = new Function(FunctionName, FunctionCalculator, Plot);
+            int ID = Model.CreateElement(Function);
+
             //Draw plot
-            PlotController.Add(TempFunction);
-            //Add plot panel to the left plot list
-            UIFunctionPanel FunctionPanel = new UIFunctionPanel(ID , FunctionName, false);
+            PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotPanel.Children.Add(Function.Plot.PlotPoints);
 
-            FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
-            FunctionPanel.EditButtonClickHandler += FPanel_EditButtonClickHandler; ;
-            FunctionPanel.DeleteButtonClickHandler += FPanel_DeleteButtonClickHandler; ;
-
+            //Add plot panel to the plot list
+            UIFunctionPanel FunctionPanel = new UIFunctionPanel(ID, FunctionName, false);
+                FunctionPanel.ViewButtonClickHandler += HideButtonFunction;
+                FunctionPanel.EditButtonClickHandler += EditFunction;
+                FunctionPanel.DeleteButtonClickHandler += DeleteFunction;
             FuncionListPanel.Children.Add(FunctionPanel);
         }
 
-        private void ReloadFunctionSize(object sender, EventArgs e)
+        private void ReloadPlotPanel(object sender, EventArgs e)
         {
-            PlotController.UpdateAxys();
-            foreach (Function Plot in Controller.GetAll())
-                PlotController.Update(Plot, PlotUpdateType.RECALCULATION);
-        }
-
-        private void SettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool propertyChanged = true;
-
-            //Add formulary
-
-            //UpdateAxys
-            if (propertyChanged)
-            {
-                PlotController.UpdateAxys();
-                //Update plots
-                foreach (Function Element in Controller.GetAll())
-                {
-                    PlotController.Update(Element, PlotUpdateType.RECALCULATION);
-                }
+            //Clear the panel
+            PlotPanel.Children.Clear();
+            //Add axys
+            Line[] Axys = PlotUtils.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotPanel.Children.Add( Axys[0] );
+            PlotPanel.Children.Add( Axys[1] );
+            //Add functions
+            foreach (Function Function in Model.GetAllElements()) {
+                PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+                PlotPanel.Children.Add(Function.Plot.PlotPoints);
             }
         }
 
-        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        private void EdditSettings(object sender, RoutedEventArgs e)
         {
-            bool ExportResult;
+            double OlderXmin, OlderXmax, OlderYmin, OlderYmax;
 
-            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
-            string FilePath = null;
-            SaveFileDialog sfd = new SaveFileDialog();
+            //Show dialog to edit de properties
+            SettingsForm SettingsForm = new SettingsForm();
+            //Load older values
+            SettingsForm.Xmin = OlderXmin = PlotSettings.XMin;
+            SettingsForm.Xmax = OlderXmax = PlotSettings.XMax;
+            SettingsForm.Ymin = OlderYmin = PlotSettings.YMin;
+            SettingsForm.Ymax = OlderYmax = PlotSettings.YMax;
 
-            sfd.Title = "Save project";
-            sfd.FileName = "Desktop"; // Default file name
-            sfd.DefaultExt = ".maclab"; // Default file extension
-            sfd.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            sfd.AddExtension = true;
+            SettingsForm.ShowDialog();
+            if (false == SettingsForm.DialogResult)
+                return;
 
-            Nullable<bool> result = sfd.ShowDialog();
+            PlotSettings.XMin = SettingsForm.Xmin;
+            PlotSettings.XMax = SettingsForm.Xmax;
+            PlotSettings.YMin = SettingsForm.Ymin;
+            PlotSettings.YMax = SettingsForm.Ymax;
 
-            if (result == true)
-            {
-                FilePath = sfd.FileName;
-            }
-            /*End of snipet*/
+            //Check if the values has changed 
+            if (PlotSettings.XMin == OlderXmin
+                && PlotSettings.XMax == OlderXmax
+                && PlotSettings.YMin == OlderYmin
+                && PlotSettings.YMax == OlderYmax)
+                return;
 
-            if (null != FilePath)
-            {
-                ExportResult = Controller.ExportAll(FilePath);
-                if (ExportResult == false)
-                    Utils.ThrowErrorWindow("No se pudo abrir el fichero");
-            }
-
+            //Reload plot panel
+            ReloadPlotPanel(null,null);
         }
 
-        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        private void SaveProject(object sender, RoutedEventArgs e)
         {
-            bool ImportResult;
+            //Show dialog to choose the path to save the project
+            SaveFileDialog SaveFileForm = new SaveFileDialog();
+            SaveFileForm.Title = "Save project";
+            SaveFileForm.FileName = "Desktop"; // Default file name
+            SaveFileForm.DefaultExt = ".maclab"; // Default file extension
+            SaveFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
+            SaveFileForm.AddExtension = true;
+
+            Nullable<bool> result = SaveFileForm.ShowDialog();
+            if (false == result)
+                return;
+
+            //Export the file
+            result = IOServices.ExportModel(SaveFileForm.FileName,Model);
+            if (result == false)
+                Utils.ThrowErrorWindow("No se pudo abrir el fichero");
+        }
+
+        private void OpenProject(object sender, RoutedEventArgs e)
+        {
             UIFunctionPanel FunctionPanel;
 
-            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
-            string FilePath = null;
-            OpenFileDialog ofd = new OpenFileDialog();
+            //Show dialog to choose the project to import
+            OpenFileDialog OpenFileForm = new OpenFileDialog();
+            OpenFileForm.FileName = "Open project";
+            OpenFileForm.FileName = "Desktop"; // Default file name
+            OpenFileForm.DefaultExt = ".maclab"; // Default file extension
+            OpenFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
+            OpenFileForm.Multiselect = false;
 
-            ofd.FileName = "Open project";
-            ofd.FileName = "Desktop"; // Default file name
-            ofd.DefaultExt = ".maclab"; // Default file extension
-            ofd.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            ofd.Multiselect = false;
+            Nullable<bool> result = OpenFileForm.ShowDialog();
+            if (false == result)
+                return;
 
-            Nullable<bool> result = ofd.ShowDialog();
-
-            if (result == true)
-            {
-                FilePath = ofd.FileName;
-            }
-            /*End of snipet*/
-
-            if (null != FilePath) {
-                ImportResult = Controller.ImportAll( FilePath );
-                if (ImportResult == false)
-                    Utils.ThrowErrorWindow("No se pudo guardar el fichero");
-            }
+            //Import the project
+            result = IOServices.ImportModel(OpenFileForm.FileName, Model);
+            if (result == false)
+                Utils.ThrowErrorWindow("No se pudo guardar el fichero");
 
             //Redraw the window
-            PlotController.Clear();
-            foreach (Function Element in Controller.GetAll()) {
+
+            //Clear plot representation and plot list
+            FuncionListPanel.Children.Clear();
+            PlotPanel.Children.Clear();
+            
+            //Add axys
+            Line[] Axys = PlotUtils.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotPanel.Children.Add(Axys[0]);
+            PlotPanel.Children.Add(Axys[1]);
+            
+            //Add functions
+            foreach (Function Function in Model.GetAllElements()) {
                 //Draw plot
-                PlotController.Add(Element);
+                PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+                PlotPanel.Children.Add(Function.Plot.PlotPoints);
+                
                 //Draw the function panel in the left function list
-                FunctionPanel = new UIFunctionPanel(Element.GetID(), Element.Name, Element.IsHidden);
-                FunctionPanel.ViewButtonClickHandler += FPanel_ViewButtonClickHandler;
-                FunctionPanel.EditButtonClickHandler += FPanel_EditButtonClickHandler; ;
-                FunctionPanel.DeleteButtonClickHandler += FPanel_DeleteButtonClickHandler;
+                FunctionPanel = new UIFunctionPanel(Function.GetID(), Function.Name, Function.Plot.IsHidden);
+                    FunctionPanel.ViewButtonClickHandler += HideButtonFunction;
+                    FunctionPanel.EditButtonClickHandler += EditFunction; ;
+                    FunctionPanel.DeleteButtonClickHandler += DeleteFunction;
                 FuncionListPanel.Children.Add( FunctionPanel );
             }
 
         }
 
-        private void ExportImageButton_Click(object sender, RoutedEventArgs e)
+        private void ExportImage(object sender, RoutedEventArgs e)
         {
-            bool ExportResult;
-            /*Part of this snipet is taken from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.win32.openfiledialog?view=netframework-4.7.2*/
-            string FilePath = null;
-            SaveFileDialog sfd = new SaveFileDialog();
+            //Show dialog to choose the path to export
+            SaveFileDialog SaveFileForm = new SaveFileDialog();
+            SaveFileForm.Title = "Export plot";
+            SaveFileForm.FileName = "Desktop";
+            SaveFileForm.DefaultExt = ".png";
+            SaveFileForm.Filter = "PNG image (.png)|*.png";
+            SaveFileForm.AddExtension = true;
 
-            sfd.Title = "Export plot";
-            sfd.FileName = "Desktop"; // Default file name
-            sfd.DefaultExt = ".png"; // Default file extension
-            sfd.Filter = "PNG image (.png)|*.png";
-            sfd.AddExtension = true;
+            Nullable<bool> result = SaveFileForm.ShowDialog();
+            if (null == result)
+                return;
 
-            Nullable<bool> result = sfd.ShowDialog();
-
-            if (result == true)
-            {
-                FilePath = sfd.FileName;
-            }
-            /*End of snipet*/
-
-            if (null != FilePath)
-            {
-                ExportResult = PlotController.ExportPlot(FilePath);
-                if (ExportResult == false)
-                    Utils.ThrowErrorWindow("No se pudo exportar la imagen");
-            }
+            //Export the image
+            result = IOServices.ExportPlot(SaveFileForm.FileName, PlotPanel);
+            if (result == false)
+                Utils.ThrowErrorWindow("No se pudo exportar la imagen");
         }
 
-        private void FPanel_DeleteButtonClickHandler(object sender, FunctionPanelEventArgs e)
+        
+        private void DeleteFunction(object sender, FunctionPanelEventArgs e)
         {
             bool result;
-            Function ToDelete = null;
+            Function Function = null;
             UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
 
-            //Delete the plot(draw)
-            ToDelete = Controller.GetById(FunctionPanel.FunctionID);
-            if (null == ToDelete)
+            //Delete the plot in draw
+            Function = Model.GetElementByID(e.FunctionId);
+            if (null == Function)
+            {
                 Utils.ThrowErrorWindow("No se pudo eliminar la funcion");
+                return;
+            }
             else
-                PlotController.Delete(ToDelete);
-            //Delete funcion (model)
-            result = Controller.Delete( FunctionPanel.FunctionID );
-            if (result == false)
-                Utils.ThrowErrorWindow("No se pudo eliminar la funcion");
+            {
+                PlotPanel.Children.Remove(Function.Plot.PlotPoints);
+            }
+
+            //Delete funcion in model
+            result = Model.DeleteElement(Function);
 
             //Delete panel
             this.FuncionListPanel.Children.Remove( FunctionPanel );
         }
 
-        private void FPanel_EditButtonClickHandler(object sender, FunctionPanelEventArgs e)
+        private void EditFunction(object sender, FunctionPanelEventArgs e)
         {
             bool result;
-            Function TempFunction = null;
-            PlotUpdateType [] Updates = new PlotUpdateType[2]{ PlotUpdateType.RECALCULATION , PlotUpdateType.COLOR };
-            
-            TempFunction = Controller.GetById( e.FunctionId );
-            if (null == TempFunction)
+            Function Function = null;
+
+            //Get Plot from model
+            Function = Model.GetElementByID( e.FunctionId );
+            if (null == Function)
+            {
                 Utils.ThrowErrorWindow("No se pudo editar la funcion");
+                return;
+            }
 
             //LANZAR FORMULARIO
 
             //Update(model)
-            result = Controller.Update( TempFunction );
+            result = Model.UpdateElement(Function);
             if (result == false)
+            {
                 Utils.ThrowErrorWindow("No se pudo editar la funcion");
+            }
+
             //Update(draw)
-            result = PlotController.Update(TempFunction, PlotUpdateType.RECALCULATION);
-            if (result == false)
-                Utils.ThrowErrorWindow("No se pudo editar la funcion");
+            PlotPanel.Children.Remove(Function.Plot.PlotPoints);
+            PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotPanel.Children.Add(Function.Plot.PlotPoints);
         }
 
-        private void FPanel_ViewButtonClickHandler(object sender, FunctionPanelEventArgs e)
+        private void HideButtonFunction(object sender, FunctionPanelEventArgs e)
         {
-            bool result;
-            Function TempFunction = null;
+           bool result;
+            Function Function = null;
 
-            TempFunction = Controller.GetById(e.FunctionId);
-            if (null == TempFunction)
+            //Retrieve the Plot from the model
+            Function = Model.GetElementByID(e.FunctionId);
+            if (null == Function)
+            {
                 Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
+                return;
+            }
 
-            TempFunction.IsHidden = !TempFunction.IsHidden;
+            //Change Plot
+            Function.Plot.IsHidden = !Function.Plot.IsHidden;
 
-            result = Controller.Update(TempFunction);
+            //Update Model -- Its not necesay because the Plot isn't encapsuled but is made to mantain coherence
+            result = Model.UpdateElement(Function);
             if (result == false)
+            {
                 Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
-            //Update(draw)
-            result = PlotController.Update(TempFunction, PlotUpdateType.VISIBILITY);
-            if (result == false)
-                Utils.ThrowErrorWindow("No se pudo cambiar la visibilidad la funcion");
+                return;
+            }
+
             //update panel
             UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
             PanelSender.SwichViewButtonImage();

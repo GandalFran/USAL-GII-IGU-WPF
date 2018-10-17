@@ -6,77 +6,58 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using IGUWPF.src.models.Model;
 using Newtonsoft.Json;
+using IGUWPF.src.controller.calculator;
+using IGUWPF.src.models.POJO;
 
 namespace IGUWPF.src.models
 {
     public class Function : IModelable<Function>
     {
         private int ID;
-        public bool IsHidden { get; set; }
+        public Plot Plot { get; set; }
         public string Name { get; set; }
-        public Color Color { get; set; }
-        public string Expression { get; set; }
+        public ICalculator Calculator { get; set; }
 
-        public Function(String Name, Color Color, String Expression)
+        public Function(string Name, ICalculator Calculator)
         {
             this.Name = Name;
-            this.Color = Color;
-            this.Expression = Expression;
-            this.IsHidden = false;
+            this.Calculator = Calculator;
+            this.Plot = new Plot();
         }
 
         [JsonConstructor]
-        public Function(String Name, Color Color, String Expression, bool IsHidden) {
+        public Function(string Name, ICalculator Calculator, Plot Plot)
+        {
+            this.Plot = Plot;
             this.Name = Name;
-            this.Color = Color;
-            this.Expression = Expression;
-            this.IsHidden = IsHidden;
+            this.Calculator = Calculator;
         }
 
         public override string ToString()
         {
-            return "{ID=" + ID + ", Name= " + Name + ", IsHidden=" + IsHidden + ", Brush=" + Color + ", Expression=" + Expression + "}";
+            return "{ID=" + ID + ", Name= " + Name + ", Expression=" + Calculator + ", Plot=" + Plot.ToString() + "}";
         }
+
 
         public override bool Equals(object obj)
         {
-
-            if( null == obj)
-            {
-                return false;
-            }else if (!obj.GetType().Equals( this.GetType()))
-            {
-                return false;
-            }
-
-            Function other = (Function)obj;
-
-            if (other.ID != this.ID)
-            {
-                return false;
-            } else if (!other.Name.Equals(this.Name))
-            {
-                return false;
-            } else if (!other.Color.Equals(this.Color))
-            {
-                return false;
-            } else if (!other.Expression.Equals( this.Expression)) {
-                return false;
-            }else
-            {
-                return true;
-            } 
+            var function = obj as Function;
+            return function != null &&
+                   ID == function.ID &&
+                   Name == function.Name &&
+                   Calculator == function.Calculator &&
+                   EqualityComparer<Plot>.Default.Equals(Plot, function.Plot);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = 783144234;
+            var hashCode = 936340811;
+            hashCode = hashCode * -1521134295 + ID.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(Color);
-            hashCode = hashCode * -1521134295 + EqualityComparer<String>.Default.GetHashCode(Expression);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ICalculator>.Default.GetHashCode(Calculator);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Plot>.Default.GetHashCode(Plot);
             return hashCode;
         }
-
 
         public int GetID()
         {
@@ -88,7 +69,7 @@ namespace IGUWPF.src.models
         }
         public Function Clone()
         {
-            Function ClonedFunction = new Function( this.Name, this.Color, this.Expression);
+            Function ClonedFunction = new Function(this.Name, this.Calculator, this.Plot);
             ClonedFunction.SetID(ID);
             return ClonedFunction;
         }

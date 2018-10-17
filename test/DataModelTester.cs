@@ -2,11 +2,13 @@
 using IGUWPF.src.models.Model;
 using IGUWPF.src.utils;
 using System;
+using IGUWPF.src.models.POJO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using IGUWPF.src.controller.calculator;
 
 namespace IGUWPF.test
 {
@@ -27,14 +29,15 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Creating test: Create 3 functions");
             for (int i = 0; i < 3; i++)
             {
-                int ID = FunctionModel.CreateElement(new Function("F" + i, Color.FromRgb(255, 0, 0), "x"));
-                if(ID != i)
+                Plot OtherPlot = new Plot(Color.FromRgb(255, 0, 0));
+                int ID = FunctionModel.CreateElement(new Function("Fi", new CosXCalculator(1, 1), OtherPlot));
+                if (ID != i)
                 {
                     Console.WriteLine("\t" + LogHeader + "ERROR Creating test: ID" + ID);
                 }
             }
             Console.WriteLine(LogHeader + "Creating test: Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
-
+            /*
             Console.WriteLine(LogHeader + "Deleting test:");
             result = FunctionModel.DeleteElement(0);
             Console.WriteLine(LogHeader + "Deleting test: Results:" + "Deleted Funcion0 true(" + result + ") : " + Utils.PrintFunctionList(FunctionModel.GetAllElements()));
@@ -42,7 +45,7 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Deleting test: Results:" + "Trying to delete Funcion0 false(" + result + ") : " + Utils.PrintFunctionList(FunctionModel.GetAllElements()));
             result = FunctionModel.DeleteElement(20);
             Console.WriteLine(LogHeader + "Deleting test: Results:" + "Trying to delete Function 20 false(" + result + ") : " + Utils.PrintFunctionList(FunctionModel.GetAllElements()));
-            
+            */
             Console.WriteLine(LogHeader + "Searching test:");
             TempFunction = FunctionModel.GetElementByID( 0 );
             Console.WriteLine(LogHeader + "Searching test: Trying to search ID 0 Results: null - " + TempFunction );
@@ -59,12 +62,13 @@ namespace IGUWPF.test
             TempFunctionList = FunctionModel.GetAllElements();
       
             Console.WriteLine(LogHeader + "Deleting all test");
-            FunctionModel.DeleteAllElementsAndResetIDs();
+            FunctionModel.Clear();
             Console.WriteLine(LogHeader + "Deleting all test: Restults: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()));
 
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions");
             FunctionModel = new IDataModelImpl<Function>( TempFunctionList );
-            int InternalID = FunctionModel.CreateElement(new Function("Fi", Color.FromRgb(255, 0, 0),"x"));
+            Plot Plot = new Plot(Color.FromRgb(255, 0, 0));
+            int InternalID = FunctionModel.CreateElement(new Function("Fi",new CosXCalculator(1,1),Plot));
             Console.WriteLine(LogHeader + "Instancing new Model since the last functions: 3- New internal ID=" + (InternalID+1) + " Results: " + Utils.PrintFunctionList(FunctionModel.GetAllElements()) );
         }
     }

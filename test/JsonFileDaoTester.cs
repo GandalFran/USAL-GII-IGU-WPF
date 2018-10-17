@@ -1,6 +1,8 @@
-﻿using IGUWPF.src.controllers;
+﻿using IGUWPF.src.controller.calculator;
+using IGUWPF.src.controllers;
 using IGUWPF.src.models;
 using IGUWPF.src.models.Model;
+using IGUWPF.src.models.POJO;
 using IGUWPF.src.utils;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,8 @@ namespace IGUWPF.test
             Console.WriteLine(LogHeader + "Creating 3 functions"); 
             for (int i = 0; i < 3; i++)
             {
-               list.Add(new Function("F" + i, Color.FromRgb(255, 0, 0), "x", i == 1));
+                Plot Plot = new Plot(Color.FromRgb(255, 0, 0));
+                list.Add(new Function("Fi", new CosXCalculator(1, 1), Plot));
             }
 
             Console.WriteLine(LogHeader + "Creation resuls: " + Utils.PrintFunctionList( list ) );

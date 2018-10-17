@@ -33,9 +33,9 @@ namespace IGUWPF.src.models.Model
             return ID;
         }
 
-        public bool DeleteElement(int ID)
+        public bool DeleteElement(T Element)
         {
-            int RemovedElements = this.ElementList.RemoveAll(Element => (ID == Element.GetID()));
+            int RemovedElements = this.ElementList.RemoveAll(OldElement => (OldElement.GetID() == Element.GetID()));
             return (RemovedElements > 0);
         }
 
@@ -61,10 +61,10 @@ namespace IGUWPF.src.models.Model
             return new List<T>( this.ElementList );
         }
 
-        public void DeleteAllElementsAndResetIDs()
+        public void Clear()
         {
             this.LastAssignedID = 0;
-            this.ElementList = new List<T>();
+            this.ElementList.Clear();
         }
 
 

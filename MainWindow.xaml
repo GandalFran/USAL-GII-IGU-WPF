@@ -89,14 +89,9 @@
                     Margin="3" 
                     BorderThickness="1" BorderBrush="DodgerBlue"  
                     Grid.Column="1">
-                <Canvas Name="PlotPanel"
-                        Background="White">
-                    <WrapPanel 
-                        Canvas.Bottom="0" Canvas.Right="0">
-                        <Label Name="XAxisValueLabel" Content="X:" Foreground="DodgerBlue"/>
-                        <Label Name="YAxisValueLabel" Content="Y:" Foreground="DodgerBlue"/>
-                    </WrapPanel>
-                </Canvas>
+                <Canvas Name="PlotPanel"  
+                        Background="White" 
+                        ClipToBounds="True"/>
             </Border>
 
         </Grid>

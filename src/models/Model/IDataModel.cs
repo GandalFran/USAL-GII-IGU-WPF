@@ -9,12 +9,11 @@ namespace IGUWPF.src.models.Model
     public interface IDataModel<T> where T:IModelable<T>
     {
         int CreateElement( T Element );
-        bool UpdateElement( T NewElement );
-        bool DeleteElement( int ID );
+        bool UpdateElement( T Element);
+        bool DeleteElement( T Element );
         T GetElementByID( int ID );
         
         List<T> GetAllElements();
-        void DeleteAllElementsAndResetIDs();
-        
+        void Clear();
     }
 }

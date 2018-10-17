@@ -91,7 +91,10 @@
                     Grid.Column="1">
                 <Canvas Name="PlotPanel"  
                         Background="White" 
-                        ClipToBounds="True"/>
+                        ClipToBounds="True">
+
+
+                </Canvas>
             </Border>
 
         </Grid>

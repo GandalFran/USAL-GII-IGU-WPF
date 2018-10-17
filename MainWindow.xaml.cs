@@ -33,7 +33,9 @@ namespace IGUWPF
     {
         private double PlotWidth { get => PlotPanel.ActualWidth; }
         private double PlotHeight { get => PlotPanel.ActualHeight; }
-        
+
+        private Label XYMouseCoordinates;
+
         private IDataModel<Function> Model;
         private IDAO<Function> FunctionDAO;
         private PlotRepresentationSettings PlotSettings;
@@ -55,7 +57,46 @@ namespace IGUWPF
             SaveFileButton.Click += SaveProject;
             OpenFileButton.Click += OpenProject;
             ExportImageButton.Click += ExportImage;
+
             PlotPanel.SizeChanged += ReloadPlotPanel;
+            PlotPanel.MouseEnter += SetMousePositionLabelVissible;
+            PlotPanel.MouseLeave += SetMousePositionLabelHidden;
+            PlotPanel.MouseMove += CalculateMousePosition;
+
+            //Create the label to know the Cursor position
+            XYMouseCoordinates = new Label()
+            {
+                BorderThickness = new Thickness(1),
+                BorderBrush = Brushes.DodgerBlue,
+                Foreground = Brushes.DodgerBlue,
+                Background = Brushes.AliceBlue,
+                Visibility = Visibility.Hidden
+            };
+        }
+
+        private void SetMousePositionLabelVissible(object sender, MouseEventArgs e)
+        {
+            XYMouseCoordinates.Visibility = Visibility.Visible;
+        }
+        private void SetMousePositionLabelHidden(object sender, MouseEventArgs e)
+        {
+            XYMouseCoordinates.Visibility = Visibility.Hidden;
+        }
+        private void CalculateMousePosition(object sender, MouseEventArgs e)
+        {
+            double realX, realY;
+
+            //Obtain the mouse pointer coordinates
+            Panel MousePanel = (Panel)sender;
+            Point p = e.GetPosition(MousePanel);
+
+            //Calculate real points
+            realX = Math.Truncate( PlotServices.ParseXScreenPointToRealPoint(p.X, MousePanel.ActualWidth, PlotSettings) );
+            realY = Math.Truncate( PlotServices.ParseYScreenPointToRealPoint(p.Y, MousePanel.ActualHeight, PlotSettings) );
+
+            //Update label
+            if(null != XYMouseCoordinates)
+                XYMouseCoordinates.Content = "X: " + realX + " Y: " + realY;
         }
 
         private void AddFunction(object sender, RoutedEventArgs e)
@@ -78,7 +119,7 @@ namespace IGUWPF
             int ID = Model.CreateElement(Function);
 
             //Draw plot
-            PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
             PlotPanel.Children.Add(Function.Plot.PlotPoints);
 
             //Add plot panel to the plot list
@@ -93,13 +134,18 @@ namespace IGUWPF
         {
             //Clear the panel
             PlotPanel.Children.Clear();
+            //Add the Label to know the plot position
+            PlotPanel.Children.Add(XYMouseCoordinates);
+            Canvas.SetRight(XYMouseCoordinates, 0);
+            Canvas.SetBottom(XYMouseCoordinates,0);
             //Add axys
-            Line[] Axys = PlotUtils.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
+            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
             PlotPanel.Children.Add( Axys[0] );
             PlotPanel.Children.Add( Axys[1] );
+
             //Add functions
             foreach (Function Function in Model.GetAllElements()) {
-                PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+                PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
                 PlotPanel.Children.Add(Function.Plot.PlotPoints);
             }
         }
@@ -190,17 +236,12 @@ namespace IGUWPF
             PlotPanel.Children.Clear();
             
             //Add axys
-            Line[] Axys = PlotUtils.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
+            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
             PlotPanel.Children.Add(Axys[0]);
             PlotPanel.Children.Add(Axys[1]);
             
-            //Add functions
+            //Add functions to the left table
             foreach (Function Function in Model.GetAllElements()) {
-                //Draw plot
-                PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
-                PlotPanel.Children.Add(Function.Plot.PlotPoints);
-                
-                //Draw the function panel in the left function list
                 FunctionPanel = new UIFunctionPanel(Function.GetID(), Function.Name, Function.Plot.IsHidden);
                     FunctionPanel.ViewButtonClickHandler += HideButtonFunction;
                     FunctionPanel.EditButtonClickHandler += EditFunction; ;
@@ -208,6 +249,8 @@ namespace IGUWPF
                 FuncionListPanel.Children.Add( FunctionPanel );
             }
 
+            //Reload panel
+            ReloadPlotPanel(null, null);
         }
 
         private void ExportImage(object sender, RoutedEventArgs e)
@@ -299,7 +342,7 @@ namespace IGUWPF
 
             //Update(draw)
             PlotPanel.Children.Remove(Function.Plot.PlotPoints);
-            PlotUtils.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
             PlotPanel.Children.Add(Function.Plot.PlotPoints);
 
             //Update(panel)

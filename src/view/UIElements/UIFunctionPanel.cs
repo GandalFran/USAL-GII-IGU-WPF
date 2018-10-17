@@ -69,7 +69,6 @@ namespace IGUWPF
             PanelElement.Children.Add(ViewButton);
             PanelElement.Children.Add(EditButton);
             PanelElement.Children.Add(DeleteButton);
-
         }
 
         public void SwichViewButtonImage() {

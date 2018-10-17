@@ -22,7 +22,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
         public double XMin, XMax, YMin, YMax;
     };
 
-    public class PlotUtils
+    public class PlotServices
     {
 
         public static void CalculatePlot(Function Element, double Width, double Height, PlotRepresentationSettings RepresentationValues)
@@ -99,7 +99,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
 
         public static double ParseXRealPointToScreenPoint(double x, double Width, PlotRepresentationSettings RepresentationValues)
         {
-            return Width * (1 - ((x - RepresentationValues.XMin) / (RepresentationValues.XMax - RepresentationValues.XMin)));
+            return Width * ((x - RepresentationValues.XMin) / (RepresentationValues.XMax - RepresentationValues.XMin));
         }
         public static double ParseYRealPointToScreenPoint(double y, double Height, PlotRepresentationSettings RepresentationValues)
         {

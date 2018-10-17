@@ -80,9 +80,8 @@
     <Compile Include="src\Funcionality\calculator\ICalculator.cs" />
     <Compile Include="src\Funcionality\IOServices.cs" />
     <Compile Include="src\Funcionality\PlotServices.cs" />
-    <Compile Include="src\IO\DaoImpl\ImageDAOImpl.cs" />
+    <Compile Include="src\Funcionality\IO\DaoImpl\ImageDAOImpl.cs" />
     <Compile Include="src\models\POJO\Plot.cs" />
-    <Compile Include="src\utils\Enumerations.cs" />
     <Compile Include="src\utils\Utils.cs" />
     <Compile Include="src\view\Windows\FunctionAddAndEditForm.xaml.cs">
       <DependentUpon>FunctionAddAndEditForm.xaml</DependentUpon>
@@ -102,8 +101,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\IO\IDAO.cs" />
-    <Compile Include="src\IO\DaoImpl\JsonDAOImpl.cs" />
+    <Compile Include="src\Funcionality\IO\IDAO.cs" />
+    <Compile Include="src\Funcionality\IO\DaoImpl\JsonDAOImpl.cs" />
     <Compile Include="src\models\Model\IDataModel.cs" />
     <Compile Include="src\models\Model\IDataModelImpl.cs" />
     <Compile Include="src\models\Model\IModelable.cs" />
@@ -168,9 +167,6 @@
   <ItemGroup>
     <Resource Include="Images\Icons\plot.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Funcionality\IOServices\" />
-    <Folder Include="src\Funcionality\PlotUtils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

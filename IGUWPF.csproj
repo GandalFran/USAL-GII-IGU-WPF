@@ -76,11 +76,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\Funcionality\calculator\CalculatorsImpl.cs" />
-    <Compile Include="src\Funcionality\calculator\ICalculator.cs" />
-    <Compile Include="src\Funcionality\IO\IOServices.cs" />
-    <Compile Include="src\Funcionality\PlotServices.cs" />
-    <Compile Include="src\Funcionality\IO\DaoImpl\ImageDAOImpl.cs" />
+    <Compile Include="src\Services\calculator\CalculatorsImpl.cs" />
+    <Compile Include="src\Services\calculator\ICalculator.cs" />
+    <Compile Include="src\Services\IO\IOServices.cs" />
+    <Compile Include="src\Services\PlotServices.cs" />
+    <Compile Include="src\Services\IO\DaoImpl\ImageDAOImpl.cs" />
+    <Compile Include="src\models\ViewModel\FunctionViewModelImpl.cs" />
     <Compile Include="src\models\ViewModel\IViewModel.cs" />
     <Compile Include="src\models\ViewModel\IViewModelImpl.cs" />
     <Compile Include="src\utils\Utils.cs" />
@@ -101,13 +102,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\Funcionality\IO\IDAO.cs" />
-    <Compile Include="src\Funcionality\IO\DaoImpl\JsonDAOImpl.cs" />
-    <Compile Include="src\models\Model\IDataModel.cs" />
-    <Compile Include="src\models\Model\IDataModelImpl.cs" />
+    <Compile Include="src\Services\IO\IDAO.cs" />
+    <Compile Include="src\Services\IO\DaoImpl\JsonDAOImpl.cs" />
+    <Compile Include="src\models\Model\IObservableDataModel.cs" />
+    <Compile Include="src\models\Model\IDataObservableModelImpl.cs" />
     <Compile Include="src\models\Model\IModelable.cs" />
     <Compile Include="src\models\POJO\Function.cs" />
-    <Compile Include="src\view\UIElements\UIFunctionPanel.cs" />
     <Compile Include="src\utils\Constants.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

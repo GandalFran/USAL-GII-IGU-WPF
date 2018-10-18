@@ -9,18 +9,18 @@ namespace IGUWPF.src.models.ViewModel
 {
     public class IViewModelImpl<T> : IViewModel<T> where T:IModelable<T>
     {
-        private IDataModel<T> Model;
+        private IObservableDataModel<T> Model;
 
-        public event ViewModelEventHandler<T> CreateElementEvent;
-        public event ViewModelEventHandler<T> DeleteElementEvent;
-        public event ViewModelEventHandler<T> UpdateElementEvent;
-        public event ViewModelEventHandler<T> ClearEvent;
+        public event ViewModelEventHandler CreateElementEvent;
+        public event ViewModelEventHandler DeleteElementEvent;
+        public event ViewModelEventHandler UpdateElementEvent;
+        public event ViewModelEventHandler ClearEvent;
 
         public IViewModelImpl() {
-            Model = new IDataModelImpl<T>();
+            Model = new IObservableDataModelImpl<T>();
         }
 
-        public IViewModelImpl(IDataModel<T> Model)
+        public IViewModelImpl(IObservableDataModel<T> Model)
         {
             this.Model = Model;
         }

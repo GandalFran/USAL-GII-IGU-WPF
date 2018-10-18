@@ -10,6 +10,12 @@
         Background="WhiteSmoke"
         Icon="Images\Icons\plot.png">
 
+    <Window.ContextMenu>
+        <ContextMenu Name="WindowContextMenu">
+            <MenuItem Name="WindowContextMenu_ExportImage" Header="Exportar imagen"/>
+        </ContextMenu>
+    </Window.ContextMenu>
+
     <DockPanel>
         <Border Margin="3" 
                 BorderThickness="1" BorderBrush="DodgerBlue">
@@ -18,4 +24,5 @@
                         ClipToBounds="True"/>
         </Border>
     </DockPanel>
+   
 </Window>

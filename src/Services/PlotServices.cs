@@ -11,15 +11,11 @@ using IGUWPF.src.controller.calculator;
 using IGUWPF.src.IO;
 using IGUWPF.src.models;
 using IGUWPF.src.models.Model;
+using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.utils;
 
 namespace IGUWPF.src.controllers.ControllersImpl
 {
-
-    public struct PlotRepresentationSettings
-    {
-        public double XMin, XMax, YMin, YMax;
-    };
 
     public class PlotServices
     {

@@ -20,7 +20,7 @@ namespace IGUWPF.src.models.ViewModel
         }
     }
 
-    public delegate void ViewModelEventHandler<T> (object sender, ViewModelEventArgs e);
+    public delegate void ViewModelEventHandler (object sender, ViewModelEventArgs e);
 
 
     public interface IViewModel<T> where T:IModelable<T>

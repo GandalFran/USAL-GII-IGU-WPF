@@ -3,6 +3,7 @@ using System.Windows.Media;
 using IGUWPF.src.models.Model;
 using Newtonsoft.Json;
 using IGUWPF.src.controller.calculator;
+using System.Windows.Controls;
 
 namespace IGUWPF.src.models
 {
@@ -58,9 +59,10 @@ namespace IGUWPF.src.models
             return hashCode;
         }
 
+        //IModelable Interface
         public int GetID()
         {
-            return ID;
+            return InternalID;
         }
         public void SetID(int ID)
         {

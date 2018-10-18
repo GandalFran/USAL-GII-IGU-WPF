@@ -70,7 +70,7 @@
                     <ContextMenu Name="DataGridContextMenu">
                         <MenuItem Name="DataGridContextMenu_AddFunction" Header="Add"/>
                         <MenuItem Name="DataGridContextMenu_DeleteSelectedFunction" Header="Delete" />
-                        <MenuItem Name="DataGridContextMenu_EditSelectedFunction" Header="Delete" />
+                        <MenuItem Name="DataGridContextMenu_EditSelectedFunction" Header="Edit" />
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 

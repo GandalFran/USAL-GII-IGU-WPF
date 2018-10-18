@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
 using IGUWPF.src.controllers;
+using System.Collections.Generic;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -72,9 +73,9 @@ namespace IGUWPF.src.view.Windows
             //Display the formulary
             FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
             Form.Title = "Editar funcion";
-            Form.A = Function.Calculator.A;
-            Form.B = Function.Calculator.B;
-            Form.C = Function.Calculator.C;
+            Form.A = Function.Calculator.a;
+            Form.B = Function.Calculator.b;
+            Form.C = Function.Calculator.c;
             Form.Color = Function.Color;
             Form.FunctionName = Function.Name;
             Form.Calculator = Function.Calculator;
@@ -131,7 +132,8 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Export the file
-            result = IOServices.ExportModel(SaveFileForm.FileName, ViewModel);
+            //Its neccesary to create a new list from the model list because the calculators are replaced in the parse process
+            result = IOServices.ExportModel(SaveFileForm.FileName, new List<Function>(ViewModel.GetAllElements()));
             if (result == false)
             {
                 MessageBox.Show(Constants.IOErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -141,6 +143,7 @@ namespace IGUWPF.src.view.Windows
 
         private void OpenProject(object sender, RoutedEventArgs e)
         {
+            List<Function> ToImport = new List<Function>();
             //Show dialog to choose the project to import
             OpenFileDialog OpenFileForm = new OpenFileDialog();
             OpenFileForm.FileName = "Open project";
@@ -154,12 +157,15 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Import the project
-            result = IOServices.ImportModel(OpenFileForm.FileName, ViewModel);
+            result = IOServices.ImportModel(OpenFileForm.FileName, ToImport);
             if (result == false)
             {
                 MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            foreach (Function Function in ToImport)
+                ViewModel.CreateElement(Function);
         }
 
     }

@@ -21,8 +21,7 @@ namespace IGUWPF
         private double PlotHeight { get => PlotPanel.ActualHeight; }
 
         private Label XYMouseCoordinates;
-
-        private IDAO<Function> FunctionDAO;
+        
         private FunctionViewModelImpl ViewModel;
 
         private FunctionListWindow FunctionListWindow;
@@ -32,7 +31,6 @@ namespace IGUWPF
             InitializeComponent();
             //Instance components
             ViewModel = new FunctionViewModelImpl();
-            FunctionDAO = new SerialDAOImpl<Function>();
 
             //Create the label to know the Cursor position
             XYMouseCoordinates = new Label()

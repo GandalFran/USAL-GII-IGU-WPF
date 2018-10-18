@@ -1,6 +1,7 @@
 ﻿using IGUWPF.src.models.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,7 @@ namespace IGUWPF.src.models.ViewModel
             return result;
         }
 
-        public List<T> GetAllElements()
+        public ObservableCollection<T> GetAllElements()
         {
             return Model.GetAllElements();
         }

@@ -9,28 +9,16 @@ namespace IGUWPF.src.controllers
     public class IOServices
     {
 
-        public static bool ExportModel(string DataPath, IViewModel<Function> FunctionModel)
+        public static bool ExportModel(string DataPath, List<Function> FunctionList)
         {
-            IDAO<Function> FunctionDAO = new SerialDAOImpl<Function>();
-            return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
+            IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
+            return FunctionDAO.ExportMultipleObject( DataPath, FunctionList );
         }
 
-        public static bool ImportModel(string DataPath, IViewModel<Function> FunctionModel)
+        public static bool ImportModel(string DataPath, List<Function> FunctionListToFill)
         {
-            bool result;
-            List<Function> toFill = new List<Function>();
-            IDAO<Function> FunctionDAO = new SerialDAOImpl<Function>();
-
-            result = FunctionDAO.ImportMultipleObject( DataPath, toFill );
-
-            if (result)
-            {
-                FunctionModel.Clear();
-                foreach (Function Function in toFill)
-                    FunctionModel.CreateElement(Function);
-            }
-            
-            return result;
+            IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
+            return FunctionDAO.ImportMultipleObject( DataPath, FunctionListToFill);
         }
 
         public static bool ExportPlot(string DataPath, Panel ToExport)

@@ -12,10 +12,10 @@ namespace IGUWPF.src.models
         private int InternalID;
         public int ID { get => InternalID;  }
 
-        public string Name { get; internal set; }
+        public string Name { get; set; }
         public ICalculator Calculator { get; set; }
-        public bool IsHidden;
-        public Color Color;
+        public bool IsHidden { get; set; }
+        public Color Color { get; set; }
 
         public Function(string Name, ICalculator Calculator)
         {

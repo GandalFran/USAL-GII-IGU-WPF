@@ -103,7 +103,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\Services\IO\IDAO.cs" />
-    <Compile Include="src\Services\IO\DaoImpl\JsonDAOImpl.cs" />
+    <Compile Include="src\Services\IO\DaoImpl\JsonFunctionDAOImpl.cs" />
     <Compile Include="src\models\Model\IObservableDataModel.cs" />
     <Compile Include="src\models\Model\IDataObservableModelImpl.cs" />
     <Compile Include="src\models\Model\IModelable.cs" />

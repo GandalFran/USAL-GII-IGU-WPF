@@ -24,5 +24,6 @@ namespace IGUWPF
         public static string ErrorWindowTitle = "ERROR";
         public static string IncorrectDataMsg = "Los datos no son correctos";
         public static string FunctionModelErrorMsg = "Hubo un problema interno con la funcion solicitada.";
+        public static string IOErrorMsg = "Hubo un problema con los ficheros.";
     }
 }

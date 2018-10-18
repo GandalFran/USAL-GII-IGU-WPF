@@ -78,21 +78,21 @@
     </ApplicationDefinition>
     <Compile Include="src\Funcionality\calculator\CalculatorsImpl.cs" />
     <Compile Include="src\Funcionality\calculator\ICalculator.cs" />
-    <Compile Include="src\Funcionality\IOServices.cs" />
+    <Compile Include="src\Funcionality\IO\IOServices.cs" />
     <Compile Include="src\Funcionality\PlotServices.cs" />
     <Compile Include="src\Funcionality\IO\DaoImpl\ImageDAOImpl.cs" />
-    <Compile Include="src\models\POJO\Plot.cs" />
+    <Compile Include="src\models\ViewModel\IViewModel.cs" />
+    <Compile Include="src\models\ViewModel\IViewModelImpl.cs" />
     <Compile Include="src\utils\Utils.cs" />
     <Compile Include="src\view\Windows\FunctionAddAndEditForm.xaml.cs">
       <DependentUpon>FunctionAddAndEditForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="src\view\Windows\FunctionListWindow.xaml.cs">
+      <DependentUpon>FunctionListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="src\view\Windows\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="test\DataModelTester.cs" />
-    <Compile Include="test\ImageDaoTester.cs" />
-    <Compile Include="test\ITestable.cs" />
-    <Compile Include="test\JsonFileDaoTester.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,6 +116,10 @@
     <Page Include="src\view\Windows\FunctionAddAndEditForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="src\view\Windows\FunctionListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="src\view\Windows\SettingsForm.xaml">
       <Generator>MSBuild:Compile</Generator>

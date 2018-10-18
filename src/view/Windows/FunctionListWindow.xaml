@@ -1,0 +1,64 @@
+﻿<Window x:Class="IGUWPF.src.view.Windows.FunctionListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IGUWPF.src.view.Windows"
+        mc:Ignorable="d"
+        Title="FunctionListWindow" Height="450" Width="800">
+    <DockPanel>
+        <ToolBar  
+                    VerticalAlignment="Center"
+                Background="LightGray"
+                    DockPanel.Dock="Top">
+            <Button Name="SettingsButton" 
+                    Margin="3" 
+                    BorderThickness="0" Background="Transparent"
+                    ToolTip="Grafic settings" >
+                <StackPanel>
+                    <Image Source="/IGUWPF;component/Images\Icons\settings.png" Width="20" Height="20"/>
+                </StackPanel>
+            </Button>
+            <Button Name="SaveFileButton" 
+                    Margin="3"
+                    BorderThickness="0" Background="Transparent"
+                    ToolTip="Save functions" >
+                <StackPanel>
+                    <Image Source="/IGUWPF;component/Images\Icons\save.png" Width="20" Height="20"/>
+                </StackPanel>
+            </Button>
+            <Button Name="OpenFileButton" 
+                    Margin="3" 
+                    BorderThickness="0" Background="Transparent"
+                    ToolTip="Load file" >
+                <StackPanel>
+                    <Image Source="/IGUWPF;component/Images\Icons\open.png" Width="20" Height="20"/>
+                </StackPanel>
+            </Button>
+            <Button Name="ExportImageButton" 
+                    Margin="3" 
+                    BorderThickness="0" Background="Transparent"
+                    ToolTip="Export plot" >
+                <StackPanel>
+                    <Image Source="/IGUWPF;component/Images\Icons\imageExport.png" Width="20" Height="20"/>
+                </StackPanel>
+            </Button>
+            <Button Name="AddFuncionButton" 
+                            Margin="3" HorizontalAlignment="Left" 
+                            BorderThickness="0" Background="Transparent"
+                            ToolTip="Add function" >
+                <StackPanel>
+                    <Image Source="/IGUWPF;component/Images\Icons\add.png" Width="20" Height="20"/>
+                </StackPanel>
+            </Button>
+        </ToolBar>
+        <Border Margin="3"  
+                BorderThickness="1" BorderBrush="DodgerBlue" 
+                Grid.Column="0">
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel Name="FuncionListPanel"/>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
+</Window>

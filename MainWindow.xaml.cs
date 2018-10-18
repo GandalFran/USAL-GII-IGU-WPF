@@ -1,30 +1,15 @@
 ﻿using IGUWPF.src.controllers;
 using IGUWPF.src.models;
-using IGUWPF.src.models.Model;
-using IGUWPF.src.utils;
-using IGUWPF.test;
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using IGUWPF.src.view;
 using IGUWPF.src.view.Windows;
-using IGUWPF.src.models.POJO;
 using IGUWPF.src.controllers.ControllersImpl;
-using static IGUWPF.src.utils.Enumerations;
-using IGUWPF.src.controller.calculator;
+using IGUWPF.src.models.ViewModel;
+using System.Collections.Generic;
 
 namespace IGUWPF
 {
@@ -36,32 +21,19 @@ namespace IGUWPF
 
         private Label XYMouseCoordinates;
 
-        private IDataModel<Function> Model;
         private IDAO<Function> FunctionDAO;
+        private IViewModelImpl<Function> ViewModel;
         private PlotRepresentationSettings PlotSettings;
+
+        private FunctionListWindow FunctionListWindow;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            Model = new IDataModelImpl<Function>();
+            //Instance components
+            ViewModel = new IViewModelImpl<Function>();
             FunctionDAO = new SerialDAOImpl<Function>();
 
-            //Give defect values
-            PlotSettings.XMin = PlotSettings.YMin = -10;
-            PlotSettings.XMax = PlotSettings.YMax = 10;
-
-            //Add event handlers
-            AddFuncionButton.Click += AddFunction;
-            SettingsButton.Click += EdditSettings;
-            SaveFileButton.Click += SaveProject;
-            OpenFileButton.Click += OpenProject;
-            ExportImageButton.Click += ExportImage;
-
-            PlotPanel.SizeChanged += ReloadPlotPanel;
-            PlotPanel.MouseEnter += SetMousePositionLabelVissible;
-            PlotPanel.MouseLeave += SetMousePositionLabelHidden;
-            PlotPanel.MouseMove += CalculateMousePosition;
 
             //Create the label to know the Cursor position
             XYMouseCoordinates = new Label()
@@ -72,6 +44,126 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
+
+            //Give defect values
+            PlotSettings.XMin = PlotSettings.YMin = -10;
+            PlotSettings.XMax = PlotSettings.YMax = 10;
+
+            //Add event handlers
+            //Reload panel if size changes
+            PlotPanel.SizeChanged += ViewModelClearEvent; //The clear event is reused
+            //Mouse position events
+            PlotPanel.MouseEnter += SetMousePositionLabelVissible;
+            PlotPanel.MouseLeave += SetMousePositionLabelHidden;
+            PlotPanel.MouseMove += CalculateMousePosition;
+            //Plot crud events
+            ViewModel.CreateElementEvent += ViewModelCreateElementEvent;
+            ViewModel.DeleteElementEvent += ViewModelDeleteElementEvent;
+            ViewModel.UpdateElementEvent += ViewModelUpdateElementEvent;
+            ViewModel.ClearEvent += ViewModelClearEvent;
+            //Closing event
+            this.Closed += WhenClosed;
+
+            //FunctionListWindow processing
+            FunctionListWindow = new FunctionListWindow(ViewModel);
+            FunctionListWindow.Closed += WhenClosed;
+            FunctionListWindow.Show();
+        }
+
+
+        private void ViewModelCreateElementEvent(object sender, ViewModelEventArgs e) {
+            Polyline Polyline = null;
+            PointCollection [] Segments = null;
+            Function Function = (Function)e.Element;
+
+            Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, PlotSettings);
+
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                Polyline = new Polyline();
+
+                Polyline.Points = Segments[i];
+                Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
+                Polyline.Stroke = new SolidColorBrush(Function.Color);
+                PlotPanel.Children.Add(Polyline);
+            }
+        }
+
+        private void ViewModelDeleteElementEvent(object sender, ViewModelEventArgs e)
+        {
+            string PlotName = null;
+            Polyline Polyline = null;
+            Function Function = (Function)e.Element;
+            List<Polyline> PolylineList = new List<Polyline>();
+
+            PlotName = PlotServices.GetPlotName(Function.ID);
+
+            foreach (UIElement Element in PlotPanel.Children) {
+                if (Element is Polyline)
+                {
+                    Polyline = (Polyline)Element;
+                    if (Polyline.Name.Contains(PlotName))
+                        PolylineList.Add((Polyline)Element);
+                }
+            }
+
+            foreach (Polyline Element in PolylineList)
+                PlotPanel.Children.Remove(Element);
+        }
+
+        private void ViewModelUpdateElementEvent(object sender, ViewModelEventArgs e)
+        {
+            string PlotName = null;
+            Polyline Polyline = null;
+            PointCollection[] Segments = null;
+            Function Function = (Function)e.Element;
+            List<Polyline> PolylineList = new List<Polyline>();
+
+            //Delete older plot
+            PlotName = PlotServices.GetPlotName(Function.ID);
+
+            foreach (UIElement Element in PlotPanel.Children)
+            {
+                if (Element is Polyline)
+                {
+                    Polyline = (Polyline)Element;
+                    if (Polyline.Name.Contains(PlotName))
+                        PolylineList.Add((Polyline)Element);
+                }
+            }
+
+            foreach (Polyline Element in PolylineList)
+                PlotPanel.Children.Remove(Element);
+
+            //Get new plot
+            Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, PlotSettings);
+
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                Polyline = new Polyline();
+
+                Polyline.Points = Segments[i];
+                Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
+                Polyline.Stroke = new SolidColorBrush(Function.Color);
+                PlotPanel.Children.Add(Polyline);
+            }
+        }
+
+        //A eventArgs is used instead a ViewModelEventArgs because is used this event handler for two events
+        private void ViewModelClearEvent(object sender, EventArgs e)
+        {
+            //Clear the panel
+            PlotPanel.Children.Clear();
+
+            //Add the Label to know the plot position
+            PlotPanel.Children.Add(XYMouseCoordinates);
+            Canvas.SetRight(XYMouseCoordinates, 0);
+            Canvas.SetBottom(XYMouseCoordinates, 0);
+
+            //Add axys
+            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
+            PlotPanel.Children.Add(Axys[0]);
+            PlotPanel.Children.Add(Axys[1]);
         }
 
         private void SetMousePositionLabelVissible(object sender, MouseEventArgs e)
@@ -91,292 +183,17 @@ namespace IGUWPF
             Point p = e.GetPosition(MousePanel);
 
             //Calculate real points
-            realX = Math.Truncate( PlotServices.ParseXScreenPointToRealPoint(p.X, MousePanel.ActualWidth, PlotSettings) );
-            realY = Math.Truncate( PlotServices.ParseYScreenPointToRealPoint(p.Y, MousePanel.ActualHeight, PlotSettings) );
+            realX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(p.X, MousePanel.ActualWidth, PlotSettings));
+            realY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(p.Y, MousePanel.ActualHeight, PlotSettings));
 
             //Update label
-            if(null != XYMouseCoordinates)
+            if (null != XYMouseCoordinates)
                 XYMouseCoordinates.Content = "X: " + realX + " Y: " + realY;
         }
 
-        private void AddFunction(object sender, RoutedEventArgs e)
+        private void WhenClosed(object sender, EventArgs e)
         {
-            //Display the formulary
-            FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
-            Form.Title = "Anadir funcion";
-            Form.A = Form.B = Form.C = 0;
-            Form.Color = Color.FromRgb(0,0,0);
-            Form.ShowDialog();
-            if (false == Form.DialogResult)
-                return;
-            string FunctionName = Form.FunctionName;
-            Color FunctionColor = Form.Color;
-            ICalculator FunctionCalculator = Form.Calculator;
-
-            //Create and save function
-            Plot Plot = new Plot(FunctionColor);
-            Function Function = new Function(FunctionName, FunctionCalculator, Plot);
-            int ID = Model.CreateElement(Function);
-
-            //Draw plot
-            PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
-            PlotPanel.Children.Add(Function.Plot.PlotPoints);
-
-            //Add plot panel to the plot list
-            UIFunctionPanel FunctionPanel = new UIFunctionPanel(ID, FunctionName, false);
-                FunctionPanel.ViewButtonClickHandler += HideButtonFunction;
-                FunctionPanel.EditButtonClickHandler += EditFunction;
-                FunctionPanel.DeleteButtonClickHandler += DeleteFunction;
-            FuncionListPanel.Children.Add(FunctionPanel);
-        }
-
-        private void ReloadPlotPanel(object sender, EventArgs e)
-        {
-            //Clear the panel
-            PlotPanel.Children.Clear();
-            //Add the Label to know the plot position
-            PlotPanel.Children.Add(XYMouseCoordinates);
-            Canvas.SetRight(XYMouseCoordinates, 0);
-            Canvas.SetBottom(XYMouseCoordinates,0);
-            //Add axys
-            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
-            PlotPanel.Children.Add( Axys[0] );
-            PlotPanel.Children.Add( Axys[1] );
-
-            //Add functions
-            foreach (Function Function in Model.GetAllElements()) {
-                PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
-                PlotPanel.Children.Add(Function.Plot.PlotPoints);
-            }
-        }
-
-        private void EdditSettings(object sender, RoutedEventArgs e)
-        {
-            double OlderXmin, OlderXmax, OlderYmin, OlderYmax;
-
-            //Show dialog to edit de properties
-            SettingsForm SettingsForm = new SettingsForm();
-            //Load older values
-            SettingsForm.Xmin = OlderXmin = PlotSettings.XMin;
-            SettingsForm.Xmax = OlderXmax = PlotSettings.XMax;
-            SettingsForm.Ymin = OlderYmin = PlotSettings.YMin;
-            SettingsForm.Ymax = OlderYmax = PlotSettings.YMax;
-
-            SettingsForm.ShowDialog();
-            if (false == SettingsForm.DialogResult)
-                return;
-
-            PlotSettings.XMin = SettingsForm.Xmin;
-            PlotSettings.XMax = SettingsForm.Xmax;
-            PlotSettings.YMin = SettingsForm.Ymin;
-            PlotSettings.YMax = SettingsForm.Ymax;
-
-            //Check if the values has changed 
-            if (PlotSettings.XMin == OlderXmin
-                && PlotSettings.XMax == OlderXmax
-                && PlotSettings.YMin == OlderYmin
-                && PlotSettings.YMax == OlderYmax)
-                return;
-
-            //Reload plot panel
-            ReloadPlotPanel(null,null);
-        }
-
-        private void SaveProject(object sender, RoutedEventArgs e)
-        {
-            //Show dialog to choose the path to save the project
-            SaveFileDialog SaveFileForm = new SaveFileDialog();
-            SaveFileForm.Title = "Save project";
-            SaveFileForm.FileName = "Desktop"; // Default file name
-            SaveFileForm.DefaultExt = ".maclab"; // Default file extension
-            SaveFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            SaveFileForm.AddExtension = true;
-
-            Nullable<bool> result = SaveFileForm.ShowDialog();
-            if (false == result)
-                return;
-
-            //Export the file
-            result = IOServices.ExportModel(SaveFileForm.FileName,Model);
-            if (result == false)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-        }
-
-        private void OpenProject(object sender, RoutedEventArgs e)
-        {
-            UIFunctionPanel FunctionPanel;
-
-            //Show dialog to choose the project to import
-            OpenFileDialog OpenFileForm = new OpenFileDialog();
-            OpenFileForm.FileName = "Open project";
-            OpenFileForm.FileName = "Desktop"; // Default file name
-            OpenFileForm.DefaultExt = ".maclab"; // Default file extension
-            OpenFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            OpenFileForm.Multiselect = false;
-
-            Nullable<bool> result = OpenFileForm.ShowDialog();
-            if (false == result)
-                return;
-
-            //Import the project
-            result = IOServices.ImportModel(OpenFileForm.FileName, Model);
-            if (result == false)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //Redraw the window
-
-            //Clear plot representation and plot list
-            FuncionListPanel.Children.Clear();
-            PlotPanel.Children.Clear();
-            
-            //Add axys
-            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, PlotSettings);
-            PlotPanel.Children.Add(Axys[0]);
-            PlotPanel.Children.Add(Axys[1]);
-            
-            //Add functions to the left table
-            foreach (Function Function in Model.GetAllElements()) {
-                FunctionPanel = new UIFunctionPanel(Function.GetID(), Function.Name, Function.Plot.IsHidden);
-                    FunctionPanel.ViewButtonClickHandler += HideButtonFunction;
-                    FunctionPanel.EditButtonClickHandler += EditFunction; ;
-                    FunctionPanel.DeleteButtonClickHandler += DeleteFunction;
-                FuncionListPanel.Children.Add( FunctionPanel );
-            }
-
-            //Reload panel
-            ReloadPlotPanel(null, null);
-        }
-
-        private void ExportImage(object sender, RoutedEventArgs e)
-        {
-            //Show dialog to choose the path to export
-            SaveFileDialog SaveFileForm = new SaveFileDialog();
-            SaveFileForm.Title = "Export plot";
-            SaveFileForm.FileName = "Desktop";
-            SaveFileForm.DefaultExt = ".png";
-            SaveFileForm.Filter = "PNG image (.png)|*.png";
-            SaveFileForm.AddExtension = true;
-
-            Nullable<bool> result = SaveFileForm.ShowDialog();
-            if (null == result)
-                return;
-
-            //Export the image
-            result = IOServices.ExportPlot(SaveFileForm.FileName, PlotPanel);
-            if (result == false)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-        }
-
-        
-        private void DeleteFunction(object sender, FunctionPanelEventArgs e)
-        {
-            bool result;
-            Function Function = null;
-            UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
-
-            //Delete the plot in draw
-            Function = Model.GetElementByID(e.FunctionId);
-            if (null == Function)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            else
-            {
-                PlotPanel.Children.Remove(Function.Plot.PlotPoints);
-            }
-
-            //Delete funcion in model
-            result = Model.DeleteElement(Function);
-
-            //Delete panel
-            this.FuncionListPanel.Children.Remove( FunctionPanel );
-        }
-
-        private void EditFunction(object sender, FunctionPanelEventArgs e)
-        {
-            bool result;
-            Function Function = null;
-
-            //Get Plot from model
-            Function = Model.GetElementByID( e.FunctionId );
-            if (null == Function)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //Display the formulary
-            FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
-            Form.Title = "Editar funcion";
-            Form.A = Function.Calculator.A;
-            Form.B = Function.Calculator.B;
-            Form.C = Function.Calculator.C;
-            Form.Color = Function.Plot.Color;
-            Form.FunctionName = Function.Name;
-            //TODO -- METER CALCULATOR Form.Calculator = ;
-
-            Form.ShowDialog();
-            if (false == Form.DialogResult)
-                return;
-            Function.Name = Form.FunctionName;
-            Function.Plot.Color = Form.Color;
-            Function.Calculator = Form.Calculator;
-
-            //Update(model)
-            result = Model.UpdateElement(Function);
-            if (result == false)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //Update(draw)
-            PlotPanel.Children.Remove(Function.Plot.PlotPoints);
-            PlotServices.CalculatePlot(Function, this.PlotWidth, this.PlotHeight, PlotSettings);
-            PlotPanel.Children.Add(Function.Plot.PlotPoints);
-
-            //Update(panel)
-            UIFunctionPanel FunctionPanel = (UIFunctionPanel)sender;
-            FunctionPanel.FunctionNameLabel.Content = Function.Name;
-        }
-
-        private void HideButtonFunction(object sender, FunctionPanelEventArgs e)
-        {
-           bool result;
-            Function Function = null;
-
-            //Retrieve the Plot from the model
-            Function = Model.GetElementByID(e.FunctionId);
-            if (null == Function)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //Change Plot
-            Function.Plot.IsHidden = !Function.Plot.IsHidden;
-
-            //Update Model -- Its not necesay because the Plot isn't encapsuled but is made to mantain coherence
-            result = Model.UpdateElement(Function);
-            if (result == false)
-            {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            //update panel
-            UIFunctionPanel PanelSender = (UIFunctionPanel)sender;
-            PanelSender.SwichViewButtonImage();
+            Application.Current.Shutdown();
         }
     }
 }

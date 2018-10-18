@@ -52,14 +52,53 @@ namespace IGUWPF.src.view
                 switch (FunctionComboBox.SelectedIndex) {
                     case 0: return new CosXCalculator(a,b);
                     case 1: return new SinXCalculator(a,b);
-                    case 2: return new XExpNCalculator(a,b);
-                    case 3: return new NExpXCalculator(a,b);
-                    case 4: return new X2Calculator(a,b, double.Parse(CValueTextBox.Text));
+                    case 2: return new TanXCalculator(a, b);
+                    case 3: return new NDividedXCalculator(a, b);
+                    case 4: return new XExpNCalculator(a,b);
+                    case 5: return new NExpXCalculator(a,b);
+                    case 6: return new X1Calculator(a, b);
+                    case 7: return new X2Calculator(a,b, double.Parse(CValueTextBox.Text));
                     default: return null;
                 }
             }
 
+            set {
+                if (null == value)
+                    return;
 
+                if (value is CosXCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 0;
+                }
+                else if (value is SinXCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 1;
+                }
+                else if (value is TanXCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 2;
+                }
+                else if (value is NDividedXCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 3;
+                }
+                else if (value is XExpNCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 4;
+                }
+                else if (value is NExpXCalculator)
+                {
+                    FunctionComboBox.SelectedIndex = 5;
+                }
+                else if (value is X1Calculator)
+                {
+                    FunctionComboBox.SelectedIndex = 6;
+                }
+                else if (value is X2Calculator)
+                {
+                    FunctionComboBox.SelectedIndex = 7;
+                }
+            }
         }
 
         public double A

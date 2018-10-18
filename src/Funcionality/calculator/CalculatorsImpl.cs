@@ -22,7 +22,7 @@ namespace IGUWPF.src.controller.calculator
 
         public override string ToString()
         {
-            return A + "cos(" + B + "*x)";
+            return A + "*cos(" + B + "*x)";
         }
 
     }
@@ -43,7 +43,27 @@ namespace IGUWPF.src.controller.calculator
 
         public override string ToString()
         {
-            return A + "sin(" + B + "*x)";
+            return A + "*sin(" + B + "*x)";
+        }
+    }
+
+    public class TanXCalculator : ICalculator
+    {
+        public TanXCalculator(double a, double b)
+        {
+            this.A = a;
+            this.B = b;
+            this.C = 0;
+        }
+
+        public override double Calculate(double x)
+        {
+            return A * Math.Tan(B * x);
+        }
+
+        public override string ToString()
+        {
+            return A + "*tan(" + B + "*x)";
         }
     }
 
@@ -93,12 +113,12 @@ namespace IGUWPF.src.controller.calculator
         {
             this.A = a;
             this.B = b;
-            this.C = C;
+            this.C = 0;
         }
 
         public override double Calculate(double x)
         {
-            return A /B*x;
+            return A /(B*x);
         }
 
         public override string ToString()
@@ -106,6 +126,27 @@ namespace IGUWPF.src.controller.calculator
             return A + "/(x*" + B + ")";
         }
     }
+
+   public class X1Calculator : ICalculator
+    {
+        public X1Calculator(double a, double b)
+        {
+            this.A = a;
+            this.B = b;
+            this.C = 0;
+        }
+
+        public override double Calculate(double x)
+        {
+            return A + (B*x);
+        }
+
+        public override string ToString()
+        {
+            return A + " + x*" + B + ")";
+        }
+    }
+
 
     public class X2Calculator : ICalculator
     {

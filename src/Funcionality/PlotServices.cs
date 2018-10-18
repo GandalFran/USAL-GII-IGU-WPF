@@ -12,7 +12,6 @@ using IGUWPF.src.IO;
 using IGUWPF.src.models;
 using IGUWPF.src.models.Model;
 using IGUWPF.src.utils;
-using static IGUWPF.src.utils.Enumerations;
 
 namespace IGUWPF.src.controllers.ControllersImpl
 {
@@ -25,12 +24,20 @@ namespace IGUWPF.src.controllers.ControllersImpl
     public class PlotServices
     {
 
-        public static void CalculatePlot(Function Element, double Width, double Height, PlotRepresentationSettings RepresentationValues)
+        /*
+         NOTE FOR THE FUTURE FRAN
+         If you are thinking that the filter will cause the deletion of a desired line when
+         two points are to far away, you are mistaken. Because the distance between two points
+         is 1 px in all cases 
+        */
+        public static PointCollection[] CalculatePlot(ICalculator Calculator, double Width, double Height, PlotRepresentationSettings RepresentationValues)
         {
             double x, y, realX;
-            ICalculator Calculator = Element.Calculator;
-            PointCollection CalculationResult = new PointCollection();
+            bool WasLastBig, WasLastSmall;
+            PointCollection CurrentSegment = new PointCollection();
+            List<PointCollection> PointCollectionList = new List<PointCollection>();
 
+            WasLastBig = WasLastSmall = false;
             //Generate plot
             for (int i = 0; i < Width; i++)
             {
@@ -38,15 +45,43 @@ namespace IGUWPF.src.controllers.ControllersImpl
                 realX = ParseXScreenPointToRealPoint(i, Width, RepresentationValues);
                 y = ParseYRealPointToScreenPoint(Calculator.Calculate(realX), Height, RepresentationValues);
 
-                CalculationResult.Add(new Point(x, y));
-            }
+                //Filter to avoid unwished lines
+                if (y < 0) //The point is smaller
+                {
+                    if (WasLastBig)
+                    {
+                        PointCollectionList.Add(CurrentSegment);
+                        CurrentSegment = new PointCollection();
+                    }
+                    else
+                    {
+                        WasLastBig = false;
+                        WasLastSmall = true;
+                    }
+                }
+                else if (y >= Height) //The point is bigger
+                { 
+                    if (WasLastSmall)
+                    {
+                        PointCollectionList.Add(CurrentSegment);
+                        CurrentSegment = new PointCollection();
+                    }
+                    else
+                    {
+                        WasLastBig = true;
+                        WasLastSmall = false;
+                    }
+                }
+                else
+                {
+                    WasLastBig = WasLastSmall = false;
+                }
 
-            //Filter results to avoid unwished lines
-            //TODO -- buscar manera mejor
-           
-            //Add the points to the plot
-            Element.Plot.PlotPoints.Points = CalculationResult;
-            Element.Plot.PlotPoints.Name = "F" + Element.GetID();
+                CurrentSegment.Add(new Point(x, y));
+            }
+            PointCollectionList.Add(CurrentSegment);
+
+            return PointCollectionList.ToArray();
         }
 
 
@@ -114,5 +149,9 @@ namespace IGUWPF.src.controllers.ControllersImpl
             return -(((RepresentationValues.YMax - RepresentationValues.YMin) * y / Height) + RepresentationValues.YMin);
         }
 
+        public static string GetPlotName(int ID)
+        {
+            return "F" + ID;
+        }
     }
 }

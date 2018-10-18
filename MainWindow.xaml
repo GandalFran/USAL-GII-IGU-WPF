@@ -11,93 +11,11 @@
         Icon="Images\Icons\plot.png">
 
     <DockPanel>
-
-        <ToolBar  
-                    VerticalAlignment="Center"
-                Background="LightGray"
-                    DockPanel.Dock="Top">
-            <Button Name="SettingsButton" 
-                    Margin="3" 
-                    BorderThickness="0" Background="Transparent"
-                    ToolTip="Grafic settings" >
-                <StackPanel>
-                    <Image Source="Images\Icons\settings.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-            <Button Name="SaveFileButton" 
-                    Margin="3"
-                    BorderThickness="0" Background="Transparent"
-                    ToolTip="Save functions" >
-                <StackPanel>
-                    <Image Source="Images\Icons\save.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-            <Button Name="OpenFileButton" 
-                    Margin="3" 
-                    BorderThickness="0" Background="Transparent"
-                    ToolTip="Load file" >
-                <StackPanel>
-                    <Image Source="Images\Icons\open.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-            <Button Name="ExportImageButton" 
-                    Margin="3" 
-                    BorderThickness="0" Background="Transparent"
-                    ToolTip="Export plot" >
-                <StackPanel>
-                    <Image Source="Images\Icons\imageExport.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-        </ToolBar>
-
-        <Grid Margin="3" Name="GridToUpdate">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
-
-            <Border 
-                Margin="3"  
-                BorderThickness="1" BorderBrush="DodgerBlue" 
-                Grid.Column="0">
-                <Grid>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="13*"/>
-                    </Grid.RowDefinitions>
-
-                    <WrapPanel Grid.Row="0">
-                        <Button Name="AddFuncionButton" 
-                            Margin="3" HorizontalAlignment="Left" 
-                            BorderThickness="0" Background="Transparent"
-                            ToolTip="Add function" >
-                            <StackPanel>
-                                <Image Source="Images\Icons\add.png" Width="20" Height="20"/>
-                            </StackPanel>
-                        </Button>
-                    </WrapPanel>
-
-                    <ScrollViewer Grid.Row="1">
-                        <StackPanel Name="FuncionListPanel"/>
-                    </ScrollViewer>
-
-                </Grid>
-            </Border>
-
-            <Border 
-                    Margin="3" 
-                    BorderThickness="1" BorderBrush="DodgerBlue"  
-                    Grid.Column="1">
-                <Canvas Name="PlotPanel"  
+        <Border Margin="3" 
+                BorderThickness="1" BorderBrush="DodgerBlue">
+            <Canvas Name="PlotPanel"  
                         Background="White" 
-                        ClipToBounds="True">
-
-
-                </Canvas>
-            </Border>
-
-        </Grid>
-
+                        ClipToBounds="True"/>
+        </Border>
     </DockPanel>
 </Window>

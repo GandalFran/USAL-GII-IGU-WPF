@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Repos\IGU-WPF\App.xaml
-3436043019
+4413180349
 
-26-758963224
+24840321895
 20-2067520086
-MainWindow.xaml;src\view\Windows\FunctionAddAndEditForm.xaml;src\view\Windows\SettingsForm.xaml;
+MainWindow.xaml;src\view\Windows\FunctionAddAndEditForm.xaml;src\view\Windows\FunctionListWindow.xaml;src\view\Windows\SettingsForm.xaml;
 
-True
+False
 

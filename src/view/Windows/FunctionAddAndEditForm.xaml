@@ -45,8 +45,11 @@
                  Grid.Row="1" Grid.Column="1">
             <ComboBoxItem Content="a*cos(b*x)"/>
             <ComboBoxItem Content="a*sin(b*x)"/>
+            <ComboBoxItem Content="a*tan(b*x)"/>
+            <ComboBoxItem Content="a/(b*x)"/>
             <ComboBoxItem Content="a*(x^b)"/>
             <ComboBoxItem Content="a*(b^x)"/>
+            <ComboBoxItem Content="a + b*x"/>
             <ComboBoxItem Content="a*x^2 + b*x + c"/>
         </ComboBox>
 

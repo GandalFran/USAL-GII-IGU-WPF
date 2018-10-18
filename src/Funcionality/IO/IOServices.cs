@@ -1,28 +1,21 @@
 ﻿using IGUWPF.src.IO;
 using IGUWPF.src.models;
-using IGUWPF.src.models.Model;
-using IGUWPF.src.models.POJO;
-using System;
+using IGUWPF.src.models.ViewModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace IGUWPF.src.controllers
 {
     public class IOServices
     {
 
-        public static bool ExportModel(string DataPath, IDataModel<Function> FunctionModel)
+        public static bool ExportModel(string DataPath, IViewModel<Function> FunctionModel)
         {
             IDAO<Function> FunctionDAO = new SerialDAOImpl<Function>();
             return FunctionDAO.ExportMultipleObject( DataPath, FunctionModel.GetAllElements() );
         }
 
-        public static bool ImportModel(string DataPath, IDataModel<Function> FunctionModel)
+        public static bool ImportModel(string DataPath, IViewModel<Function> FunctionModel)
         {
             bool result;
             List<Function> toFill = new List<Function>();
@@ -32,7 +25,9 @@ namespace IGUWPF.src.controllers
 
             if (result)
             {
-                FunctionModel = new IDataModelImpl<Function>( toFill );
+                FunctionModel.Clear();
+                foreach (Function Function in toFill)
+                    FunctionModel.CreateElement(Function);
             }
             
             return result;

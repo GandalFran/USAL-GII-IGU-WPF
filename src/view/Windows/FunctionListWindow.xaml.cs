@@ -15,8 +15,7 @@ namespace IGUWPF.src.view.Windows
     {
 
         private FunctionViewModelImpl ViewModel;
-
-        public object PlotSettings { get; private set; }
+        
 
         public FunctionListWindow(FunctionViewModelImpl ViewModel)
         {

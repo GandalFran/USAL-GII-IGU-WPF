@@ -125,6 +125,9 @@ namespace IGUWPF.src.controllers.ControllersImpl
                 Axys[1].Visibility = Visibility.Hidden;
             }
 
+            Axys[0].StrokeThickness = 1;
+            Axys[1].StrokeThickness = 1;
+
             return Axys;
         }
 

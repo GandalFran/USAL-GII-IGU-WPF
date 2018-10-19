@@ -79,7 +79,7 @@
     <Compile Include="src\Services\calculator\CalculatorsImpl.cs" />
     <Compile Include="src\Services\calculator\ICalculator.cs" />
     <Compile Include="src\Services\IO\IOServices.cs" />
-    <Compile Include="src\Services\PlotServices.cs" />
+    <Compile Include="src\Services\plot\PlotServices.cs" />
     <Compile Include="src\Services\IO\DaoImpl\ImageDAOImpl.cs" />
     <Compile Include="src\models\ViewModel\FunctionViewModelImpl.cs" />
     <Compile Include="src\models\ViewModel\IViewModel.cs" />

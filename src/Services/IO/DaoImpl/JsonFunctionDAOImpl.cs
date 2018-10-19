@@ -29,9 +29,6 @@ namespace IGUWPF.src.controllers
 
         public Boolean ImportMultipleObject(string FilePath, List<Function> ToFill)
         {
-            SerializableCalculator SerializableCalculator = null;
-
-            //Import
             try
             {
                 string JsonSerializedArray = File.ReadAllText(FilePath, Encoding.UTF8);

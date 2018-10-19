@@ -21,6 +21,7 @@ namespace IGUWPF
         private double PlotHeight { get => PlotPanel.ActualHeight; }
 
         private Label XYMouseCoordinates;
+        private Line[] CursorAxys;
         
         private FunctionViewModelImpl ViewModel;
 
@@ -32,7 +33,11 @@ namespace IGUWPF
             //Instance components
             ViewModel = new FunctionViewModelImpl();
 
-            //Create the label to know the Cursor position
+            //Give default values
+            ViewModel.XMin = ViewModel.YMin = -10;
+            ViewModel.XMax = ViewModel.YMax = 10;
+
+            //Create the label and the bars to know the Cursor position
             XYMouseCoordinates = new Label()
             {
                 BorderThickness = new Thickness(1),
@@ -41,10 +46,25 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
-
-            //Give default values
-            ViewModel.XMin = ViewModel.YMin = -10;
-            ViewModel.XMax = ViewModel.YMax = 10;
+            CursorAxys = new Line[2];
+            CursorAxys[0] = new Line()
+            {
+                X1 = 0, 
+                X2 = 0,
+                Y1 = 0,
+                Y2 = 0,
+                Visibility = Visibility.Hidden,
+                Stroke = Brushes.DodgerBlue
+            };
+            CursorAxys[1] = new Line()
+            {
+                X1 = 0,
+                X2 = 0,
+                Y1 = 0,
+                Y2 = 0,
+                Visibility = Visibility.Hidden,
+                Stroke = Brushes.DodgerBlue
+            };
 
             //Add event handlers
             //Reload panel if size changes
@@ -167,26 +187,38 @@ namespace IGUWPF
         private void SetMousePositionLabelVissible(object sender, MouseEventArgs e)
         {
             XYMouseCoordinates.Visibility = Visibility.Visible;
+            CursorAxys[0].Visibility = Visibility.Visible;
+            CursorAxys[1].Visibility = Visibility.Visible;
         }
         private void SetMousePositionLabelHidden(object sender, MouseEventArgs e)
         {
             XYMouseCoordinates.Visibility = Visibility.Hidden;
+            CursorAxys[0].Visibility = Visibility.Hidden;
+            CursorAxys[1].Visibility = Visibility.Hidden;
         }
         private void CalculateMousePosition(object sender, MouseEventArgs e)
         {
-            double realX, realY;
+            double realX, realY, screenX, screenY;
 
             //Obtain the mouse pointer coordinates
             Panel MousePanel = (Panel)sender;
             Point p = e.GetPosition(MousePanel);
 
             //Calculate real points
-            realX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(p.X, MousePanel.ActualWidth, ViewModel.PlotSettings));
-            realY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(p.Y, MousePanel.ActualHeight, ViewModel.PlotSettings));
+            screenX = p.X;
+            screenY = p.Y;
+            realX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(screenX, MousePanel.ActualWidth, ViewModel.PlotSettings));
+            realY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(screenY, MousePanel.ActualHeight, ViewModel.PlotSettings));
 
             //Update label
             if (null != XYMouseCoordinates)
                 XYMouseCoordinates.Content = "X: " + realX + " Y: " + realY;
+
+            //Update the cursor axys
+            CursorAxys[0].X2 = Width;
+            CursorAxys[0].Y1 = CursorAxys[0].Y2 = screenY;
+            CursorAxys[1].Y2 = Height;
+            CursorAxys[1].X1 = CursorAxys[1].X2 = screenX;
         }
 
         private void ExportImage(object sender, RoutedEventArgs e)
@@ -219,10 +251,12 @@ namespace IGUWPF
             //Clear the panel
             PlotPanel.Children.Clear();
 
-            //Add the Label to know the plot position
+            //Add the Label and cursor to know the plot position
             PlotPanel.Children.Add(XYMouseCoordinates);
             Canvas.SetRight(XYMouseCoordinates, 0);
             Canvas.SetBottom(XYMouseCoordinates, 0);
+            PlotPanel.Children.Add(CursorAxys[0]);
+            PlotPanel.Children.Add(CursorAxys[1]);
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);

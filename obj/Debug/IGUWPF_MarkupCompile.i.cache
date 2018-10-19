@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Repos\IGU-WPF\obj\Debug\
+C:\Users\alce\Desktop\IGU-WPF-master\obj\Debug\
 IGUWPF
 none
 false
 DEBUG;TRACE
-D:\Repos\IGU-WPF\App.xaml
+C:\Users\alce\Desktop\IGU-WPF-master\src\view\Windows\App.xaml
 4413180349
 
-281598671979
-20-2067520086
+272032247826
+20-251254102
 MainWindow.xaml;src\view\Windows\FunctionAddAndEditForm.xaml;src\view\Windows\FunctionListWindow.xaml;src\view\Windows\SettingsForm.xaml;
 
 True

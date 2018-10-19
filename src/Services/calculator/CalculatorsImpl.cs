@@ -150,7 +150,7 @@ namespace IGUWPF.src.controller.calculator
 
         public override string ToString()
         {
-            return a + " + x*" + b + ")";
+            return a + " + (x*" + b + ")";
         }
     }
 
@@ -172,7 +172,7 @@ namespace IGUWPF.src.controller.calculator
 
         public override string ToString()
         {
-            return a + "x^2 + " + b + "x + " + c + ")";
+            return a + "x^2 + " + b + "x + " + c;
         }
     }
 

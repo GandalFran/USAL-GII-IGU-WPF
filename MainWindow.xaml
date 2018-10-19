@@ -18,7 +18,7 @@
 
     <DockPanel>
         <Border Margin="3" 
-                BorderThickness="1" BorderBrush="DodgerBlue">
+                BorderThickness="1" BorderBrush="DarkGray">
             <Canvas Name="PlotPanel"  
                         Background="White" 
                         ClipToBounds="True"/>

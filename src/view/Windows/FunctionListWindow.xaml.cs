@@ -166,6 +166,7 @@ namespace IGUWPF.src.view.Windows
             ViewModel.Clear();
             foreach (Function Function in ToImport)
                 ViewModel.CreateElement(Function);
+
         }
 
     }

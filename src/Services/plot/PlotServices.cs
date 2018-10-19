@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using IGUWPF.src.controller.calculator;
-using IGUWPF.src.IO;
-using IGUWPF.src.models;
-using IGUWPF.src.models.Model;
 using IGUWPF.src.models.ViewModel;
-using IGUWPF.src.utils;
 
 namespace IGUWPF.src.controllers.ControllersImpl
 {
@@ -28,7 +19,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
         */
         public static PointCollection[] CalculatePlot(ICalculator Calculator, double Width, double Height, PlotRepresentationSettings RepresentationValues)
         {
-            double x, y, realX;
+            double x, y, realX,realY;
             bool WasLastBig, WasLastSmall;
             PointCollection CurrentSegment = new PointCollection();
             List<PointCollection> PointCollectionList = new List<PointCollection>();
@@ -39,7 +30,8 @@ namespace IGUWPF.src.controllers.ControllersImpl
             {
                 x = i;
                 realX = ParseXScreenPointToRealPoint(i, Width, RepresentationValues);
-                y = ParseYRealPointToScreenPoint(Calculator.Calculate(realX), Height, RepresentationValues);
+                realY = Calculator.Calculate(realX);
+                y = ParseYRealPointToScreenPoint( realY, Height, RepresentationValues);
 
                 //Filter to avoid unwished lines
                 if (y < 0) //The point is smaller
@@ -88,7 +80,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
             //X Axys
             Axys[0] = new Line()
             {
-                Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                Stroke = Brushes.DarkGray,
                 X1 = 0,
                 X2 = Width,
                 Name = "FX"
@@ -108,7 +100,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
             //Y Axys
             Axys[1] = new Line()
             {
-                Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                Stroke = Brushes.DarkGray,
                 Y1 = 0,
                 Y2 = Height,
                 Name = "FY"

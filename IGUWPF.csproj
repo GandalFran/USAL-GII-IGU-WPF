@@ -72,7 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="src\view\Windows\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -84,7 +84,6 @@
     <Compile Include="src\models\ViewModel\FunctionViewModelImpl.cs" />
     <Compile Include="src\models\ViewModel\IViewModel.cs" />
     <Compile Include="src\models\ViewModel\IViewModelImpl.cs" />
-    <Compile Include="src\utils\Utils.cs" />
     <Compile Include="src\view\Windows\FunctionAddAndEditForm.xaml.cs">
       <DependentUpon>FunctionAddAndEditForm.xaml</DependentUpon>
     </Compile>
@@ -98,7 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="src\view\Windows\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

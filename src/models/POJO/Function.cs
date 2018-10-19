@@ -83,5 +83,11 @@ namespace IGUWPF.src.models
             ClonedFunction.InternalID = InternalID;
             return ClonedFunction;
         }
+
+        //Bindings for datagrid
+        public string BindingName { get=> Name; set => Name=value; }
+        public ICalculator BindingCalculator { get=> Calculator; set=> Calculator = value; }
+        public bool BindingIsVisible { get => !IsHidden; set => IsHidden = !value; }
+        public Color BindingColor { get=> Color; set=> Color=value; }
     }
 }

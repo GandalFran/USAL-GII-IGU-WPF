@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:IGUWPF.src.view.Windows"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="FunctionListWindow" Height="450" Width="600">
+        Icon="/IGUWPF;component/Images/Icons/plot.png"
+        Title="MacLab" Height="450" Width="600">
 
     <Window.ContextMenu>
         <ContextMenu Name="WindowContextMenu">
@@ -15,54 +16,62 @@
     </Window.ContextMenu>
 
     <DockPanel>
-        <ToolBar VerticalAlignment="Center"
+        <Menu VerticalAlignment="Center"
                  Background="LightGray"
-                 DockPanel.Dock="Top" Header="">
-            <Button Name="SettingsButton" 
+                 DockPanel.Dock="Top">
+            <MenuItem Name="SettingsButton" 
                     Margin="3" 
                     BorderThickness="0" Background="Transparent"
-                    ToolTip="Grafic settings" >
-                <StackPanel>
-                    <Image Source="/IGUWPF;component/Images\Icons\settings.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-            <Button Name="SaveFileButton" 
+                    ToolTip="Grafic settings">
+                    <MenuItem.Header>
+                        <StackPanel>
+                            <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/settings.png" />
+                        </StackPanel>
+                    </MenuItem.Header>
+            </MenuItem>
+            
+            <MenuItem Name="SaveFileButton" 
                     Margin="3"
                     BorderThickness="0" Background="Transparent"
-                    ToolTip="Save functions" >
-                <StackPanel>
-                    <Image Source="/IGUWPF;component/Images\Icons\save.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-            <Button Name="OpenFileButton" 
+                    ToolTip="Save functions">
+                    <MenuItem.Header>
+                        <StackPanel>
+                            <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/save.png" />
+                        </StackPanel>
+                    </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Name="OpenFileButton" 
                     Margin="3" 
                     BorderThickness="0" Background="Transparent"
-                    ToolTip="Load file" >
-                <StackPanel>
-                    <Image Source="/IGUWPF;component/Images\Icons\open.png" Width="20" Height="20"/>
-                </StackPanel>
-            </Button>
-        </ToolBar>
+                    ToolTip="Load file">
+                    <MenuItem.Header>
+                        <StackPanel>
+                            <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/open.png" />
+                        </StackPanel>
+                    </MenuItem.Header>
+            </MenuItem>
+        </Menu>
 
 
         <ScrollViewer BorderBrush="DodgerBlue" BorderThickness="1">
-            <DataGrid Name="FunctionListPanel" AutoGenerateColumns="False">
+            <DataGrid Name="FunctionListPanel" AutoGenerateColumns="False" SelectionMode="Single">
                 <DataGrid.Columns>
                     
-                    <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Path=Name}"/>
+                    <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Path=BindingName}"/>
                     
-                    <DataGridTextColumn Header="Expresion" Width="3*" Binding="{Binding Path=Calculator}"/>
+                    <DataGridTextColumn Header="Expresion" Width="3*" Binding="{Binding Path=BindingCalculator}"/>
                     
                     <DataGridTemplateColumn Header="Color" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="Function">
-                                <xctk:ColorPicker SelectedColor="{Binding Path=Color}"
+                                <xctk:ColorPicker SelectedColor="{Binding Path=BindingColor}"
                                     DisplayColorAndName="True" UsingAlphaChannel="False"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridCheckBoxColumn Header="Visibilidad" Width="*" Binding="{Binding Path=IsHidden}"/>
+                    <DataGridCheckBoxColumn Header="Visibilidad" Width="*" Binding="{Binding Path=BindingIsVisible}"/>
 
                 </DataGrid.Columns>
 

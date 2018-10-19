@@ -177,6 +177,8 @@ namespace IGUWPF
             PlotPanel.Children.Add(XYMouseCoordinates);
             Canvas.SetRight(XYMouseCoordinates, 0);
             Canvas.SetBottom(XYMouseCoordinates, 0);
+            PlotPanel.Children.Add(CursorAxys[0]);
+            PlotPanel.Children.Add(CursorAxys[1]);
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
@@ -265,7 +267,7 @@ namespace IGUWPF
 
             //Redraw all functions
             foreach (Function Function in ViewModel.GetAllElements()) {
-                if (Function.IsHidden)
+                if (!Function.IsHidden)
                 {
                     Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
 

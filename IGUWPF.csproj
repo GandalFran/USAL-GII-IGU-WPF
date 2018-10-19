@@ -72,7 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="src\view\Windows\App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -81,46 +81,46 @@
     <Compile Include="src\Services\IO\IOServices.cs" />
     <Compile Include="src\Services\plot\PlotServices.cs" />
     <Compile Include="src\Services\IO\DaoImpl\ImageDAOImpl.cs" />
-    <Compile Include="src\models\ViewModel\FunctionViewModelImpl.cs" />
-    <Compile Include="src\models\ViewModel\IViewModel.cs" />
-    <Compile Include="src\models\ViewModel\IViewModelImpl.cs" />
-    <Compile Include="src\view\Windows\FunctionAddAndEditForm.xaml.cs">
-      <DependentUpon>FunctionAddAndEditForm.xaml</DependentUpon>
+    <Compile Include="src\models\viewModel\FunctionViewModelImpl.cs" />
+    <Compile Include="src\models\viewModel\IViewModel.cs" />
+    <Compile Include="src\models\viewModel\IViewModelImpl.cs" />
+    <Compile Include="src\view\ExpresionSelectorForm.xaml.cs">
+      <DependentUpon>ExpresionSelectorForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\view\Windows\FunctionListWindow.xaml.cs">
-      <DependentUpon>FunctionListWindow.xaml</DependentUpon>
+    <Compile Include="src\view\FunctionListUI.xaml.cs">
+      <DependentUpon>FunctionListUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="src\view\Windows\SettingsForm.xaml.cs">
+    <Compile Include="src\view\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="src\view\Windows\App.xaml.cs">
+    <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="src\Services\IO\IDAO.cs" />
     <Compile Include="src\Services\IO\DaoImpl\JsonFunctionDAOImpl.cs" />
-    <Compile Include="src\models\Model\IObservableDataModel.cs" />
-    <Compile Include="src\models\Model\IDataObservableModelImpl.cs" />
-    <Compile Include="src\models\Model\IModelable.cs" />
+    <Compile Include="src\models\model\IObservableModel.cs" />
+    <Compile Include="src\models\model\IObservableModelImpl.cs" />
+    <Compile Include="src\models\model\IModelable.cs" />
     <Compile Include="src\models\POJO\Function.cs" />
     <Compile Include="src\utils\Constants.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="src\view\Windows\FunctionAddAndEditForm.xaml">
+    <Page Include="src\view\ExpresionSelectorForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="src\view\Windows\FunctionListWindow.xaml">
+    <Page Include="src\view\FunctionListUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="src\view\Windows\SettingsForm.xaml">
+    <Page Include="src\view\SettingsForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -170,6 +170,5 @@
   <ItemGroup>
     <Resource Include="Images\Icons\plot.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

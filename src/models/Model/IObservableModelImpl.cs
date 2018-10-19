@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IGUWPF.src.models.Model
 {
-    public class IObservableDataModelImpl<T> : IObservableDataModel<T> where T : IModelable<T>
+    public class IObservableModelImpl<T> : IObservableModel<T> where T : IModelable<T>
     {
         private int LastAssignedID;
         private ObservableCollection<T> ElementList = null;
 
-        public IObservableDataModelImpl() {
+        public IObservableModelImpl() {
             this.LastAssignedID = 0;
             this.ElementList = new ObservableCollection<T>();
         }
 
-        public IObservableDataModelImpl( List<T> ElementList )
+        public IObservableModelImpl( List<T> ElementList )
         {
             this.ElementList = new ObservableCollection<T>();
             foreach (T Element in ElementList) {
@@ -91,7 +88,12 @@ namespace IGUWPF.src.models.Model
             }
         }
 
-        public ObservableCollection<T> GetAllElements()
+        public List<T> GetAllElements()
+        {
+            return new List<T>(this.ElementList);
+        }
+
+        public ObservableCollection<T> GetAllElementsForBinding()
         {
             return this.ElementList;
         }

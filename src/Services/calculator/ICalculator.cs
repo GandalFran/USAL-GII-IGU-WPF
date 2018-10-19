@@ -1,10 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace IGUWPF.src.controller.calculator
 {
     public abstract class ICalculator
@@ -15,7 +9,6 @@ namespace IGUWPF.src.controller.calculator
 
         public abstract double Calculate(double x);
     }
-
 
     //To let other programmers add more operations easily
     public class MultipleOperationCalculator : ICalculator

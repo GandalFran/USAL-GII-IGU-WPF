@@ -1,13 +1,10 @@
-﻿using IGUWPF.src.controllers;
-using IGUWPF.src.models;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using IGUWPF.src.view.Windows;
-using IGUWPF.src.controllers.ControllersImpl;
 using IGUWPF.src.models.ViewModel;
 using System.Collections.Generic;
 using Microsoft.Win32;
@@ -17,20 +14,20 @@ namespace IGUWPF
 
     public partial class MainWindow : Window
     {
-        private double PlotWidth { get => PlotPanel.ActualWidth; }
+        private double PlotWidth  { get => PlotPanel.ActualWidth;  }
         private double PlotHeight { get => PlotPanel.ActualHeight; }
-
-        private Label XYMouseCoordinates;
-        private Line[] CursorAxys;
         
+        private Line[] CursorAxys;
+        private Label XYMouseCoordinates;
+
         private FunctionViewModelImpl ViewModel;
 
-        private FunctionListWindow FunctionListWindow;
+        private FunctionLitsUI FunctionListUI;
 
         public MainWindow()
         {
             InitializeComponent();
-            //Instance components
+
             ViewModel = new FunctionViewModelImpl();
 
             //Give default values
@@ -66,12 +63,11 @@ namespace IGUWPF
                 Stroke = Brushes.DodgerBlue
             };
 
-            //Add event handlers
             //Reload panel if size changes
             PlotPanel.SizeChanged += RefreshPlotPanel;
             //Mouse position events
-            PlotPanel.MouseEnter += SetMousePositionLabelVissible;
-            PlotPanel.MouseLeave += SetMousePositionLabelHidden;
+            PlotPanel.MouseEnter += ShowCursorPositionElements;
+            PlotPanel.MouseLeave += HideCursorPositionElements;
             PlotPanel.MouseMove += CalculateMousePosition;
             //ViewModel events
             ViewModel.ClearEvent += ViewModelClearEvent;
@@ -84,10 +80,9 @@ namespace IGUWPF
             //Closing event
             this.Closed += WhenClosed;
 
-            //FunctionListWindow processing
-            FunctionListWindow = new FunctionListWindow(ViewModel);
-            FunctionListWindow.Closed += WhenClosed;
-            FunctionListWindow.Show();
+            FunctionListUI = new FunctionLitsUI(ViewModel);
+            FunctionListUI.Closed += WhenClosed;
+            FunctionListUI.Show();
         }
 
         private void ViewModelCreateElementEvent(object sender, ViewModelEventArgs e) {
@@ -154,17 +149,20 @@ namespace IGUWPF
             foreach (Polyline Element in PolylineList)
                 PlotPanel.Children.Remove(Element);
 
-            //Get new plot
-            Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-
-            for (int i = 0; i < Segments.Length; i++)
+            if (!Function.IsHidden)
             {
-                Polyline = new Polyline();
+                //Get new plot
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
 
-                Polyline.Points = Segments[i];
-                Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                Polyline.Stroke = new SolidColorBrush(Function.Color);
-                PlotPanel.Children.Add(Polyline);
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    Polyline = new Polyline();
+
+                    Polyline.Points = Segments[i];
+                    Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
+                    Polyline.Stroke = new SolidColorBrush(Function.Color);
+                    PlotPanel.Children.Add(Polyline);
+                }
             }
         }
 
@@ -173,12 +171,12 @@ namespace IGUWPF
             //Clear the panel
             PlotPanel.Children.Clear();
 
-            //Add the Label to know the plot position
-            PlotPanel.Children.Add(XYMouseCoordinates);
-            Canvas.SetRight(XYMouseCoordinates, 0);
-            Canvas.SetBottom(XYMouseCoordinates, 0);
+            //Add label and axys for cursor porsition
             PlotPanel.Children.Add(CursorAxys[0]);
             PlotPanel.Children.Add(CursorAxys[1]);
+            PlotPanel.Children.Add(XYMouseCoordinates);
+                Canvas.SetRight(XYMouseCoordinates, 0);
+                Canvas.SetBottom(XYMouseCoordinates, 0);
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
@@ -186,41 +184,43 @@ namespace IGUWPF
             PlotPanel.Children.Add(Axys[1]);
         }
 
-        private void SetMousePositionLabelVissible(object sender, MouseEventArgs e)
+        private void ShowCursorPositionElements(object sender, MouseEventArgs e)
         {
             XYMouseCoordinates.Visibility = Visibility.Visible;
             CursorAxys[0].Visibility = Visibility.Visible;
             CursorAxys[1].Visibility = Visibility.Visible;
         }
-        private void SetMousePositionLabelHidden(object sender, MouseEventArgs e)
+
+        private void HideCursorPositionElements(object sender, MouseEventArgs e)
         {
             XYMouseCoordinates.Visibility = Visibility.Hidden;
             CursorAxys[0].Visibility = Visibility.Hidden;
             CursorAxys[1].Visibility = Visibility.Hidden;
         }
+
         private void CalculateMousePosition(object sender, MouseEventArgs e)
         {
-            double realX, realY, screenX, screenY;
+            double RealX, RealY, ScreenX, ScreenY;
 
             //Obtain the mouse pointer coordinates
             Panel MousePanel = (Panel)sender;
             Point p = e.GetPosition(MousePanel);
 
             //Calculate real points
-            screenX = p.X;
-            screenY = p.Y;
-            realX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(screenX, MousePanel.ActualWidth, ViewModel.PlotSettings));
-            realY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(screenY, MousePanel.ActualHeight, ViewModel.PlotSettings));
+            ScreenX = p.X;
+            ScreenY = p.Y;
+            RealX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(ScreenX, MousePanel.ActualWidth, ViewModel.PlotSettings));
+            RealY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(ScreenY, MousePanel.ActualHeight, ViewModel.PlotSettings));
 
             //Update label
             if (null != XYMouseCoordinates)
-                XYMouseCoordinates.Content = "X: " + realX + " Y: " + realY;
+                XYMouseCoordinates.Content = "X: " + RealX + " Y: " + RealY;
 
-            //Update the cursor axys
+            //Update cursor axys
             CursorAxys[0].X2 = Width;
-            CursorAxys[0].Y1 = CursorAxys[0].Y2 = screenY;
+            CursorAxys[0].Y1 = CursorAxys[0].Y2 = ScreenY;
             CursorAxys[1].Y2 = Height;
-            CursorAxys[1].X1 = CursorAxys[1].X2 = screenX;
+            CursorAxys[1].X1 = CursorAxys[1].X2 = ScreenX;
         }
 
         private void ExportImage(object sender, RoutedEventArgs e)
@@ -250,15 +250,16 @@ namespace IGUWPF
         {
             Polyline Polyline = null;
             PointCollection[] Segments = null;
+
             //Clear the panel
             PlotPanel.Children.Clear();
 
-            //Add the Label and cursor to know the plot position
-            PlotPanel.Children.Add(XYMouseCoordinates);
-            Canvas.SetRight(XYMouseCoordinates, 0);
-            Canvas.SetBottom(XYMouseCoordinates, 0);
+            //Add label and axys to know the cursor position
             PlotPanel.Children.Add(CursorAxys[0]);
             PlotPanel.Children.Add(CursorAxys[1]);
+            PlotPanel.Children.Add(XYMouseCoordinates);
+                Canvas.SetRight(XYMouseCoordinates, 0);
+                Canvas.SetBottom(XYMouseCoordinates, 0);
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);

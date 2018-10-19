@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace IGUWPF.src.models.ViewModel
 {
-
     public struct PlotRepresentationSettings
     {
         public double XMin, XMax, YMin, YMax;
     };
-
 
     public class FunctionViewModelImpl : IViewModelImpl<Function>
     {
         public event ViewModelEventHandler UpdatePlotSettingsEvent;
 
         private PlotRepresentationSettings InternPlotSettings;
+
         public PlotRepresentationSettings PlotSettings
         {
-            get
-            {
-                return InternPlotSettings;
-            }
+            get { return InternPlotSettings; }
             set
             {
                 InternPlotSettings = value;
@@ -32,10 +23,7 @@ namespace IGUWPF.src.models.ViewModel
         }
 
         public double XMin {
-            get
-            {
-                return InternPlotSettings.XMin;
-            }
+            get { return InternPlotSettings.XMin; }
             set
             {
                 InternPlotSettings.XMin = value;
@@ -44,10 +32,7 @@ namespace IGUWPF.src.models.ViewModel
         }
         public double XMax
         {
-            get
-            {
-                return InternPlotSettings.XMax;
-            }
+            get { return InternPlotSettings.XMax; }
             set
             {
                 InternPlotSettings.XMax = value;
@@ -56,10 +41,7 @@ namespace IGUWPF.src.models.ViewModel
         }
         public double YMin
         {
-            get
-            {
-                return InternPlotSettings.YMin;
-            }
+            get { return InternPlotSettings.YMin; }
             set
             {
                 InternPlotSettings.YMin = value;
@@ -68,10 +50,7 @@ namespace IGUWPF.src.models.ViewModel
         }
         public double YMax
         {
-            get
-            {
-                return InternPlotSettings.YMax;
-            }
+            get { return InternPlotSettings.YMax; }
             set
             {
                 InternPlotSettings.YMax = value;

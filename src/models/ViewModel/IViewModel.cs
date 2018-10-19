@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace IGUWPF.src.models.ViewModel
 {
@@ -23,15 +21,21 @@ namespace IGUWPF.src.models.ViewModel
 
     public delegate void ViewModelEventHandler (object sender, ViewModelEventArgs e);
 
-
-    public interface IViewModel<T> where T:IModelable<T>
+    public interface IViewModel<T> where T:IModelable<T>, INotifyPropertyChanged
     {
+        event ViewModelEventHandler CreateElementEvent;
+        event ViewModelEventHandler DeleteElementEvent;
+        event ViewModelEventHandler UpdateElementEvent;
+        event ViewModelEventHandler ClearEvent;
+
         int CreateElement(T Element);
         bool UpdateElement(T Element);
         bool DeleteElement(T Element);
         T GetElementByID(int ID);
 
-        ObservableCollection<T> GetAllElements();
+        List<T> GetAllElements();
+        ObservableCollection<T> GetAllElementsForBinding();
+
         void Clear();
     }
 }

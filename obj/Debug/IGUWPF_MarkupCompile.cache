@@ -9,12 +9,12 @@ IGUWPF
 none
 false
 DEBUG;TRACE
-D:\Repos\IGU-WPF\src\view\Windows\App.xaml
-4413180349
+D:\Repos\IGU-WPF\App.xaml
+4733198239
 
-23-1660334959
+23198101743
 20-2067520086
-MainWindow.xaml;src\view\Windows\FunctionAddAndEditForm.xaml;src\view\Windows\FunctionListWindow.xaml;src\view\Windows\SettingsForm.xaml;
+MainWindow.xaml;src\view\ExpresionSelectorForm.xaml;src\view\FunctionListUI.xaml;src\view\SettingsForm.xaml;
 
 False
 

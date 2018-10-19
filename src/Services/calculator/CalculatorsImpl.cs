@@ -8,7 +8,6 @@ namespace IGUWPF.src.controller.calculator
 {
     public class CosXCalculator : ICalculator
     {
-
         public CosXCalculator(double a, double b) 
         {
             this.a = a;
@@ -25,12 +24,10 @@ namespace IGUWPF.src.controller.calculator
         {
             return a + "*cos(" + b + "*x)";
         }
-
     }
 
     public class SinXCalculator : ICalculator
     {
-
         public SinXCalculator(double a, double b)
         {
             this.a = a;
@@ -51,7 +48,6 @@ namespace IGUWPF.src.controller.calculator
 
     public class TanXCalculator : ICalculator
     {
-
         public TanXCalculator(double a, double b)
         {
             this.a = a;
@@ -72,7 +68,6 @@ namespace IGUWPF.src.controller.calculator
 
     public class XExpNCalculator : ICalculator
     {
-
         public XExpNCalculator(double a, double b)
         {
             this.a = a;
@@ -93,7 +88,6 @@ namespace IGUWPF.src.controller.calculator
 
     public class NExpXCalculator : ICalculator
     {
-
         public NExpXCalculator(double a, double b)
         {
             this.a = a;
@@ -114,7 +108,6 @@ namespace IGUWPF.src.controller.calculator
 
     public class NDividedXCalculator : ICalculator
     {
-
         public NDividedXCalculator(double a, double b)
         {
             this.a = a;
@@ -124,7 +117,15 @@ namespace IGUWPF.src.controller.calculator
 
         public override double Calculate(double x)
         {
-            return a /(b*x);
+            double toReturn;
+            try
+            {
+                toReturn = a / (b * x);
+            }
+            catch (Exception) {
+                return double.MaxValue;
+            }
+            return toReturn;
         }
 
         public override string ToString()
@@ -135,7 +136,6 @@ namespace IGUWPF.src.controller.calculator
 
    public class X1Calculator : ICalculator
     {
-
         public X1Calculator(double a, double b)
         {
             this.a = a;
@@ -157,7 +157,6 @@ namespace IGUWPF.src.controller.calculator
 
     public class X2Calculator : ICalculator
     {
-
         public X2Calculator(double a, double b, double c)
         {
             this.a = a;
@@ -175,5 +174,4 @@ namespace IGUWPF.src.controller.calculator
             return a + "x^2 + " + b + "x + " + c;
         }
     }
-
 }

@@ -3,14 +3,19 @@ using System.Windows.Media;
 using IGUWPF.src.models.Model;
 using Newtonsoft.Json;
 using IGUWPF.src.controller.calculator;
-using System.Windows.Controls;
 using IGUWPF.src.controllers;
+using System.ComponentModel;
 
 namespace IGUWPF.src.models
 {
-    public class Function : IModelable<Function>
+    public class Function : IModelable<Function>, INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [JsonIgnore]
         private int InternalID;
+        [JsonIgnore]
         public int ID { get => InternalID;  }
 
         public string Name { get; set; }
@@ -43,7 +48,7 @@ namespace IGUWPF.src.models
 
         public override string ToString()
         {
-            return "{ID=" + ID + ", Name= " + Name + ", Expression=" + Calculator + ", Color=" + Color.ToString() + ", IsHidden=" + IsHidden.ToString() + "}";
+            return "{ID=" + ID + ", Name= " + Name + ", Calculator=" + Calculator + ", Color=" + Color.ToString() + ", IsHidden=" + IsHidden.ToString() + "}";
         }
 
         public override bool Equals(object obj)
@@ -59,13 +64,7 @@ namespace IGUWPF.src.models
 
         public override int GetHashCode()
         {
-            var hashCode = -237823076;
-            hashCode = hashCode * -1521134295 + ID.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ICalculator>.Default.GetHashCode(Calculator);
-            hashCode = hashCode * -1521134295 + IsHidden.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(Color);
-            return hashCode;
+            return InternalID;
         }
 
         //IModelable Interface
@@ -84,10 +83,50 @@ namespace IGUWPF.src.models
             return ClonedFunction;
         }
 
-        //Bindings for datagrid
-        public string BindingName { get=> Name; set => Name=value; }
-        public ICalculator BindingCalculator { get=> Calculator; set=> Calculator = value; }
-        public bool BindingIsVisible { get => !IsHidden; set => IsHidden = !value; }
-        public Color BindingColor { get=> Color; set=> Color=value; }
+        //INotifyPropertyChanged interface
+        [JsonIgnore]
+        public string NameProperty
+        {
+            get { return Name; }
+            set
+            {
+                Name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+        [JsonIgnore]
+        public string CalculatorProperty
+        {
+            get { return Calculator.ToString(); }
+            set {
+                //TODO add calculator
+                OnPropertyChanged("Calculator");
+            }
+        }
+        [JsonIgnore]
+        public bool IsVissibleProperty
+        {
+            get { return !IsHidden; }
+            set
+            {
+                IsHidden = !value;
+                OnPropertyChanged("IsVissible");
+            }
+        }
+        [JsonIgnore]
+        public Color ColorProperty
+        {
+            get { return Color; }
+            set
+            {
+                Color = value;
+                OnPropertyChanged("color");
+            }
+        }
+
+        public void OnPropertyChanged(string PropertyName)
+        {
+            if (null != PropertyChanged) PropertyChanged(this,new PropertyChangedEventArgs(PropertyName));
+        }
     }
 }

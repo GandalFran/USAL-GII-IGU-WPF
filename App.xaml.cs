@@ -8,9 +8,6 @@ using System.Windows;
 
 namespace IGUWPF
 {
-    /// <summary>
-    /// Lógica de interacción para App.xaml
-    /// </summary>
     public partial class App : Application
     {
     }

@@ -1,0 +1,53 @@
+﻿<Window x:Class="IGUWPF.src.view.Windows.SettingsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="SettingsForm" Height="220" Width="200"
+        Icon="/IGUWPF;component/Images/Icons/plot.png"
+        ResizeMode="NoResize">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0">
+            <Label Content="Xmin:" Margin="5" />
+            <TextBox Name="XMinTextBox" Margin="5" Width="120"/>
+        </WrapPanel>
+        
+        <WrapPanel Grid.Row="1">
+            <Label Content="Xmax:" Margin="5" />
+            <TextBox Name="XMaxTextBox" Margin="5" Width="120"/>
+        </WrapPanel>
+        
+        <WrapPanel Grid.Row="2">
+            <Label Content="Ymin:" Margin="5" />
+            <TextBox Name="YMinTextBox" Margin="5" Width="120"/>
+        </WrapPanel>
+        
+        <WrapPanel Grid.Row="3">
+            <Label Content="Ymax:" Margin="5" />
+            <TextBox Name="YMaxTextBox" Margin="5" Width="120"/>
+        </WrapPanel>
+        
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Name="SaveButton" Content = "Guardar"  Margin="5" Grid.Column="0"/>
+            <Button Name="CancelButton" Content= "Cancelar" Margin="5" Grid.Column="1"/>
+            
+        </Grid>
+        
+    </Grid>
+    
+</Window>

@@ -1,16 +1,13 @@
 ﻿using IGUWPF.src.models.Model;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace IGUWPF.src.models.ViewModel
 {
-    public class IViewModelImpl<T> : IViewModel<T> where T:IModelable<T>
+    public class IViewModelImpl<T> : IViewModel<T> where T:IModelable<T>, INotifyPropertyChanged
     {
-        private IObservableDataModel<T> Model;
+        private IObservableModel<T> Model;
 
         public event ViewModelEventHandler CreateElementEvent;
         public event ViewModelEventHandler DeleteElementEvent;
@@ -18,10 +15,10 @@ namespace IGUWPF.src.models.ViewModel
         public event ViewModelEventHandler ClearEvent;
 
         public IViewModelImpl() {
-            Model = new IObservableDataModelImpl<T>();
+            Model = new IObservableModelImpl<T>();
         }
 
-        public IViewModelImpl(IObservableDataModel<T> Model)
+        public IViewModelImpl(IObservableModel<T> Model)
         {
             this.Model = Model;
         }
@@ -29,7 +26,19 @@ namespace IGUWPF.src.models.ViewModel
         public int CreateElement(T Element)
         {
             int result = Model.CreateElement(Element);
+            Element.PropertyChanged += OnPropertyChanged;
             OnCreateElementEvent(Element);
+            return result;
+        }
+
+        public bool UpdateElement(T Element)
+        {
+            bool result = Model.UpdateElement(Element);
+            if (result)
+            {
+                Element.PropertyChanged += OnPropertyChanged;
+                OnUpdateElementEvent(Element);
+            }
             return result;
         }
 
@@ -41,22 +50,19 @@ namespace IGUWPF.src.models.ViewModel
             return result;
         }
 
-        public bool UpdateElement(T Element)
+        public T GetElementByID(int ID)
         {
-            bool result = Model.UpdateElement(Element);
-            if (result)
-                OnUpdateElementEvent(Element);
-            return result;
+            return Model.GetElementByID(ID);
         }
 
-        public ObservableCollection<T> GetAllElements()
+        public List<T> GetAllElements()
         {
             return Model.GetAllElements();
         }
 
-        public T GetElementByID(int ID)
+        public ObservableCollection<T> GetAllElementsForBinding()
         {
-            return Model.GetElementByID(ID);
+            return Model.GetAllElementsForBinding();
         }
 
         public void Clear()
@@ -79,6 +85,10 @@ namespace IGUWPF.src.models.ViewModel
         public void OnClearEvent()
         {
             if (null != ClearEvent) ClearEvent(this, new ViewModelEventArgs());
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            OnUpdateElementEvent((T)sender);
         }
     }
 }

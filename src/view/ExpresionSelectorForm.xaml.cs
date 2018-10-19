@@ -16,31 +16,8 @@ using System.Windows.Shapes;
 namespace IGUWPF.src.view
 {
 
-    public partial class FunctionAddAndEditForm : Window
+    public partial class ExpressionSelectorUI : Window
     {
-
-        public string FunctionName{
-            get {
-                return this.FunctionNameTextBox.Text;
-            }
-
-            set
-            {
-                this.FunctionNameTextBox.Text = value;
-            }
-        }
-
-        public Color Color {
-            get {
-                //If the Selected color is returned the plot isnt drawed -- change the A value doesn't works
-                Color c = (Color) this.ColorSelector.SelectedColor;
-                return Color.FromArgb(255,c.R,c.G,c.B);
-            }
-
-            set {
-                this.ColorSelector.SelectedColor = value;
-            }
-        }
 
         public ICalculator Calculator {
             get {
@@ -125,7 +102,7 @@ namespace IGUWPF.src.view
             }
         }
 
-        public FunctionAddAndEditForm()
+        public ExpressionSelectorUI()
         {
             InitializeComponent();
 
@@ -145,8 +122,6 @@ namespace IGUWPF.src.view
             if (!double.TryParse(AValueTextBox.Text, out toTest) ||
                 !double.TryParse(BValueTextBox.Text, out toTest) ||
                 !double.TryParse(CValueTextBox.Text, out toTest) ||
-                FunctionNameTextBox.Text.Length == 0 ||
-                ColorSelector.SelectedColor == null  ||
                 FunctionComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);

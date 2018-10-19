@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IGUWPF"
         mc:Ignorable="d"
         Title="MacLab" 
         Height="450" Width="800" MinHeight="450" MinWidth="800"
@@ -16,13 +15,6 @@
         </ContextMenu>
     </Window.ContextMenu>
 
-    <DockPanel>
-        <Border Margin="3" 
-                BorderThickness="1" BorderBrush="DarkGray">
-            <Canvas Name="PlotPanel"  
-                        Background="White" 
-                        ClipToBounds="True"/>
-        </Border>
-    </DockPanel>
-   
+    <Canvas Name="PlotPanel" Background="White" ClipToBounds="True"/>
+
 </Window>

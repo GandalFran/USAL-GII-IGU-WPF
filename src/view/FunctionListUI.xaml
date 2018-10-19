@@ -1,0 +1,171 @@
+﻿<Window x:Class="IGUWPF.src.view.Windows.FunctionLitsUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Icon="/IGUWPF;component/Images/Icons/plot.png"
+        Title="MacLab" Height="450" Width="600" MinHeight="450" MinWidth="600">
+
+
+    <DockPanel>
+        <Menu VerticalAlignment="Center"
+                 Background="LightGray"
+                 DockPanel.Dock="Top">
+            <MenuItem Name="SettingsButton" 
+                        Margin="3" 
+                        BorderThickness="0" Background="Transparent"
+                        ToolTip="Cambiar parametros de representacion">
+                <MenuItem.Header>
+                    <StackPanel>
+                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/settings.png" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Name="SaveFileButton" 
+                        Margin="3"
+                        BorderThickness="0" Background="Transparent"
+                        ToolTip="Guardar proyecto">
+                <MenuItem.Header>
+                    <StackPanel>
+                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/save.png" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+
+            <MenuItem Name="OpenFileButton" 
+                            Margin="3" 
+                            BorderThickness="0" Background="Transparent"
+                            ToolTip="Abrir proyecto">
+                <MenuItem.Header>
+                    <StackPanel>
+                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/open.png" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </Menu>
+
+        <TabControl Name="MainTabControl">
+            <TabItem Name="FunctionListTab" Header="Lista de functiones">
+
+                <ScrollViewer BorderBrush="DodgerBlue" BorderThickness="1" VerticalScrollBarVisibility="Auto">
+                    <DataGrid Name="FunctionListPanel" AutoGenerateColumns="False" SelectionMode="Single">
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Mode=TwoWay, Path=NameProperty, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <DataGridTextColumn Header="Expresion" IsReadOnly="True" Width="3*" Binding="{Binding Mode=TwoWay, Path=CalculatorProperty, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <DataGridTemplateColumn Header="Color" Width="2*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="Function">
+                                        <xctk:ColorPicker SelectedColor="{Binding Mode=TwoWay, Path=ColorProperty, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn  Header="Visibilidad" Width="2*" >
+                                <DataGridTemplateColumn.CellTemplate >
+                                    <DataTemplate >
+                                        <CheckBox  IsChecked="{Binding Mode=TwoWay, Path=IsVissibleProperty, UpdateSourceTrigger=PropertyChanged}"   />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu Name="DataGridContextMenu">
+                                <MenuItem Name="DataGridContextMenu_AddFunction" Header="Add"/>
+                                <MenuItem Name="DataGridContextMenu_DeleteSelectedFunction" Header="Delete" />
+                                <MenuItem Name="DataGridContextMenu_EditSelectedFunctionExpression" Header="Editar expresion" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                    </DataGrid>
+                </ScrollViewer>
+
+            </TabItem>
+
+            <TabItem Name="Anadir" Header="Definicion de grafica">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Definicion de grafica" Grid.Row="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <WrapPanel Grid.Row="0">
+                                <Label Content="Nombre:" Margin="5" />
+                                <TextBox Name="FunctionNameTextBox"  Margin="5" Width="200" Text="{Binding NumericValidation}"/>
+                            </WrapPanel>
+
+                            <WrapPanel Grid.Row="1"  Grid.Column="0">
+                                <Label Content="Color:    " Margin="5"/>
+                                <xctk:ColorPicker  Name="ColorSelector" Margin="5" Width="200"/>
+                            </WrapPanel>
+
+                            <WrapPanel Grid.Row="2">
+                                <Label Content="Funcion:" Margin="5"/>
+                                <ComboBox Name="FunctionComboBox" Margin="5" Width="200">
+                                    <ComboBoxItem Content="a*cos(b*x)"/>
+                                    <ComboBoxItem Content="a*sin(b*x)"/>
+                                    <ComboBoxItem Content="a*tan(b*x)"/>
+                                    <ComboBoxItem Content="a/(b*x)"/>
+                                    <ComboBoxItem Content="a*(x^b)"/>
+                                    <ComboBoxItem Content="a*(b^x)"/>
+                                    <ComboBoxItem Content="a + b*x"/>
+                                    <ComboBoxItem Content="a*x^2 + b*x + c"/>
+                                </ComboBox>
+                            </WrapPanel>
+
+                            <WrapPanel Grid.Row="3"  Grid.Column="0">
+                                <Label Content="a:" Margin="5"/>
+                                <TextBox Name="AValueTextBox" Margin="5" Width="100"/>
+                                <Label Content="b:" Margin="5"/>
+                                <TextBox Name="BValueTextBox" Margin="5" Width="100"/>
+                                <Label Content="c:" Margin="5"/>
+                                <TextBox Name="CValueTextBox" Margin="5" Width="100"/>
+                            </WrapPanel>
+
+                            <Grid Grid.Row="4">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Name="AddFunctionButton"
+                                    Content = "Anadir function"
+                                    Margin="5"
+                                    Grid.Column="1"/>
+                                <Button Name="PreviewButton"
+                                    Content = "Generar preview"
+                                    Margin="5"
+                                    DockPanel.Dock="Right"
+                                    Grid.Column="0"/>
+                            </Grid>
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Preview" Grid.Row="1">
+                        <Canvas Name="PreviewPanel" ClipToBounds="True" Background="White"/>
+                    </GroupBox>
+                </Grid>
+
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

@@ -67,7 +67,7 @@ namespace IGUWPF.src.view.Windows
 
         private void EditFunction(object sender, EventArgs e)
         {
-            Function Function = null; //TODO obtener funcion
+            Function Function = (Function)FunctionListPanel.SelectedItem;
 
             //Display the formulary
             FunctionAddAndEditForm Form = new FunctionAddAndEditForm();
@@ -163,6 +163,7 @@ namespace IGUWPF.src.view.Windows
                 return;
             }
 
+            ViewModel.Clear();
             foreach (Function Function in ToImport)
                 ViewModel.CreateElement(Function);
         }

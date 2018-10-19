@@ -4,6 +4,7 @@ using IGUWPF.src.models.Model;
 using Newtonsoft.Json;
 using IGUWPF.src.controller.calculator;
 using System.Windows.Controls;
+using IGUWPF.src.controllers;
 
 namespace IGUWPF.src.models
 {
@@ -23,13 +24,21 @@ namespace IGUWPF.src.models
             this.Calculator = Calculator;
         }
 
-        [JsonConstructor]
         public Function(string Name, ICalculator Calculator, Color Color, bool IsHidden)
         {
             this.Name = Name;
             this.Color = Color;
             this.IsHidden = IsHidden;
             this.Calculator = Calculator;
+        }
+
+        [JsonConstructor]
+        public Function(string Name, SerializableCalculator Calculator, Color Color, bool IsHidden)
+        {
+            this.Name = Name;
+            this.Color = Color;
+            this.IsHidden = IsHidden;
+            this.Calculator = Calculator.ToICalculator();
         }
 
         public override string ToString()

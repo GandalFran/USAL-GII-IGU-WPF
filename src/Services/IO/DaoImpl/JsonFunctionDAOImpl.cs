@@ -41,15 +41,6 @@ namespace IGUWPF.src.controllers
                 return false;
             }
 
-            //Parse each calculator into a not serializable calculator
-            foreach(Function Function in ToFill) {
-                if (null == Function.Calculator)
-                    continue;
-                else
-                    SerializableCalculator = (SerializableCalculator)Function.Calculator;
-                Function.Calculator = SerializableCalculator.ToICalculator();
-            }
-
             return true;
         }
 

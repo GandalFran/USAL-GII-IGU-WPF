@@ -1,4 +1,4 @@
-﻿using IGUWPF.src.controller.calculator;
+﻿using IGUWPF.src.services.calculator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +20,22 @@ namespace IGUWPF.src.view
     {
 
         public ICalculator Calculator {
-            get {
-                double a, b;
 
-                a = double.Parse(AValueTextBox.Text);
-                b = double.Parse(BValueTextBox.Text);
+            get {
+                double a, b, c;
+
+                double.TryParse(AValueTextBox.Text, out a);
+                double.TryParse(BValueTextBox.Text, out b);
+                double.TryParse(CValueTextBox.Text, out c);
 
                 switch (FunctionComboBox.SelectedIndex) {
                     case 0: return new CosXCalculator(a,b);
                     case 1: return new SinXCalculator(a,b);
-                    case 2: return new TanXCalculator(a, b);
-                    case 3: return new NDividedXCalculator(a, b);
-                    case 4: return new XExpNCalculator(a,b);
-                    case 5: return new NExpXCalculator(a,b);
-                    case 6: return new X1Calculator(a, b);
-                    case 7: return new X2Calculator(a,b, double.Parse(CValueTextBox.Text));
+                    case 2: return new NDividedXCalculator(a, b);
+                    case 3: return new XExpNCalculator(a,b);
+                    case 4: return new NExpXCalculator(a,b);
+                    case 5: return new X1Calculator(a,b);
+                    case 6: return new X2Calculator(a,b,c);
                     default: return null;
                 }
             }
@@ -51,55 +52,32 @@ namespace IGUWPF.src.view
                 {
                     FunctionComboBox.SelectedIndex = 1;
                 }
-                else if (value is TanXCalculator)
+                else if (value is NDividedXCalculator)
                 {
                     FunctionComboBox.SelectedIndex = 2;
                 }
-                else if (value is NDividedXCalculator)
+                else if (value is XExpNCalculator)
                 {
                     FunctionComboBox.SelectedIndex = 3;
                 }
-                else if (value is XExpNCalculator)
+                else if (value is NExpXCalculator)
                 {
                     FunctionComboBox.SelectedIndex = 4;
                 }
-                else if (value is NExpXCalculator)
+                else if (value is X1Calculator)
                 {
                     FunctionComboBox.SelectedIndex = 5;
                 }
-                else if (value is X1Calculator)
+                else if (value is X2Calculator)
                 {
                     FunctionComboBox.SelectedIndex = 6;
                 }
-                else if (value is X2Calculator)
-                {
-                    FunctionComboBox.SelectedIndex = 7;
-                }
-            }
-        }
 
-        public double A
-        {
-            set
-            {
-                this.AValueTextBox.Text = value + "";
+                AValueTextBox.Text = value.a + "";
+                BValueTextBox.Text = value.b + "";
+                CValueTextBox.Text = value.c + "";
             }
-        }
 
-        public double B
-        {
-            set
-            {
-                this.BValueTextBox.Text = value + "";
-            }
-        }
-
-        public double C
-        {
-            set
-            {
-                this.CValueTextBox.Text = value + "";
-            }
         }
 
         public ExpressionSelectorUI()
@@ -130,5 +108,6 @@ namespace IGUWPF.src.view
             else
                 this.DialogResult = true;
         }
+
     }
 }

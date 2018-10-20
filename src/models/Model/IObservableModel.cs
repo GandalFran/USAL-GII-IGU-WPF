@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace IGUWPF.src.models.Model
+namespace IGUWPF.src.models.model
 {
     public interface IObservableModel<T> where T:IModelable<T>
     {

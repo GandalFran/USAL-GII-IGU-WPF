@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
-using IGUWPF.src.models.Model;
 using Newtonsoft.Json;
-using IGUWPF.src.controller.calculator;
-using IGUWPF.src.controllers;
+using IGUWPF.src.services.calculator;
 using System.ComponentModel;
+using IGUWPF.src.models.model;
+using IGUWPF.src.services.IO;
 
-namespace IGUWPF.src.models
+namespace IGUWPF.src.models.POJO
 {
     public class Function : IModelable<Function>, INotifyPropertyChanged
     {
@@ -72,10 +72,12 @@ namespace IGUWPF.src.models
         {
             return InternalID;
         }
+
         public void SetID(int ID)
         {
             this.InternalID = ID;
         }
+
         public Function Clone()
         {
             Function ClonedFunction = new Function(this.Name, this.Calculator, this.Color,this.IsHidden);
@@ -94,6 +96,7 @@ namespace IGUWPF.src.models
                 OnPropertyChanged("Name");
             }
         }
+
         [JsonIgnore]
         public string CalculatorProperty
         {
@@ -103,6 +106,7 @@ namespace IGUWPF.src.models
                 OnPropertyChanged("Calculator");
             }
         }
+
         [JsonIgnore]
         public bool IsVissibleProperty
         {
@@ -113,6 +117,7 @@ namespace IGUWPF.src.models
                 OnPropertyChanged("IsVissible");
             }
         }
+
         [JsonIgnore]
         public Color ColorProperty
         {

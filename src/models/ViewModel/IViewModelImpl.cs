@@ -1,4 +1,4 @@
-﻿using IGUWPF.src.models.Model;
+﻿using IGUWPF.src.models.model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -74,14 +74,17 @@ namespace IGUWPF.src.models.ViewModel
         public void OnCreateElementEvent(T Element) {
             if (null != CreateElementEvent) CreateElementEvent(this,new ViewModelEventArgs(Element));
         }
+
         public void OnDeleteElementEvent(T Element)
         {
             if (null != DeleteElementEvent) DeleteElementEvent(this, new ViewModelEventArgs(Element));
         }
+
         public void OnUpdateElementEvent(T Element)
         {
             if (null != UpdateElementEvent) UpdateElementEvent(this, new ViewModelEventArgs(Element));
         }
+
         public void OnClearEvent()
         {
             if (null != ClearEvent) ClearEvent(this, new ViewModelEventArgs());

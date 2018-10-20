@@ -1,14 +1,14 @@
-﻿using IGUWPF.src.controller.calculator;
-using IGUWPF.src.models;
-using IGUWPF.src.models.ViewModel;
+﻿using IGUWPF.src.services.calculator;
 using System;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
-using IGUWPF.src.controllers;
 using System.Collections.Generic;
-using IGUWPF.src.controllers.ControllersImpl;
+using IGUWPF.src.services.plot;
 using System.Windows.Shapes;
+using IGUWPF.src.models.ViewModel;
+using IGUWPF.src.models.POJO;
+using IGUWPF.src.services.IO;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -23,9 +23,11 @@ namespace IGUWPF.src.view.Windows
             InitializeComponent();
 
             this.ViewModel = ViewModel;
-
             //Link the model to the datagrid
-            FunctionListPanel.ItemsSource = ViewModel.GetAllElementsForBinding();
+            FunctionDataGrid.ItemsSource = ViewModel.GetAllElementsForBinding();
+
+            //Add function selection combobox items
+            FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
 
             //Add handlers 
             //Handlers for button events
@@ -95,7 +97,7 @@ namespace IGUWPF.src.view.Windows
 
         private void EditSettings(object sender, RoutedEventArgs e)
         {
-            PlotRepresentationSettings Settings = ViewModel.PlotSettings;
+            RepresentationParameters Settings = ViewModel.PlotSettings;
 
             //Show dialog to edit de properties
             SettingsForm SettingsForm = new SettingsForm();
@@ -125,20 +127,18 @@ namespace IGUWPF.src.view.Windows
 
         private void DeleteFunction(object sender, RoutedEventArgs e)
         {
-            Function Function = (Function)FunctionListPanel.SelectedItem;
+            Function Function = (Function)FunctionDataGrid.SelectedItem;
             ViewModel.DeleteElement(Function);
         }
 
         private void EditFunction(object sender, EventArgs e)
         {
-            Function Function = (Function)FunctionListPanel.SelectedItem;
+            Function Function = (Function)FunctionDataGrid.SelectedItem;
 
-            //Display the formulary
+            //Display formulary
             ExpressionSelectorUI Form = new ExpressionSelectorUI();
-            Form.Title = "Editar funcion";
-            Form.A = Function.Calculator.a;
-            Form.B = Function.Calculator.b;
-            Form.C = Function.Calculator.c;
+            Form.Title = "Editar expresion";
+            Form.FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
             Form.Calculator = Function.Calculator;
 
             Form.ShowDialog();
@@ -160,6 +160,7 @@ namespace IGUWPF.src.view.Windows
 
         private void GeneratePreview(object sender, RoutedEventArgs e)
         {
+            Line[] Axys = null;
             Polyline Segment = null;
             PointCollection[] CalculationResult = null;
             Function Function = TakeFunctionDataFromAddFunctionForm();
@@ -168,6 +169,9 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             PreviewPanel.Children.Clear();
+            Axys = PlotServices.GetAxys(PreviewPanel.ActualWidth, PreviewPanel.ActualHeight, ViewModel.PlotSettings);
+            PreviewPanel.Children.Add(Axys[0]);
+            PreviewPanel.Children.Add(Axys[1]);
             CalculationResult = PlotServices.CalculatePlot(Function.Calculator, PreviewPanel.ActualWidth,PreviewPanel.ActualHeight, ViewModel.PlotSettings);
             foreach (PointCollection Points in CalculationResult) {
                 Segment = new Polyline();
@@ -175,7 +179,6 @@ namespace IGUWPF.src.view.Windows
                 Segment.Points = Points;
                 PreviewPanel.Children.Add(Segment);
             }
-            
         }
 
         private Function TakeFunctionDataFromAddFunctionForm() {
@@ -205,15 +208,26 @@ namespace IGUWPF.src.view.Windows
             {
                 case 0: FunctionCalculator = new CosXCalculator(a, b); break;
                 case 1: FunctionCalculator = new SinXCalculator(a, b); break;
-                case 2: FunctionCalculator = new TanXCalculator(a, b); break;
-                case 3: FunctionCalculator = new NDividedXCalculator(a, b); break;
-                case 4: FunctionCalculator = new XExpNCalculator(a, b); break;
-                case 5: FunctionCalculator = new NExpXCalculator(a, b); break;
-                case 6: FunctionCalculator = new X1Calculator(a, b); break;
-                case 7: FunctionCalculator = new X2Calculator(a, b, c); break;
+                case 2: FunctionCalculator = new NDividedXCalculator(a, b); break;
+                case 3: FunctionCalculator = new XExpNCalculator(a, b); break;
+                case 4: FunctionCalculator = new NExpXCalculator(a, b); break;
+                case 5: FunctionCalculator = new X1Calculator(a, b); break;
+                case 6: FunctionCalculator = new X2Calculator(a, b, c); break;
             }
 
             return new Function(FunctionName, FunctionCalculator, FunctionColor, false);
+        }
+
+        private String[] InitializeFunctionComboBox() {
+            String[] ItemArray = {
+                    CosXCalculator.Operation
+                    , SinXCalculator.Operation
+                    , NDividedXCalculator.Operation
+                    , XExpNCalculator.Operation
+                    , NExpXCalculator.Operation
+                    , X1Calculator.Operation
+                    , X2Calculator.Operation};
+            return ItemArray;
         }
 
     }

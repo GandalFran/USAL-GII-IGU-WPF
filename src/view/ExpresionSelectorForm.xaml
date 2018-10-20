@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Height="160" Width="430"
+        Height="160" Width="450"
         Icon="/IGUWPF;component/Images/Icons/plot.png"
         ResizeMode="NoResize"
         Title="Seleccion de funcion">
@@ -18,16 +18,7 @@
 
         <WrapPanel Grid.Row="0">
             <Label Content="Funcion:" Margin="5"/>
-            <ComboBox Name="FunctionComboBox" Margin="5" Width="300">
-                <ComboBoxItem Content="a*cos(b*x)"/>
-                <ComboBoxItem Content="a*sin(b*x)"/>
-                <ComboBoxItem Content="a*tan(b*x)"/>
-                <ComboBoxItem Content="a/(b*x)"/>
-                <ComboBoxItem Content="a*(x^b)"/>
-                <ComboBoxItem Content="a*(b^x)"/>
-                <ComboBoxItem Content="a + b*x"/>
-                <ComboBoxItem Content="a*x^2 + b*x + c"/>
-            </ComboBox>
+            <ComboBox Name="FunctionComboBox" Margin="5" Width="300"/>
         </WrapPanel>
 
         <WrapPanel Grid.Row="1">

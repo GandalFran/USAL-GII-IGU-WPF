@@ -1,5 +1,5 @@
 ﻿
-using IGUWPF.src.models;
+using IGUWPF.src.services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace IGUWPF.src.IO
+namespace IGUWPF.src.services.IO
 {
     public class ImageDAOImpl : IDAO<Panel>
     {

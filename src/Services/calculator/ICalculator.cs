@@ -1,11 +1,13 @@
 ﻿
-namespace IGUWPF.src.controller.calculator
+namespace IGUWPF.src.services.calculator
 {
     public abstract class ICalculator
     {
         public double a {get; set; }
         public double b { get; set; }
         public double c { get; set; }
+
+        public static string Operation { get; }
 
         public abstract double Calculate(double x);
     }
@@ -38,4 +40,5 @@ namespace IGUWPF.src.controller.calculator
             return ToReturn;
         }
     }
+
 }

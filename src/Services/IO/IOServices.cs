@@ -1,12 +1,12 @@
-﻿using IGUWPF.src.IO;
-using IGUWPF.src.models;
+﻿using IGUWPF.src.models.POJO;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace IGUWPF.src.controllers
+namespace IGUWPF.src.services.IO
 {
     public class IOServices
     {
+
         public static bool ExportModel(string DataPath, List<Function> FunctionList)
         {
             IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
@@ -24,5 +24,6 @@ namespace IGUWPF.src.controllers
             IDAO<Panel> PlotDAO = new ImageDAOImpl();
             return PlotDAO.ExportSingleObject(DataPath, ToExport);
         }
+
     }
 }

@@ -3,7 +3,6 @@ D:\Repos\IGU-WPF\bin\Debug\IGUWPF.exe
 D:\Repos\IGU-WPF\bin\Debug\IGUWPF.pdb
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csprojAssemblyReference.cache
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF_MarkupCompile.cache
-D:\Repos\IGU-WPF\obj\Debug\IGUWPF_MarkupCompile.lref
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.g.resources
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.Properties.Resources.resources
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.GenerateResource.cache
@@ -13,7 +12,6 @@ D:\Repos\IGU-WPF\obj\Debug\IGUWPF.pdb
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.dll
 D:\Repos\IGU-WPF\bin\Debug\Newtonsoft.Json.xml
 D:\Repos\IGU-WPF\obj\Debug\IGUWPF.csproj.CopyComplete
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\SettingsForm.g.cs
 D:\Repos\IGU-WPF\bin\Debug\Xceed.Wpf.AvalonDock.dll
 D:\Repos\IGU-WPF\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
 D:\Repos\IGU-WPF\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
@@ -30,7 +28,6 @@ D:\Repos\IGU-WPF\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\SettingsForm.baml
 C:\Users\alce\Desktop\IGU-WPF-master\bin\Debug\IGUWPF.exe.config
 C:\Users\alce\Desktop\IGU-WPF-master\bin\Debug\IGUWPF.exe
 C:\Users\alce\Desktop\IGU-WPF-master\bin\Debug\IGUWPF.pdb
@@ -71,10 +68,6 @@ C:\Users\alce\Desktop\IGU-WPF-master\obj\Debug\IGUWPF.csproj.CopyComplete
 C:\Users\alce\Desktop\IGU-WPF-master\obj\Debug\IGUWPF.exe
 C:\Users\alce\Desktop\IGU-WPF-master\obj\Debug\IGUWPF.pdb
 C:\Users\alce\Desktop\IGU-WPF-master\obj\Debug\src\view\Windows\App.g.cs
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionListUI.g.cs
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\FunctionListUI.baml
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\ExpresionSelectorForm.g.cs
-D:\Repos\IGU-WPF\obj\Debug\src\view\Windows\ExpresionSelectorForm.baml
 D:\Repos\IGU-WPF\obj\Debug\MainWindow.baml
 D:\Repos\IGU-WPF\obj\Debug\MainWindow.g.cs
 D:\Repos\IGU-WPF\obj\Debug\App.g.cs

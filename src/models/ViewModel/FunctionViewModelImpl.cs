@@ -1,24 +1,25 @@
-﻿
+﻿using IGUWPF.src.models.POJO;
+
 namespace IGUWPF.src.models.ViewModel
 {
-    public struct PlotRepresentationSettings
+    public struct RepresentationParameters
     {
         public double XMin, XMax, YMin, YMax;
     };
 
     public class FunctionViewModelImpl : IViewModelImpl<Function>
     {
-        public event ViewModelEventHandler UpdatePlotSettingsEvent;
+        public event ViewModelEventHandler UpdateRepresentationParameters;
 
-        private PlotRepresentationSettings InternPlotSettings;
+        private RepresentationParameters InternPlotSettings;
 
-        public PlotRepresentationSettings PlotSettings
+        public RepresentationParameters PlotSettings
         {
             get { return InternPlotSettings; }
             set
             {
                 InternPlotSettings = value;
-                OnUpdatePlotSettingsEvent();
+                OnUpdateRepresentationParameters();
             }
         }
 
@@ -27,39 +28,43 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings.XMin = value;
-                OnUpdatePlotSettingsEvent();
+                OnUpdateRepresentationParameters();
             }
         }
+
         public double XMax
         {
             get { return InternPlotSettings.XMax; }
             set
             {
                 InternPlotSettings.XMax = value;
-                OnUpdatePlotSettingsEvent();
+                OnUpdateRepresentationParameters();
             }
         }
+
         public double YMin
         {
             get { return InternPlotSettings.YMin; }
             set
             {
                 InternPlotSettings.YMin = value;
-                OnUpdatePlotSettingsEvent();
+                OnUpdateRepresentationParameters();
             }
         }
+
         public double YMax
         {
             get { return InternPlotSettings.YMax; }
             set
             {
                 InternPlotSettings.YMax = value;
-                OnUpdatePlotSettingsEvent();
+                OnUpdateRepresentationParameters();
             }
         }
 
-        public void OnUpdatePlotSettingsEvent() {
-            if (null != UpdatePlotSettingsEvent) UpdatePlotSettingsEvent(this, new ViewModelEventArgs());
+        public void OnUpdateRepresentationParameters() {
+            if (null != UpdateRepresentationParameters) UpdateRepresentationParameters(this, new ViewModelEventArgs());
         }
+
     }
 }

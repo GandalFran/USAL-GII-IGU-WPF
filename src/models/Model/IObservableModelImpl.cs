@@ -2,24 +2,17 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace IGUWPF.src.models.Model
+namespace IGUWPF.src.models.model
 {
     public class IObservableModelImpl<T> : IObservableModel<T> where T : IModelable<T>
     {
+
         private int LastAssignedID;
         private ObservableCollection<T> ElementList = null;
 
         public IObservableModelImpl() {
             this.LastAssignedID = 0;
             this.ElementList = new ObservableCollection<T>();
-        }
-
-        public IObservableModelImpl( List<T> ElementList )
-        {
-            this.ElementList = new ObservableCollection<T>();
-            foreach (T Element in ElementList) {
-                CreateElement(Element);
-            }
         }
 
         public int CreateElement(T Element)

@@ -76,11 +76,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\Services\calculator\CalculatorsImpl.cs" />
-    <Compile Include="src\Services\calculator\ICalculator.cs" />
-    <Compile Include="src\Services\IO\IOServices.cs" />
-    <Compile Include="src\Services\plot\PlotServices.cs" />
-    <Compile Include="src\Services\IO\DaoImpl\ImageDAOImpl.cs" />
+    <Compile Include="src\services\calculator\CalculatorsImpl.cs" />
+    <Compile Include="src\services\calculator\ICalculator.cs" />
+    <Compile Include="src\services\IO\IOServices.cs" />
+    <Compile Include="src\services\plot\PlotServices.cs" />
+    <Compile Include="src\services\IO\DaoImpl\ImageDAOImpl.cs" />
     <Compile Include="src\models\viewModel\FunctionViewModelImpl.cs" />
     <Compile Include="src\models\viewModel\IViewModel.cs" />
     <Compile Include="src\models\viewModel\IViewModelImpl.cs" />
@@ -101,8 +101,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\Services\IO\IDAO.cs" />
-    <Compile Include="src\Services\IO\DaoImpl\JsonFunctionDAOImpl.cs" />
+    <Compile Include="src\services\IO\IDAO.cs" />
+    <Compile Include="src\services\IO\DaoImpl\JsonFunctionDAOImpl.cs" />
     <Compile Include="src\models\model\IObservableModel.cs" />
     <Compile Include="src\models\model\IObservableModelImpl.cs" />
     <Compile Include="src\models\model\IModelable.cs" />

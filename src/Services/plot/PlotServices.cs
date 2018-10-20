@@ -2,18 +2,18 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using IGUWPF.src.controller.calculator;
 using IGUWPF.src.models.ViewModel;
+using IGUWPF.src.services.calculator;
 
-namespace IGUWPF.src.controllers.ControllersImpl
+namespace IGUWPF.src.services.plot
 {
     public class PlotServices
     {
-        /*NOTE
+        /*NOTE FOR FUTURE FRAN
          If you are thinking that the filter will cause the deletion of a desired line when
          two points are to far away, you are mistaken. Because the distance between two points
          is 1 px in all cases*/
-        public static PointCollection[] CalculatePlot(ICalculator Calculator, double Width, double Height, PlotRepresentationSettings RepresentationValues)
+        public static PointCollection[] CalculatePlot(ICalculator Calculator, double Width, double Height, RepresentationParameters RepresentationValues)
         {
             double ScreenX, ScreenY, RealX,RealY;
             bool WasLastBig, WasLastSmall;
@@ -67,7 +67,7 @@ namespace IGUWPF.src.controllers.ControllersImpl
             return PointCollectionList.ToArray();
         }
 
-        public static Line[] GetAxys(double Width, double Height, PlotRepresentationSettings RepresentationValues)
+        public static Line[] GetAxys(double Width, double Height, RepresentationParameters RepresentationValues)
         {
             Line[] Axys = new Line[2];
 
@@ -96,19 +96,22 @@ namespace IGUWPF.src.controllers.ControllersImpl
             return Axys;
         }
 
-        public static double ParseXRealPointToScreenPoint(double x, double Width, PlotRepresentationSettings RepresentationValues)
+        public static double ParseXRealPointToScreenPoint(double x, double Width, RepresentationParameters RepresentationValues)
         {
             return Width * ((x - RepresentationValues.XMin) / (RepresentationValues.XMax - RepresentationValues.XMin));
         }
-        public static double ParseYRealPointToScreenPoint(double y, double Height, PlotRepresentationSettings RepresentationValues)
+
+        public static double ParseYRealPointToScreenPoint(double y, double Height, RepresentationParameters RepresentationValues)
         {
             return Height * (1 - ((y - RepresentationValues.YMin) / (RepresentationValues.YMax - RepresentationValues.YMin)));
         }
-        public static double ParseXScreenPointToRealPoint(double x, double Width, PlotRepresentationSettings RepresentationValues)
+
+        public static double ParseXScreenPointToRealPoint(double x, double Width, RepresentationParameters RepresentationValues)
         {
             return ((RepresentationValues.XMax - RepresentationValues.XMin) * x / Width) + RepresentationValues.XMin;
         }
-        public static double ParseYScreenPointToRealPoint(double y, double Height, PlotRepresentationSettings RepresentationValues)
+
+        public static double ParseYScreenPointToRealPoint(double y, double Height, RepresentationParameters RepresentationValues)
         {
             return -(((RepresentationValues.YMax - RepresentationValues.YMin) * y / Height) + RepresentationValues.YMin);
         }
@@ -117,5 +120,6 @@ namespace IGUWPF.src.controllers.ControllersImpl
         {
             return "F" + ID;
         }
+
     }
 }

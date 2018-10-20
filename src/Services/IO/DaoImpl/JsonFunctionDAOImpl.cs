@@ -1,18 +1,13 @@
-﻿using IGUWPF.src.controller.calculator;
-using IGUWPF.src.models;
+﻿using IGUWPF.src.services.calculator;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using IGUWPF.src.models.POJO;
 
-
-namespace IGUWPF.src.controllers
+namespace IGUWPF.src.services.IO
 {
-
 
     public class JsonFunctionDAOImpl: IDAO <Function>
     {
@@ -70,7 +65,7 @@ namespace IGUWPF.src.controllers
     }
     
     //To make easy the serialization
-    public enum TypeOfCalculator { COS, SIN, TAN, XEXPN, NEXPX, NDIVEDX, X1, X2 };
+    public enum TypeOfCalculator { COS, SIN, XEXPN, NEXPX, NDIVEDX, X1, X2 };
     public class SerializableCalculator : ICalculator
     {
         public double[] OperationElementsArray { get; set; }
@@ -97,13 +92,6 @@ namespace IGUWPF.src.controllers
                 OperationElementsArray[0] = ((SinXCalculator)Calculator).a;
                 OperationElementsArray[1] = ((SinXCalculator)Calculator).b;
                 Type = TypeOfCalculator.SIN;
-            }
-            else if (Calculator is TanXCalculator)
-            {
-                OperationElementsArray = new double[2];
-                OperationElementsArray[0] = ((TanXCalculator)Calculator).a;
-                OperationElementsArray[1] = ((TanXCalculator)Calculator).b;
-                Type = TypeOfCalculator.TAN;
             }
             else if (Calculator is NDividedXCalculator)
             {
@@ -150,7 +138,6 @@ namespace IGUWPF.src.controllers
             {
                 case TypeOfCalculator.COS: Calculator = new CosXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
                 case TypeOfCalculator.SIN: Calculator = new SinXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
-                case TypeOfCalculator.TAN: Calculator = new TanXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
                 case TypeOfCalculator.NEXPX: Calculator = new NExpXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
                 case TypeOfCalculator.XEXPN: Calculator = new XExpNCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
                 case TypeOfCalculator.NDIVEDX: Calculator = new NDividedXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
@@ -165,6 +152,5 @@ namespace IGUWPF.src.controllers
             return 0;
         }
     }
-
 
 }

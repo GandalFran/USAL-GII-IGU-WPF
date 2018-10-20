@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IGUWPF.src.models
+namespace IGUWPF.src.services.IO
 {
     public interface IDAO <T>
     {

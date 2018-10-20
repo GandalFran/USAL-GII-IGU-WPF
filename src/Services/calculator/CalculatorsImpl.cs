@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace IGUWPF.src.controller.calculator
+namespace IGUWPF.src.services.calculator
 {
     public class CosXCalculator : ICalculator
     {
+        public new static string Operation { get { return "a*cos(b*x)"; } }
+
         public CosXCalculator(double a, double b) 
         {
             this.a = a;
@@ -28,6 +26,8 @@ namespace IGUWPF.src.controller.calculator
 
     public class SinXCalculator : ICalculator
     {
+        public new static string Operation { get { return "a*sin(b*x)"; } }
+
         public SinXCalculator(double a, double b)
         {
             this.a = a;
@@ -46,28 +46,10 @@ namespace IGUWPF.src.controller.calculator
         }
     }
 
-    public class TanXCalculator : ICalculator
-    {
-        public TanXCalculator(double a, double b)
-        {
-            this.a = a;
-            this.b = b;
-            this.c = 0;
-        }
-
-        public override double Calculate(double x)
-        {
-            return a * Math.Tan(b * x);
-        }
-
-        public override string ToString()
-        {
-            return a + "*tan(" + b + "*x)";
-        }
-    }
-
     public class XExpNCalculator : ICalculator
     {
+        public new static string Operation { get { return "a*x^b"; } }
+
         public XExpNCalculator(double a, double b)
         {
             this.a = a;
@@ -88,6 +70,8 @@ namespace IGUWPF.src.controller.calculator
 
     public class NExpXCalculator : ICalculator
     {
+        public new static string Operation { get { return "a*b^x"; } }
+
         public NExpXCalculator(double a, double b)
         {
             this.a = a;
@@ -108,6 +92,8 @@ namespace IGUWPF.src.controller.calculator
 
     public class NDividedXCalculator : ICalculator
     {
+        public new static string Operation { get { return "a/(b*x)"; } }
+
         public NDividedXCalculator(double a, double b)
         {
             this.a = a;
@@ -136,6 +122,8 @@ namespace IGUWPF.src.controller.calculator
 
    public class X1Calculator : ICalculator
     {
+        public new static string Operation { get { return "a + b*x"; } }
+
         public X1Calculator(double a, double b)
         {
             this.a = a;
@@ -154,9 +142,10 @@ namespace IGUWPF.src.controller.calculator
         }
     }
 
-
     public class X2Calculator : ICalculator
     {
+        public new static string Operation { get { return "a*x^2 + bx + c"; } }
+
         public X2Calculator(double a, double b, double c)
         {
             this.a = a;
@@ -174,4 +163,5 @@ namespace IGUWPF.src.controller.calculator
             return a + "x^2 + " + b + "x + " + c;
         }
     }
+
 }

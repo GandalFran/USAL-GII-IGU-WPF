@@ -1,5 +1,5 @@
 ﻿
-namespace IGUWPF.src.models.Model
+namespace IGUWPF.src.models.model
 {
     public interface IModelable<T>
     {

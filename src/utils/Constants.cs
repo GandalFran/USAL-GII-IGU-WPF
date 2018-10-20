@@ -5,20 +5,12 @@ namespace IGUWPF
 {
     public class Constants
     {
-        private static String IconsFolderPath = "Images\\Icons";
-    
-        public static BitmapImage ViewButtonIcon    = new BitmapImage(new Uri(IconsFolderPath + "\\view.png", UriKind.Relative));
-        public static BitmapImage NotViewButtonIcon = new BitmapImage(new Uri(IconsFolderPath + "\\not-view.png", UriKind.Relative));
-        public static BitmapImage AddButtonIcon     = new BitmapImage(new Uri(IconsFolderPath + "\\add.png", UriKind.Relative));
-        public static BitmapImage EditButtonIcon    = new BitmapImage(new Uri(IconsFolderPath + "\\edit.png", UriKind.Relative));
-        public static BitmapImage DeleteButtonIcon  = new BitmapImage(new Uri(IconsFolderPath + "\\delete.png", UriKind.Relative));
+        public readonly static string ProjectFileExtension = "maclab";
+        public readonly static string ApplicationName = "MacLab";
 
-        public static string ProjectFileExtension = "maclab";
-        public static string ApplicationName = "MacLab";
-
-        public static string ErrorWindowTitle = "ERROR";
-        public static string IncorrectDataMsg = "Los datos no son correctos";
-        public static string FunctionModelErrorMsg = "Hubo un problema interno con la funcion solicitada.";
-        public static string IOErrorMsg = "Hubo un problema con los ficheros.";
+        public readonly static string ErrorWindowTitle = "ERROR";
+        public readonly static string IncorrectDataMsg = "Los datos introudcidos estan incompletos o no son validos. Por favor vuelva a introducirlos.";
+        public readonly static string FunctionModelErrorMsg = "Hubo un problema interno con la funcion solicitada, Por favor, reinicie la aplicacion.";
+        public readonly static string IOErrorMsg = "Hubo un problema con los ficheros solicitados.";
     }
 }

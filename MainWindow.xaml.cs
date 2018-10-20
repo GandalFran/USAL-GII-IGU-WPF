@@ -5,9 +5,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using IGUWPF.src.view.Windows;
-using IGUWPF.src.models.ViewModel;
 using System.Collections.Generic;
 using Microsoft.Win32;
+using IGUWPF.src.services.plot;
+using IGUWPF.src.models.ViewModel;
+using IGUWPF.src.models.POJO;
+using IGUWPF.src.services.IO;
 
 namespace IGUWPF
 {
@@ -74,7 +77,7 @@ namespace IGUWPF
             ViewModel.CreateElementEvent += ViewModelCreateElementEvent;
             ViewModel.DeleteElementEvent += ViewModelDeleteElementEvent;
             ViewModel.UpdateElementEvent += ViewModelUpdateElementEvent;
-            ViewModel.UpdatePlotSettingsEvent += RefreshPlotPanel;
+            ViewModel.UpdateRepresentationParameters += RefreshPlotPanel;
             //Contextual menus events
             WindowContextMenu_ExportImage.Click += ExportImage;
             //Closing event
@@ -90,16 +93,19 @@ namespace IGUWPF
             PointCollection [] Segments = null;
             Function Function = (Function)e.Element;
 
-            Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-
-            for (int i = 0; i < Segments.Length; i++)
+            if (!Function.IsHidden)
             {
-                Polyline = new Polyline();
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
 
-                Polyline.Points = Segments[i];
-                Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                Polyline.Stroke = new SolidColorBrush(Function.Color);
-                PlotPanel.Children.Add(Polyline);
+                for (int i = 0; i < Segments.Length; i++)
+                {
+                    Polyline = new Polyline();
+
+                    Polyline.Points = Segments[i];
+                    Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
+                    Polyline.Stroke = new SolidColorBrush(Function.Color);
+                    PlotPanel.Children.Add(Polyline);
+                }
             }
         }
 

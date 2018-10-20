@@ -51,12 +51,12 @@
             <TabItem Name="FunctionListTab" Header="Lista de functiones">
 
                 <ScrollViewer BorderBrush="DodgerBlue" BorderThickness="1" VerticalScrollBarVisibility="Auto">
-                    <DataGrid Name="FunctionListPanel" AutoGenerateColumns="False" SelectionMode="Single">
+                    <DataGrid Name="FunctionDataGrid" AutoGenerateColumns="False" SelectionMode="Single">
                         <DataGrid.Columns>
 
                             <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Mode=TwoWay, Path=NameProperty, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <DataGridTextColumn Header="Expresion" IsReadOnly="True" Width="3*" Binding="{Binding Mode=TwoWay, Path=CalculatorProperty, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Expresion" IsReadOnly="True" Width="3*" Binding="{Binding Mode=TwoWay, Path=CalculatorProperty, UpdateSourceTrigger=LostFocus}"/>
 
                             <DataGridTemplateColumn Header="Color" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -119,16 +119,7 @@
 
                             <WrapPanel Grid.Row="2">
                                 <Label Content="Funcion:" Margin="5"/>
-                                <ComboBox Name="FunctionComboBox" Margin="5" Width="200">
-                                    <ComboBoxItem Content="a*cos(b*x)"/>
-                                    <ComboBoxItem Content="a*sin(b*x)"/>
-                                    <ComboBoxItem Content="a*tan(b*x)"/>
-                                    <ComboBoxItem Content="a/(b*x)"/>
-                                    <ComboBoxItem Content="a*(x^b)"/>
-                                    <ComboBoxItem Content="a*(b^x)"/>
-                                    <ComboBoxItem Content="a + b*x"/>
-                                    <ComboBoxItem Content="a*x^2 + b*x + c"/>
-                                </ComboBox>
+                                <ComboBox Name="FunctionComboBox" Margin="5" Width="200"/>
                             </WrapPanel>
 
                             <WrapPanel Grid.Row="3"  Grid.Column="0">

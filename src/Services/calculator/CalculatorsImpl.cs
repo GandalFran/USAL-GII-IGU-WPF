@@ -2,7 +2,7 @@
 
 namespace IGUWPF.src.services.calculator
 {
-    public class CosXCalculator : ICalculator
+    public class CosXCalculator : Calculator
     {
         public new static string Operation { get { return "a*cos(b*x)"; } }
 
@@ -24,7 +24,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-    public class SinXCalculator : ICalculator
+    public class SinXCalculator : Calculator
     {
         public new static string Operation { get { return "a*sin(b*x)"; } }
 
@@ -46,7 +46,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-    public class XExpNCalculator : ICalculator
+    public class XExpNCalculator : Calculator
     {
         public new static string Operation { get { return "a*x^b"; } }
 
@@ -68,7 +68,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-    public class NExpXCalculator : ICalculator
+    public class NExpXCalculator : Calculator
     {
         public new static string Operation { get { return "a*b^x"; } }
 
@@ -90,7 +90,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-    public class NDividedXCalculator : ICalculator
+    public class NDividedXCalculator : Calculator
     {
         public new static string Operation { get { return "a/(b*x)"; } }
 
@@ -120,7 +120,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-   public class X1Calculator : ICalculator
+   public class X1Calculator : Calculator
     {
         public new static string Operation { get { return "a + b*x"; } }
 
@@ -142,7 +142,7 @@ namespace IGUWPF.src.services.calculator
         }
     }
 
-    public class X2Calculator : ICalculator
+    public class X2Calculator : Calculator
     {
         public new static string Operation { get { return "a*x^2 + bx + c"; } }
 

@@ -9,7 +9,7 @@ namespace IGUWPF.src.models.ViewModel
 
     public class FunctionViewModelImpl : IViewModelImpl<Function>
     {
-        public event ViewModelEventHandler UpdateRepresentationParameters;
+        public event ViewModelEventHandler RepresentationParametersChanged;
 
         private RepresentationParameters InternPlotSettings;
 
@@ -19,7 +19,7 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings = value;
-                OnUpdateRepresentationParameters();
+                OnRepresentationParametersChanged();
             }
         }
 
@@ -28,7 +28,7 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings.XMin = value;
-                OnUpdateRepresentationParameters();
+                OnRepresentationParametersChanged();
             }
         }
 
@@ -38,7 +38,7 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings.XMax = value;
-                OnUpdateRepresentationParameters();
+                OnRepresentationParametersChanged();
             }
         }
 
@@ -48,7 +48,7 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings.YMin = value;
-                OnUpdateRepresentationParameters();
+                OnRepresentationParametersChanged();
             }
         }
 
@@ -58,12 +58,12 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternPlotSettings.YMax = value;
-                OnUpdateRepresentationParameters();
+                OnRepresentationParametersChanged();
             }
         }
 
-        public void OnUpdateRepresentationParameters() {
-            if (null != UpdateRepresentationParameters) UpdateRepresentationParameters(this, new ViewModelEventArgs());
+        public void OnRepresentationParametersChanged() {
+            if (null != RepresentationParametersChanged) RepresentationParametersChanged(this, new ViewModelEventArgs());
         }
 
     }

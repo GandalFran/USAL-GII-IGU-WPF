@@ -122,6 +122,7 @@ namespace IGUWPF.src.view.Windows
 
         private void ChangeToAddFunctionTab(object sender, RoutedEventArgs e)
         {
+            /*Snipet taken from https://stackoverflow.com/questions/7929646/how-to-programmatically-select-a-tabitem-in-wpf-tabcontrol*/
             Dispatcher.BeginInvoke((Action)(() => MainTabControl.SelectedIndex = 1));
         }
 
@@ -198,7 +199,7 @@ namespace IGUWPF.src.view.Windows
             double a, b, c;
             string FunctionName = FunctionNameTextBox.Text;
             Color FunctionColor = (Color)ColorSelector.SelectedColor;
-            ICalculator FunctionCalculator = null;
+            Calculator FunctionCalculator = null;
 
             a = double.Parse(AValueTextBox.Text);
             b = double.Parse(BValueTextBox.Text);

@@ -13,6 +13,7 @@
         <Menu VerticalAlignment="Center"
                  Background="LightGray"
                  DockPanel.Dock="Top">
+            
             <MenuItem Name="SettingsButton" 
                         Margin="3" 
                         BorderThickness="0" Background="Transparent"
@@ -78,8 +79,8 @@
 
                         <DataGrid.ContextMenu>
                             <ContextMenu Name="DataGridContextMenu">
-                                <MenuItem Name="DataGridContextMenu_AddFunction" Header="Add"/>
-                                <MenuItem Name="DataGridContextMenu_DeleteSelectedFunction" Header="Delete" />
+                                <MenuItem Name="DataGridContextMenu_AddFunction" Header="Añadir funcion"/>
+                                <MenuItem Name="DataGridContextMenu_DeleteSelectedFunction" Header="Eliminar" />
                                 <MenuItem Name="DataGridContextMenu_EditSelectedFunctionExpression" Header="Editar expresion" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
@@ -108,7 +109,7 @@
                             </Grid.RowDefinitions>
 
                             <WrapPanel Grid.Row="0">
-                                <Label Content="Nombre:" Margin="5" />
+                                <Label Margin="5" Content="Nombre:"/>
                                 <TextBox Name="FunctionNameTextBox"  Margin="5" Width="200" Text="{Binding NumericValidation}"/>
                             </WrapPanel>
 
@@ -122,7 +123,7 @@
                                 <ComboBox Name="FunctionComboBox" Margin="5" Width="200"/>
                             </WrapPanel>
 
-                            <WrapPanel Grid.Row="3"  Grid.Column="0">
+                            <WrapPanel Grid.Row="3">
                                 <Label Content="a:" Margin="5"/>
                                 <TextBox Name="AValueTextBox" Margin="5" Width="100"/>
                                 <Label Content="b:" Margin="5"/>
@@ -138,19 +139,21 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Button Name="AddFunctionButton"
-                                    Content = "Anadir function"
-                                    Margin="5"
-                                    Grid.Column="1"/>
                                 <Button Name="PreviewButton"
                                     Content = "Generar preview"
                                     Margin="5"
                                     DockPanel.Dock="Right"
                                     Grid.Column="0"/>
+                                
+                                <Button Name="AddFunctionButton"
+                                    Content = "Anadir function"
+                                    Margin="5"
+                                    Grid.Column="1"/>
                             </Grid>
 
                         </Grid>
                     </GroupBox>
+                    
                     <GroupBox Header="Preview" Grid.Row="1">
                         <Canvas Name="PreviewPanel" ClipToBounds="True" Background="White"/>
                     </GroupBox>

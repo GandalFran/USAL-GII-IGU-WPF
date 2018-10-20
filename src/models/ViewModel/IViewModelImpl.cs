@@ -9,10 +9,10 @@ namespace IGUWPF.src.models.ViewModel
     {
         private IObservableModel<T> Model;
 
-        public event ViewModelEventHandler CreateElementEvent;
-        public event ViewModelEventHandler DeleteElementEvent;
-        public event ViewModelEventHandler UpdateElementEvent;
-        public event ViewModelEventHandler ClearEvent;
+        public event ViewModelEventHandler ElementCreated;
+        public event ViewModelEventHandler ElementDeleted;
+        public event ViewModelEventHandler ElementUpdated;
+        public event ViewModelEventHandler ModelCleaned;
 
         public IViewModelImpl() {
             Model = new IObservableModelImpl<T>();
@@ -27,7 +27,7 @@ namespace IGUWPF.src.models.ViewModel
         {
             int result = Model.CreateElement(Element);
             Element.PropertyChanged += OnPropertyChanged;
-            OnCreateElementEvent(Element);
+            OnElementCreated(Element);
             return result;
         }
 
@@ -37,7 +37,7 @@ namespace IGUWPF.src.models.ViewModel
             if (result)
             {
                 Element.PropertyChanged += OnPropertyChanged;
-                OnUpdateElementEvent(Element);
+                OnElementUpdated(Element);
             }
             return result;
         }
@@ -46,7 +46,7 @@ namespace IGUWPF.src.models.ViewModel
         {
             bool result = Model.DeleteElement(Element);
             if (result)
-                OnDeleteElementEvent(Element);
+                OnElementDeleted(Element);
             return result;
         }
 
@@ -68,30 +68,30 @@ namespace IGUWPF.src.models.ViewModel
         public void Clear()
         {
             Model.Clear();
-            OnClearEvent();
+            OnModelCleaned();
         }
 
-        public void OnCreateElementEvent(T Element) {
-            if (null != CreateElementEvent) CreateElementEvent(this,new ViewModelEventArgs(Element));
+        public void OnElementCreated(T Element) {
+            if (null != ElementCreated) ElementCreated(this,new ViewModelEventArgs(Element));
         }
 
-        public void OnDeleteElementEvent(T Element)
+        public void OnElementDeleted(T Element)
         {
-            if (null != DeleteElementEvent) DeleteElementEvent(this, new ViewModelEventArgs(Element));
+            if (null != ElementDeleted) ElementDeleted(this, new ViewModelEventArgs(Element));
         }
 
-        public void OnUpdateElementEvent(T Element)
+        public void OnElementUpdated(T Element)
         {
-            if (null != UpdateElementEvent) UpdateElementEvent(this, new ViewModelEventArgs(Element));
+            if (null != ElementUpdated) ElementUpdated(this, new ViewModelEventArgs(Element));
         }
 
-        public void OnClearEvent()
+        public void OnModelCleaned()
         {
-            if (null != ClearEvent) ClearEvent(this, new ViewModelEventArgs());
+            if (null != ModelCleaned) ModelCleaned(this, new ViewModelEventArgs());
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            OnUpdateElementEvent((T)sender);
+            OnElementUpdated((T)sender);
         }
     }
 }

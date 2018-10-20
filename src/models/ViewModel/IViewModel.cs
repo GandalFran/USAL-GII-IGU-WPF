@@ -27,10 +27,10 @@ namespace IGUWPF.src.models.ViewModel
 
     public interface IViewModel<T> where T:IModelable<T>, INotifyPropertyChanged
     {
-        event ViewModelEventHandler CreateElementEvent;
-        event ViewModelEventHandler DeleteElementEvent;
-        event ViewModelEventHandler UpdateElementEvent;
-        event ViewModelEventHandler ClearEvent;
+        event ViewModelEventHandler ElementCreated;
+        event ViewModelEventHandler ElementDeleted;
+        event ViewModelEventHandler ElementUpdated;
+        event ViewModelEventHandler ModelCleaned;
 
         int CreateElement(T Element);
         bool UpdateElement(T Element);

@@ -19,17 +19,17 @@ namespace IGUWPF.src.models.POJO
         public int ID { get => InternalID;  }
 
         public string Name { get; set; }
-        public ICalculator Calculator { get; set; }
+        public Calculator Calculator { get; set; }
         public bool IsHidden { get; set; }
         public Color Color { get; set; }
 
-        public Function(string Name, ICalculator Calculator)
+        public Function(string Name, Calculator Calculator)
         {
             this.Name = Name;
             this.Calculator = Calculator;
         }
 
-        public Function(string Name, ICalculator Calculator, Color Color, bool IsHidden)
+        public Function(string Name, Calculator Calculator, Color Color, bool IsHidden)
         {
             this.Name = Name;
             this.Color = Color;
@@ -57,7 +57,7 @@ namespace IGUWPF.src.models.POJO
             return function != null &&
                    ID == function.ID &&
                    Name == function.Name &&
-                   EqualityComparer<ICalculator>.Default.Equals(Calculator, function.Calculator) &&
+                   EqualityComparer<Calculator>.Default.Equals(Calculator, function.Calculator) &&
                    IsHidden == function.IsHidden &&
                    Color.Equals(function.Color);
         }
@@ -133,5 +133,6 @@ namespace IGUWPF.src.models.POJO
         {
             if (null != PropertyChanged) PropertyChanged(this,new PropertyChangedEventArgs(PropertyName));
         }
+
     }
 }

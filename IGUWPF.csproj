@@ -77,7 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="src\services\calculator\CalculatorsImpl.cs" />
-    <Compile Include="src\services\calculator\ICalculator.cs" />
+    <Compile Include="src\services\calculator\Calculator.cs" />
     <Compile Include="src\services\IO\IOServices.cs" />
     <Compile Include="src\services\plot\PlotServices.cs" />
     <Compile Include="src\services\IO\DaoImpl\ImageDAOImpl.cs" />
@@ -154,18 +154,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Icons\add.png" />
-    <Resource Include="Images\Icons\delete.png" />
-    <Resource Include="Images\Icons\edit.png" />
-    <Resource Include="Images\Icons\generate.png" />
-    <Resource Include="Images\Icons\not-view.png" />
     <Resource Include="Images\Icons\open.png" />
     <Resource Include="Images\Icons\save.png" />
     <Resource Include="Images\Icons\settings.png" />
-    <Resource Include="Images\Icons\view.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Icons\imageExport.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Icons\plot.png" />

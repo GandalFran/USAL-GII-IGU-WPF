@@ -19,7 +19,7 @@ namespace IGUWPF.src.view
     public partial class ExpressionSelectorUI : Window
     {
 
-        public ICalculator Calculator {
+        public Calculator Calculator {
 
             get {
                 double a, b, c;

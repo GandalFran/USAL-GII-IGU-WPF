@@ -1,7 +1,7 @@
 ﻿
 namespace IGUWPF.src.services.calculator
 {
-    public abstract class ICalculator
+    public abstract class Calculator
     {
         public double a {get; set; }
         public double b { get; set; }
@@ -13,11 +13,11 @@ namespace IGUWPF.src.services.calculator
     }
 
     //To let other programmers add more operations easily
-    public class MultipleOperationCalculator : ICalculator
+    public class MultipleOperationCalculator : Calculator
     {
-        public ICalculator[] OperationArray { get; set; }
+        public Calculator[] OperationArray { get; set; }
 
-        public MultipleOperationCalculator(params ICalculator[] OperationArray)
+        public MultipleOperationCalculator(params Calculator[] OperationArray)
         {
             this.OperationArray = OperationArray;
         }
@@ -26,7 +26,7 @@ namespace IGUWPF.src.services.calculator
         {
             double result = x;
 
-            foreach (ICalculator calc in OperationArray)
+            foreach (Calculator calc in OperationArray)
                 result = calc.Calculate(result);
 
             return result;
@@ -35,7 +35,7 @@ namespace IGUWPF.src.services.calculator
         public override string ToString()
         {
             string ToReturn = "";
-            foreach (ICalculator calc in OperationArray)
+            foreach (Calculator calc in OperationArray)
                 ToReturn = "(" + calc.ToString() + ")";
             return ToReturn;
         }

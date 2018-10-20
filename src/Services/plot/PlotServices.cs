@@ -13,7 +13,7 @@ namespace IGUWPF.src.services.plot
          If you are thinking that the filter will cause the deletion of a desired line when
          two points are to far away, you are mistaken. Because the distance between two points
          is 1 px in all cases*/
-        public static PointCollection[] CalculatePlot(ICalculator Calculator, double Width, double Height, RepresentationParameters RepresentationValues)
+        public static PointCollection[] CalculatePlot(Calculator Calculator, double Width, double Height, RepresentationParameters RepresentationValues)
         {
             double ScreenX, ScreenY, RealX,RealY;
             bool WasLastBig, WasLastSmall;

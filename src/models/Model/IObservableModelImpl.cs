@@ -102,5 +102,6 @@ namespace IGUWPF.src.models.model
             this.LastAssignedID = this.LastAssignedID + 1;
             return IDtoReturn;
         }
+
     }
 }

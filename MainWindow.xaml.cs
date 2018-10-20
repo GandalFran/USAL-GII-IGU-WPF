@@ -73,11 +73,11 @@ namespace IGUWPF
             PlotPanel.MouseLeave += HideCursorPositionElements;
             PlotPanel.MouseMove += CalculateMousePosition;
             //ViewModel events
-            ViewModel.ClearEvent += ViewModelClearEvent;
-            ViewModel.CreateElementEvent += ViewModelCreateElementEvent;
-            ViewModel.DeleteElementEvent += ViewModelDeleteElementEvent;
-            ViewModel.UpdateElementEvent += ViewModelUpdateElementEvent;
-            ViewModel.UpdateRepresentationParameters += RefreshPlotPanel;
+            ViewModel.ModelCleaned += ViewModelClearEvent;
+            ViewModel.ElementCreated += ViewModelCreateElementEvent;
+            ViewModel.ElementDeleted += ViewModelDeleteElementEvent;
+            ViewModel.ElementUpdated += ViewModelUpdateElementEvent;
+            ViewModel.RepresentationParametersChanged += RefreshPlotPanel;
             //Contextual menus events
             WindowContextMenu_ExportImage.Click += ExportImage;
             //Closing event

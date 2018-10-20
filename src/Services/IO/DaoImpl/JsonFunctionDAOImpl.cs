@@ -64,9 +64,11 @@ namespace IGUWPF.src.services.IO
 
     }
     
-    //To make easy the serialization
+    //To make possible the Calculator Serialization and Deserialization
+
     public enum TypeOfCalculator { COS, SIN, XEXPN, NEXPX, NDIVEDX, X1, X2 };
-    public class SerializableCalculator : ICalculator
+
+    public class SerializableCalculator : Calculator
     {
         public double[] OperationElementsArray { get; set; }
         public TypeOfCalculator Type { get; set; }
@@ -78,7 +80,7 @@ namespace IGUWPF.src.services.IO
             this.Type = Type;
         }
 
-        public SerializableCalculator(ICalculator Calculator) {
+        public SerializableCalculator(Calculator Calculator) {
             if (Calculator is CosXCalculator)
             {
                 OperationElementsArray = new double[2];
@@ -131,9 +133,9 @@ namespace IGUWPF.src.services.IO
             }
         }
 
-        public ICalculator ToICalculator()
+        public Calculator ToICalculator()
         {
-            ICalculator Calculator = null;
+            Calculator Calculator = null;
             switch (Type)
             {
                 case TypeOfCalculator.COS: Calculator = new CosXCalculator(OperationElementsArray[0], OperationElementsArray[1]); break;
@@ -151,6 +153,6 @@ namespace IGUWPF.src.services.IO
         {
             return 0;
         }
-    }
 
+    }
 }

@@ -49,7 +49,7 @@
         </Menu>
 
         <TabControl Name="MainTabControl">
-            <TabItem Name="FunctionListTab" Header="Lista de functiones">
+            <TabItem Name="FunctionListTab" Header="Lista de funciones">
 
                 <ScrollViewer BorderBrush="DodgerBlue" BorderThickness="1" VerticalScrollBarVisibility="Auto">
                     <DataGrid Name="FunctionDataGrid" AutoGenerateColumns="False" SelectionMode="Single">
@@ -140,13 +140,13 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Button Name="PreviewButton"
-                                    Content = "Generar preview"
+                                    Content = "Generar vista previa"
                                     Margin="5"
                                     DockPanel.Dock="Right"
                                     Grid.Column="0"/>
                                 
                                 <Button Name="AddFunctionButton"
-                                    Content = "Anadir function"
+                                    Content = "Anadir funcion"
                                     Margin="5"
                                     Grid.Column="1"/>
                             </Grid>
@@ -154,7 +154,7 @@
                         </Grid>
                     </GroupBox>
                     
-                    <GroupBox Header="Preview" Grid.Row="1">
+                    <GroupBox Header="Vista previa" Grid.Row="1">
                         <Canvas Name="PreviewPanel" ClipToBounds="True" Background="White"/>
                     </GroupBox>
                 </Grid>

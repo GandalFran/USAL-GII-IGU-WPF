@@ -45,7 +45,7 @@ namespace IGUWPF.src.services.plot
 
             PointCollectionList.Add(Plot);
             PointCollectionList.Add(Plot2);
-            PointCollectionList = PlotSplitter(Plot, Width, Height, RepresentationValues);
+            //PointCollectionList = PlotSplitter(Plot, Width, Height, RepresentationValues);
 
 
             return PointCollectionList.ToArray();
@@ -76,9 +76,8 @@ namespace IGUWPF.src.services.plot
                         CurrentSegment.Add(new Point(Plot[i].X, 0));
                     else
                         CurrentSegment.Add(new Point(Plot[i].X, Height));
-                }
-
-                CurrentSegment.Add(Plot[i]);
+                }else
+                    CurrentSegment.Add(Plot[i]);
             }
 
             PointCollectionList.Add(CurrentSegment);

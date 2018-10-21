@@ -36,3 +36,4 @@ D:\Repos\IGU-WPF\obj\Release\IGUWPF.csproj.CoreCompileInputs.cache
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.csproj.CopyComplete
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.exe
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.pdb
+D:\Repos\IGU-WPF\obj\Release\IGUWPF.csprojAssemblyReference.cache

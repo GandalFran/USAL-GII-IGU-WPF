@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -7,64 +8,83 @@ using IGUWPF.src.services.calculator;
 
 namespace IGUWPF.src.services.plot
 {
+
     public class PlotServices
     {
         /*NOTE FOR FUTURE FRAN
          If you are thinking that the filter will cause the deletion of a desired line when
          two points are to far away, you are mistaken. Because the distance between two points
          is 1 px in all cases*/
+
         public static PointCollection[] CalculatePlot(Calculator Calculator, double Width, double Height, RepresentationParameters RepresentationValues)
         {
-            double ScreenX, ScreenY, RealX,RealY;
-            bool WasLastBig, WasLastSmall;
+            double ScreenX, ScreenY, RealX, RealY;
+            PointCollection Plot = new PointCollection();
+            PointCollection Plot2 = new PointCollection();
+            List<PointCollection> PointCollectionList = null;
+
+            PointCollectionList = new List<PointCollection>();
+
+            for (int i = 0; i < Width; i++)
+            {
+                RealX = ParseXScreenPointToRealPoint(i, Width, RepresentationValues);
+                RealY = Calculator.Calculate(RealX);
+                ScreenX = i;
+                ScreenY = ParseYRealPointToScreenPoint(RealY, Height, RepresentationValues);
+
+                if (RealX < 0)
+                {
+                    Plot.Add(new Point(ScreenX, ScreenY));
+                }
+                if( RealX > 0)
+                {
+                    Plot2.Add(new Point(ScreenX, ScreenY));
+                }
+             
+            }
+
+            PointCollectionList.Add(Plot);
+            PointCollectionList.Add(Plot2);
+            PointCollectionList = PlotSplitter(Plot, Width, Height, RepresentationValues);
+
+
+            return PointCollectionList.ToArray();
+        }
+
+        private static List<PointCollection> PlotSplitter(PointCollection Plot, double Width, double Height, RepresentationParameters RepresentationValues)
+        {
             PointCollection CurrentSegment = new PointCollection();
             List<PointCollection> PointCollectionList = new List<PointCollection>();
 
-            WasLastBig = WasLastSmall = false;
-            for (int i = 0; i < Width; i++)
-            {
-                ScreenX = i;
-                RealX = ParseXScreenPointToRealPoint(i, Width, RepresentationValues);
-                RealY = Calculator.Calculate(RealX);
-                ScreenY = ParseYRealPointToScreenPoint( RealY, Height, RepresentationValues);
+            Console.WriteLine("-------------------------------------\n Width, Height" + Width + "   " + Height);
 
-                //Filter to avoid unwished lines
-                if (RealY <= RepresentationValues.YMin)
+            CurrentSegment.Add(Plot[0]);
+            for (int i = 1; i < Width; i++) {
+                
+                if (Math.Abs(Plot[i - 1].Y - Plot[i].Y) >=Height )
                 {
-                    if (WasLastBig)
-                    {
-                        PointCollectionList.Add(CurrentSegment);
-                        CurrentSegment = new PointCollection();
-                    }
+                    if(Plot[i - 1].Y < 0)
+                        CurrentSegment.Add( new Point(Plot[i-1].X, 0) );
                     else
-                    {
-                        WasLastBig = false;
-                        WasLastSmall = true;
-                    }
-                }
-                else if (RealY >= RepresentationValues.YMax)
-                { 
-                    if (WasLastSmall)
-                    {
-                        PointCollectionList.Add(CurrentSegment);
-                        CurrentSegment = new PointCollection();
-                    }
+                        CurrentSegment.Add(new Point(Plot[i-1].X, Height));
+
+                    Console.WriteLine("NUEVA - BIG -> SMALL " + Plot[i - 1].X + ", " + Plot[i - 1].Y + " -- " + Plot[i].X + ", " + Plot[i].Y);
+                    PointCollectionList.Add(CurrentSegment);
+                    CurrentSegment = new PointCollection();
+
+                    if (Plot[i].Y < 0)
+                        CurrentSegment.Add(new Point(Plot[i].X, 0));
                     else
-                    {
-                        WasLastBig = true;
-                        WasLastSmall = false;
-                    }
-                }
-                else
-                {
-                    WasLastBig = WasLastSmall = false;
+                        CurrentSegment.Add(new Point(Plot[i].X, Height));
                 }
 
-                CurrentSegment.Add(new Point(ScreenX, ScreenY));
+                CurrentSegment.Add(Plot[i]);
             }
-            PointCollectionList.Add(CurrentSegment);
 
-            return PointCollectionList.ToArray();
+            PointCollectionList.Add(CurrentSegment);
+            Console.WriteLine("Number of segments " + PointCollectionList.Count );
+
+            return PointCollectionList;
         }
 
         public static Line[] GetAxys(double Width, double Height, RepresentationParameters RepresentationValues)

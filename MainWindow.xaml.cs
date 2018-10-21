@@ -67,7 +67,7 @@ namespace IGUWPF
             };
 
             //Reload panel if size changes
-            PlotPanel.SizeChanged += RefreshPlotPanel;
+            this.SizeChanged += RefreshPlotPanel;
             //Mouse position events
             PlotPanel.MouseEnter += ShowCursorPositionElements;
             PlotPanel.MouseLeave += HideCursorPositionElements;
@@ -89,22 +89,23 @@ namespace IGUWPF
         }
 
         private void ViewModelCreateElementEvent(object sender, ViewModelEventArgs e) {
-            Polyline Polyline = null;
             PointCollection [] Segments = null;
             Function Function = (Function)e.Element;
 
             if (!Function.IsHidden)
             {
+                Console.WriteLine(Function.ToString());
                 Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
 
-                for (int i = 0; i < Segments.Length; i++)
+                int i = 0;
+                foreach (PointCollection Points in Segments)
                 {
-                    Polyline = new Polyline();
-
-                    Polyline.Points = Segments[i];
-                    Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                    Polyline.Stroke = new SolidColorBrush(Function.Color);
-                    PlotPanel.Children.Add(Polyline);
+                    PlotPanel.Children.Add(new Polyline()
+                    {
+                        Points = Points,
+                        Stroke = new SolidColorBrush(Function.Color),
+                        Name = PlotServices.GetPlotName(Function.ID) + "S" + (i++),
+                    });
                 }
             }
         }
@@ -160,14 +161,15 @@ namespace IGUWPF
                 //Get new plot
                 Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
 
-                for (int i = 0; i < Segments.Length; i++)
+                int i = 0;
+                foreach(PointCollection Points in Segments)
                 {
-                    Polyline = new Polyline();
-
-                    Polyline.Points = Segments[i];
-                    Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                    Polyline.Stroke = new SolidColorBrush(Function.Color);
-                    PlotPanel.Children.Add(Polyline);
+                    PlotPanel.Children.Add(new Polyline()
+                    {
+                        Points = Points,
+                        Stroke = new SolidColorBrush(Function.Color),
+                        Name = PlotServices.GetPlotName(Function.ID) + "S" + (i++),
+                    });
                 }
             }
         }
@@ -186,8 +188,8 @@ namespace IGUWPF
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-            PlotPanel.Children.Add(Axys[0]);
-            PlotPanel.Children.Add(Axys[1]);
+                PlotPanel.Children.Add(Axys[0]);
+                PlotPanel.Children.Add(Axys[1]);
         }
 
         private void ShowCursorPositionElements(object sender, MouseEventArgs e)
@@ -223,9 +225,9 @@ namespace IGUWPF
                 XYMouseCoordinates.Content = "X: " + RealX + " Y: " + RealY;
 
             //Update cursor axys
-            CursorAxys[0].X2 = Width;
+            CursorAxys[0].X2 = PlotWidth;
             CursorAxys[0].Y1 = CursorAxys[0].Y2 = ScreenY;
-            CursorAxys[1].Y2 = Height;
+            CursorAxys[1].Y2 = PlotHeight;
             CursorAxys[1].X1 = CursorAxys[1].X2 = ScreenX;
         }
 
@@ -269,8 +271,8 @@ namespace IGUWPF
 
             //Add axys
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-            PlotPanel.Children.Add(Axys[0]);
-            PlotPanel.Children.Add(Axys[1]);
+                PlotPanel.Children.Add(Axys[0]);
+                PlotPanel.Children.Add(Axys[1]);
 
             //Redraw all functions
             foreach (Function Function in ViewModel.GetAllElements()) {

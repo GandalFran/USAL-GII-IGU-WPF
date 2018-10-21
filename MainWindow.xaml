@@ -15,6 +15,6 @@
         </ContextMenu>
     </Window.ContextMenu>
 
-    <Canvas Name="PlotPanel" Background="White" ClipToBounds="True"/>
+    <Canvas Name="PlotPanel" Background="White" ClipToBounds="False"/>
 
 </Window>

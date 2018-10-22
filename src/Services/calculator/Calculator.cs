@@ -1,12 +1,10 @@
-﻿
-namespace IGUWPF.src.services.calculator
+﻿namespace IGUWPF.src.services.calculator
 {
     public abstract class Calculator
     {
         public double a {get; set; }
         public double b { get; set; }
         public double c { get; set; }
-        public double [] SegmentationPoints { get; set; }
 
         public static string Operation { get; }
 

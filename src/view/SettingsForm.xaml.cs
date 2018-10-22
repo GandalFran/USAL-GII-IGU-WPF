@@ -4,10 +4,10 @@ namespace IGUWPF.src.view.Windows
 {
     public partial class SettingsForm : Window
     {
-        public double Xmin { get => double.Parse(XMinTextBox.Text); set => XMinTextBox.Text = value.ToString(); }
-        public double Xmax { get => double.Parse(XMaxTextBox.Text); set => XMaxTextBox.Text = value.ToString(); }
-        public double Ymin { get => double.Parse(YMinTextBox.Text); set => YMinTextBox.Text = value.ToString(); }
-        public double Ymax { get => double.Parse(YMaxTextBox.Text); set => YMaxTextBox.Text = value.ToString(); }
+        public double Xmin { get => double.Parse(XMinTextBox.Text); set => XMinTextBox.Text = value + ""; }
+        public double Xmax { get => double.Parse(XMaxTextBox.Text); set => XMaxTextBox.Text = value + ""; }
+        public double Ymin { get => double.Parse(YMinTextBox.Text); set => YMinTextBox.Text = value + ""; }
+        public double Ymax { get => double.Parse(YMaxTextBox.Text); set => YMaxTextBox.Text = value + ""; }
 
         public SettingsForm()
         {
@@ -33,13 +33,12 @@ namespace IGUWPF.src.view.Windows
                 Xmin >= Xmax || Ymin >= Ymax)
             {
                 MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
             }
             else
             {
                 this.DialogResult = true;
             }
         }
-    }
 
+    }
 }

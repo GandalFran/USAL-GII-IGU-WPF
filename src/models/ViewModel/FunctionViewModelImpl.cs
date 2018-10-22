@@ -11,58 +11,68 @@ namespace IGUWPF.src.models.ViewModel
     {
         public event ViewModelEventHandler RepresentationParametersChanged;
 
-        private RepresentationParameters InternPlotSettings;
+        private double InternZoomPonderation;
+        private RepresentationParameters InternRepresentationParameters;
 
-        public RepresentationParameters PlotSettings
+        public RepresentationParameters RepresentationParameters
         {
-            get { return InternPlotSettings; }
+            get
+            {
+                RepresentationParameters ToReturn;
+                ToReturn.XMin = InternRepresentationParameters.XMin;
+                ToReturn.XMax = InternRepresentationParameters.XMax;
+                ToReturn.YMin = InternRepresentationParameters.YMin;
+                ToReturn.YMax = InternRepresentationParameters.YMax;
+                return ToReturn;
+            }
             set
             {
-                InternPlotSettings = value;
+                InternRepresentationParameters = value;
                 OnRepresentationParametersChanged();
+            }
+        }
+
+        public RepresentationParameters PonderedPlotSettings
+        {
+            get {
+                RepresentationParameters ToReturn;
+                ToReturn.XMin = InternRepresentationParameters.XMin * InternZoomPonderation;
+                ToReturn.XMax = InternRepresentationParameters.XMax * InternZoomPonderation;
+                ToReturn.YMin = InternRepresentationParameters.YMin * InternZoomPonderation;
+                ToReturn.YMax = InternRepresentationParameters.YMax * InternZoomPonderation;
+                return ToReturn;
             }
         }
 
         public double XMin {
-            get { return InternPlotSettings.XMin; }
-            set
-            {
-                InternPlotSettings.XMin = value;
-                OnRepresentationParametersChanged();
-            }
+            get { return InternRepresentationParameters.XMin * ZoomPonderation; }
         }
 
         public double XMax
         {
-            get { return InternPlotSettings.XMax; }
-            set
-            {
-                InternPlotSettings.XMax = value;
-                OnRepresentationParametersChanged();
-            }
+            get { return InternRepresentationParameters.XMax * ZoomPonderation; }
         }
 
         public double YMin
         {
-            get { return InternPlotSettings.YMin; }
-            set
-            {
-                InternPlotSettings.YMin = value;
-                OnRepresentationParametersChanged();
-            }
+            get { return InternRepresentationParameters.YMin * ZoomPonderation; }
         }
 
         public double YMax
         {
-            get { return InternPlotSettings.YMax; }
+            get { return InternRepresentationParameters.YMax * ZoomPonderation; }
+        }
+
+        public double ZoomPonderation {
+            get { return InternZoomPonderation; }
             set
             {
-                InternPlotSettings.YMax = value;
+                this.InternZoomPonderation = value;
                 OnRepresentationParametersChanged();
             }
         }
 
-        public void OnRepresentationParametersChanged() {
+        protected void OnRepresentationParametersChanged() {
             if (null != RepresentationParametersChanged) RepresentationParametersChanged(this, new ViewModelEventArgs());
         }
 

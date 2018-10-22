@@ -71,26 +71,26 @@ namespace IGUWPF.src.models.ViewModel
             OnModelCleaned();
         }
 
-        public void OnElementCreated(T Element) {
+        protected virtual void OnElementCreated(T Element) {
             if (null != ElementCreated) ElementCreated(this,new ViewModelEventArgs(Element));
         }
 
-        public void OnElementDeleted(T Element)
+        protected virtual void OnElementDeleted(T Element)
         {
             if (null != ElementDeleted) ElementDeleted(this, new ViewModelEventArgs(Element));
         }
 
-        public void OnElementUpdated(T Element)
+        protected virtual void OnElementUpdated(T Element)
         {
             if (null != ElementUpdated) ElementUpdated(this, new ViewModelEventArgs(Element));
         }
 
-        public void OnModelCleaned()
+        protected virtual void OnModelCleaned()
         {
             if (null != ModelCleaned) ModelCleaned(this, new ViewModelEventArgs());
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
             OnElementUpdated((T)sender);
         }
     }

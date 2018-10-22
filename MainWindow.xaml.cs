@@ -11,6 +11,7 @@ using IGUWPF.src.services.plot;
 using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.models.POJO;
 using IGUWPF.src.services.IO;
+using System.Windows.Threading;
 
 namespace IGUWPF
 {
@@ -22,10 +23,11 @@ namespace IGUWPF
         
         private Line[] CursorAxys;
         private Label XYMouseCoordinates;
-
-        private FunctionViewModelImpl ViewModel;
+        private Label ZoomLabel;
 
         private FunctionLitsUI FunctionListUI;
+        private FunctionViewModelImpl ViewModel;
+        private DispatcherTimer RefreshPlotPanelTimer;
 
         public MainWindow()
         {
@@ -33,11 +35,18 @@ namespace IGUWPF
 
             ViewModel = new FunctionViewModelImpl();
 
-            //Give default values
-            ViewModel.XMin = ViewModel.YMin = -10;
-            ViewModel.XMax = ViewModel.YMax = 10;
+            //Timer to improve the refresh of the plot panel performance
+            RefreshPlotPanelTimer = new DispatcherTimer();
+            RefreshPlotPanelTimer.Interval = TimeSpan.FromMilliseconds(Constants.NumberOfMsBeforePlotRecalculation);
 
-            //Create the label and the bars to know the Cursor position
+            //Give default values
+            RepresentationParameters RepresentationValues;
+            RepresentationValues.XMin = RepresentationValues.YMin = -10;
+            RepresentationValues.XMax = RepresentationValues.YMax = 10;
+            ViewModel.RepresentationParameters = RepresentationValues;
+            ViewModel.ZoomPonderation = 1;
+
+            //Create the UI elements which are changed during the execution
             XYMouseCoordinates = new Label()
             {
                 BorderThickness = new Thickness(1),
@@ -65,13 +74,24 @@ namespace IGUWPF
                 Visibility = Visibility.Hidden,
                 Stroke = Brushes.DodgerBlue
             };
+            ZoomLabel = new Label()
+            {
+                BorderThickness = new Thickness(1),
+                BorderBrush = Brushes.DodgerBlue,
+                Foreground = Brushes.DodgerBlue,
+                Background = Brushes.AliceBlue,
+                Visibility = Visibility.Hidden
+            };
 
             //Reload panel if size changes
-            this.SizeChanged += RefreshPlotPanel;
+            this.SizeChanged += SetRefreshPlotPanelTimer;
+            RefreshPlotPanelTimer.Tick += RefreshPlotPanel;
             //Mouse position events
             PlotPanel.MouseEnter += ShowCursorPositionElements;
             PlotPanel.MouseLeave += HideCursorPositionElements;
             PlotPanel.MouseMove += CalculateMousePosition;
+            PlotPanel.MouseWheel += MakeZoom;
+            PlotPanel.MouseWheel += CalculateMousePosition;
             //ViewModel events
             ViewModel.ModelCleaned += ViewModelClearEvent;
             ViewModel.ElementCreated += ViewModelCreateElementEvent;
@@ -94,8 +114,7 @@ namespace IGUWPF
 
             if (!Function.IsHidden)
             {
-                Console.WriteLine(Function.ToString());
-                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
 
                 int i = 0;
                 foreach (PointCollection Points in Segments)
@@ -159,7 +178,7 @@ namespace IGUWPF
             if (!Function.IsHidden)
             {
                 //Get new plot
-                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
 
                 int i = 0;
                 foreach(PointCollection Points in Segments)
@@ -176,31 +195,26 @@ namespace IGUWPF
 
         private void ViewModelClearEvent(object sender, ViewModelEventArgs e)
         {
-            //Clear the panel
             PlotPanel.Children.Clear();
-
-            //Add label and axys for cursor porsition
-            PlotPanel.Children.Add(CursorAxys[0]);
-            PlotPanel.Children.Add(CursorAxys[1]);
-            PlotPanel.Children.Add(XYMouseCoordinates);
-                Canvas.SetRight(XYMouseCoordinates, 0);
-                Canvas.SetBottom(XYMouseCoordinates, 0);
-
-            //Add axys
-            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-                PlotPanel.Children.Add(Axys[0]);
-                PlotPanel.Children.Add(Axys[1]);
+            AddPlotPanelBasics();
         }
 
         private void ShowCursorPositionElements(object sender, MouseEventArgs e)
         {
+            double ZoomValue;
+
+            ZoomValue = Math.Truncate(ViewModel.ZoomPonderation * 100);
+            ZoomLabel.Content = "Zoom: " + ZoomValue + "%";
+
             XYMouseCoordinates.Visibility = Visibility.Visible;
+            ZoomLabel.Visibility = Visibility.Visible;
             CursorAxys[0].Visibility = Visibility.Visible;
             CursorAxys[1].Visibility = Visibility.Visible;
         }
 
         private void HideCursorPositionElements(object sender, MouseEventArgs e)
         {
+            ZoomLabel.Visibility = Visibility.Hidden;
             XYMouseCoordinates.Visibility = Visibility.Hidden;
             CursorAxys[0].Visibility = Visibility.Hidden;
             CursorAxys[1].Visibility = Visibility.Hidden;
@@ -217,8 +231,8 @@ namespace IGUWPF
             //Calculate real points
             ScreenX = p.X;
             ScreenY = p.Y;
-            RealX = Math.Truncate(PlotServices.ParseXScreenPointToRealPoint(ScreenX, MousePanel.ActualWidth, ViewModel.PlotSettings));
-            RealY = Math.Truncate(PlotServices.ParseYScreenPointToRealPoint(ScreenY, MousePanel.ActualHeight, ViewModel.PlotSettings));
+            RealX = double.Parse(string.Format("{0:n2}", (PlotServices.ParseXScreenPointToRealPoint(ScreenX, MousePanel.ActualWidth, ViewModel.PonderedPlotSettings) * 100) / 100));
+            RealY = double.Parse(string.Format("{0:n2}", (PlotServices.ParseYScreenPointToRealPoint(ScreenY, MousePanel.ActualHeight, ViewModel.PonderedPlotSettings) * 100) / 100));
 
             //Update label
             if (null != XYMouseCoordinates)
@@ -229,6 +243,56 @@ namespace IGUWPF
             CursorAxys[0].Y1 = CursorAxys[0].Y2 = ScreenY;
             CursorAxys[1].Y2 = PlotHeight;
             CursorAxys[1].X1 = CursorAxys[1].X2 = ScreenX;
+        }
+
+        private void MakeZoom(object sender, MouseWheelEventArgs e)
+        {
+            double ZoomValue, ToAddToZoomValue;
+
+            ToAddToZoomValue = (e.Delta > 0) ? (-0.05) : (0.05);
+            if (!((ToAddToZoomValue < 0 && ViewModel.ZoomPonderation <= 0.1) || (ToAddToZoomValue > 0 && ViewModel.ZoomPonderation >= 5)))
+                ViewModel.ZoomPonderation += ToAddToZoomValue;
+
+            ZoomValue = Math.Truncate(ViewModel.ZoomPonderation * 100); ;
+            ZoomLabel.Content = "Zoom: " + ZoomValue + "%";
+        }
+
+        private void SetRefreshPlotPanelTimer(object sender, EventArgs e) {
+            RefreshPlotPanelTimer.Start();
+        }
+
+        private void RefreshPlotPanel(object sender, EventArgs e)
+        {
+            Polyline Polyline = null;
+            PointCollection[] Segments = null;
+
+            //Clear the panel
+            PlotPanel.Children.Clear();
+            AddPlotPanelBasics();
+
+            //Redraw all functions
+            foreach (Function Function in ViewModel.GetAllElements())
+            {
+                if (!Function.IsHidden)
+                {
+                    Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
+
+                    for (int i = 0; i < Segments.Length; i++)
+                    {
+                        Polyline = new Polyline();
+
+                        Polyline.Points = Segments[i];
+                        Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
+                        Polyline.Stroke = new SolidColorBrush(Function.Color);
+                        PlotPanel.Children.Add(Polyline);
+                    }
+                }
+            }
+        }
+
+        private void WhenClosed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void ExportImage(object sender, RoutedEventArgs e)
@@ -254,48 +318,22 @@ namespace IGUWPF
             }
         }
 
-        private void RefreshPlotPanel(object sender, EventArgs e)
-        {
-            Polyline Polyline = null;
-            PointCollection[] Segments = null;
-
-            //Clear the panel
-            PlotPanel.Children.Clear();
-
-            //Add label and axys to know the cursor position
+        private void AddPlotPanelBasics() {
             PlotPanel.Children.Add(CursorAxys[0]);
             PlotPanel.Children.Add(CursorAxys[1]);
+
             PlotPanel.Children.Add(XYMouseCoordinates);
                 Canvas.SetRight(XYMouseCoordinates, 0);
                 Canvas.SetBottom(XYMouseCoordinates, 0);
 
-            //Add axys
-            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
+            PlotPanel.Children.Add(ZoomLabel);
+                Canvas.SetLeft(ZoomLabel, 0);
+                Canvas.SetTop(ZoomLabel, 0);
+
+            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
                 PlotPanel.Children.Add(Axys[0]);
                 PlotPanel.Children.Add(Axys[1]);
-
-            //Redraw all functions
-            foreach (Function Function in ViewModel.GetAllElements()) {
-                if (!Function.IsHidden)
-                {
-                    Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PlotSettings);
-
-                    for (int i = 0; i < Segments.Length; i++)
-                    {
-                        Polyline = new Polyline();
-
-                        Polyline.Points = Segments[i];
-                        Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                        Polyline.Stroke = new SolidColorBrush(Function.Color);
-                        PlotPanel.Children.Add(Polyline);
-                    }
-                }
-            }
         }
 
-        private void WhenClosed(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
     }
 }

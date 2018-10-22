@@ -8,41 +8,60 @@
         Icon="/IGUWPF;component/Images/Icons/plot.png"
         Title="MacLab" Height="450" Width="600" MinHeight="450" MinWidth="600">
 
+    <Window.Resources>
+        <Style x:Key="ToolBarButtonStyle">
+            <Setter Property="Button.Margin" Value="3"/>
+            <Setter Property="Button.BorderThickness" Value="0"/>
+            <Setter Property="Button.Background" Value="Transparent"/>
+        </Style>
+        <Style x:Key="ToolBarIconStyle">
+            <Setter Property="Image.Width" Value="20"/>
+            <Setter Property="Image.Height" Value="20"/>
+        </Style>
+        <Style x:Key="FunctionValuesTextBoxStyle">
+            <Setter Property="TextBox.Margin" Value="5"/>
+            <Setter Property="TextBox.Width" Value="100"/>
+            <Setter Property="TextBox.Text" Value="0"/>
+        </Style>
+        <Style x:Key="FunctionValuesLabelStyle">
+            <Setter Property="Label.Margin" Value="5"/>
+        </Style>
+        <Style x:Key="ConfirmationButtonsStyle">
+            <Setter Property="Button.Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
 
     <DockPanel>
         <Menu VerticalAlignment="Center"
                  Background="LightGray"
                  DockPanel.Dock="Top">
-            
-            <MenuItem Name="SettingsButton" 
-                        Margin="3" 
-                        BorderThickness="0" Background="Transparent"
-                        ToolTip="Cambiar parametros de representacion">
+
+            <MenuItem Name="SettingsButton"  
+                        ToolTip="Cambiar parametros de representacion"
+                        Style="{StaticResource ToolBarButtonStyle}">
                 <MenuItem.Header>
                     <StackPanel>
-                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/settings.png" />
+                        <Image Source="/IGUWPF;component/Images/Icons/settings.png" Style="{StaticResource ToolBarIconStyle}"/>
                     </StackPanel>
                 </MenuItem.Header>
             </MenuItem>
 
             <MenuItem Name="SaveFileButton" 
-                        Margin="3"
-                        BorderThickness="0" Background="Transparent"
-                        ToolTip="Guardar proyecto">
+                        ToolTip="Guardar proyecto"
+                        Style="{StaticResource ToolBarButtonStyle}">
                 <MenuItem.Header>
                     <StackPanel>
-                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/save.png" />
+                        <Image Source="/IGUWPF;component/Images/Icons/save.png" Style="{StaticResource ToolBarIconStyle}"/>
                     </StackPanel>
                 </MenuItem.Header>
             </MenuItem>
 
             <MenuItem Name="OpenFileButton" 
-                            Margin="3" 
-                            BorderThickness="0" Background="Transparent"
-                            ToolTip="Abrir proyecto">
+                            ToolTip="Abrir proyecto"
+                            Style="{StaticResource ToolBarButtonStyle}">
                 <MenuItem.Header>
                     <StackPanel>
-                        <Image Width="20" Height="20" Source="/IGUWPF;component/Images/Icons/open.png" />
+                        <Image Source="/IGUWPF;component/Images/Icons/open.png" Style="{StaticResource ToolBarIconStyle}"/>
                     </StackPanel>
                 </MenuItem.Header>
             </MenuItem>
@@ -110,12 +129,12 @@
 
                             <WrapPanel Grid.Row="0">
                                 <Label Margin="5" Content="Nombre:"/>
-                                <TextBox Name="FunctionNameTextBox"  Margin="5" Width="200" Text="{Binding NumericValidation}"/>
+                                <TextBox Name="FunctionNameTextBox"  Margin="5" Width="200" />
                             </WrapPanel>
 
                             <WrapPanel Grid.Row="1"  Grid.Column="0">
                                 <Label Content="Color:    " Margin="5"/>
-                                <xctk:ColorPicker  Name="ColorSelector" Margin="5" Width="200"/>
+                                <xctk:ColorPicker  Name="ColorSelector" Margin="5" Width="200" SelectedColor="Black"/>
                             </WrapPanel>
 
                             <WrapPanel Grid.Row="2">
@@ -124,12 +143,12 @@
                             </WrapPanel>
 
                             <WrapPanel Grid.Row="3">
-                                <Label Content="a:" Margin="5"/>
-                                <TextBox Name="AValueTextBox" Margin="5" Width="100"/>
-                                <Label Content="b:" Margin="5"/>
-                                <TextBox Name="BValueTextBox" Margin="5" Width="100"/>
-                                <Label Content="c:" Margin="5"/>
-                                <TextBox Name="CValueTextBox" Margin="5" Width="100"/>
+                                <Label Content="a:" Style="{StaticResource FunctionValuesLabelStyle}"/>
+                                <TextBox Name="AValueTextBox" Style="{StaticResource FunctionValuesTextBoxStyle}"/>
+                                <Label Content="b:" Style="{StaticResource FunctionValuesLabelStyle}"/>
+                                <TextBox Name="BValueTextBox" Style="{StaticResource FunctionValuesTextBoxStyle}"/>
+                                <Label Name="CLabel"  Content="c:" Visibility="Hidden" Style="{StaticResource FunctionValuesLabelStyle}"/>
+                                <TextBox Name="CValueTextBox" Visibility="Hidden" Style="{StaticResource FunctionValuesTextBoxStyle}"/>
                             </WrapPanel>
 
                             <Grid Grid.Row="4">
@@ -141,19 +160,19 @@
 
                                 <Button Name="PreviewButton"
                                     Content = "Generar vista previa"
-                                    Margin="5"
                                     DockPanel.Dock="Right"
-                                    Grid.Column="0"/>
-                                
+                                    Grid.Column="0"
+                                    Style="{StaticResource ConfirmationButtonsStyle}"/>
+
                                 <Button Name="AddFunctionButton"
                                     Content = "Anadir funcion"
-                                    Margin="5"
-                                    Grid.Column="1"/>
+                                    Grid.Column="1"
+                                    Style="{StaticResource ConfirmationButtonsStyle}"/>
                             </Grid>
 
                         </Grid>
                     </GroupBox>
-                    
+
                     <GroupBox Header="Vista previa" Grid.Row="1">
                         <Canvas Name="PreviewPanel" ClipToBounds="True" Background="White"/>
                     </GroupBox>

@@ -18,7 +18,6 @@ namespace IGUWPF.src.view
 
     public partial class ExpressionSelectorUI : Window
     {
-
         public Calculator Calculator {
 
             get {
@@ -85,7 +84,22 @@ namespace IGUWPF.src.view
             InitializeComponent();
 
             this.SaveButton.Click += SaveButton_Click;
-            this.CancelButton.Click += CancelButton_Click; 
+            this.CancelButton.Click += CancelButton_Click;
+            this.FunctionComboBox.SelectionChanged += ShowHideCValue;
+        }
+
+        private void ShowHideCValue(object sender, SelectionChangedEventArgs e)
+        {
+            if (FunctionComboBox.SelectedIndex == 6)
+            {
+                CValueTextBox.Visibility = Visibility.Visible;
+                CLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CValueTextBox.Visibility = Visibility.Hidden;
+                CLabel.Visibility = Visibility.Hidden;
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -103,10 +117,11 @@ namespace IGUWPF.src.view
                 FunctionComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
             }
             else
+            {
                 this.DialogResult = true;
+            }
         }
 
     }

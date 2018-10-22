@@ -8,7 +8,20 @@
         Icon="/IGUWPF;component/Images/Icons/plot.png"
         ResizeMode="NoResize"
         Title="Seleccion de funcion">
-    
+
+    <Window.Resources>
+        <Style x:Key="FunctionValuesTextBoxStyle">
+            <Setter Property="TextBox.Margin" Value="5"/>
+            <Setter Property="TextBox.Width" Value="100"/>
+        </Style>
+        <Style x:Key="FunctionValuesLabelStyle">
+            <Setter Property="Label.Margin" Value="5"/>
+        </Style>
+        <Style x:Key="ConfirmationButtonsStyle">
+            <Setter Property="Button.Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -22,12 +35,12 @@
         </WrapPanel>
 
         <WrapPanel Grid.Row="1">
-            <Label Content="a:" Margin="5"/>
-            <TextBox Name="AValueTextBox" Margin="5" Width="100"/>
-            <Label Content="b:" Margin="5"/>
-            <TextBox Name="BValueTextBox" Margin="5" Width="100"/>
-            <Label Content="c:" Margin="5"/>
-            <TextBox Name="CValueTextBox" Margin="5" Width="100"/>
+            <Label Content="a:" Style="{StaticResource FunctionValuesLabelStyle}"/>
+            <TextBox Name="AValueTextBox" Style="{StaticResource FunctionValuesTextBoxStyle}"/>
+            <Label Content="b:" Style="{StaticResource FunctionValuesLabelStyle}"/>
+            <TextBox Name="BValueTextBox" Style="{StaticResource FunctionValuesTextBoxStyle}"/>
+            <Label Name="CLabel" Content="c:" Visibility="Hidden" Style="{StaticResource FunctionValuesLabelStyle}"/>
+            <TextBox Name="CValueTextBox" Visibility="Hidden" Style="{StaticResource FunctionValuesTextBoxStyle}" />
         </WrapPanel>
 
         <Grid Grid.Row="2" >
@@ -35,10 +48,10 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Name="SaveButton" Content = "Guardar" Margin="5" Grid.Column="0"/>
-            <Button Name="CancelButton" Content= "Cancelar" Margin="5" Grid.Column="1"/>
+            <Button Name="SaveButton" Content = "Guardar" Grid.Column="0" Style="{StaticResource ConfirmationButtonsStyle}"/>
+            <Button Name="CancelButton" Content= "Cancelar" Grid.Column="1" Style="{StaticResource ConfirmationButtonsStyle}"/>
         </Grid>
 
     </Grid>
-    
+
 </Window>

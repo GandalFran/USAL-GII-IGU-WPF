@@ -9,6 +9,7 @@ using System.Windows.Shapes;
 using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.models.POJO;
 using IGUWPF.src.services.IO;
+using System.Windows.Controls;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -28,6 +29,7 @@ namespace IGUWPF.src.view.Windows
 
             //Add function selection combobox items
             FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
+            FunctionComboBox.SelectionChanged += EditFunctionShowHideCValue;
 
             //Add handlers 
             //Handlers for button events
@@ -97,7 +99,7 @@ namespace IGUWPF.src.view.Windows
 
         private void EditSettings(object sender, RoutedEventArgs e)
         {
-            RepresentationParameters Settings = ViewModel.PlotSettings;
+            RepresentationParameters Settings = ViewModel.RepresentationParameters;
 
             //Show dialog to edit de properties
             SettingsForm SettingsForm = new SettingsForm();
@@ -117,7 +119,7 @@ namespace IGUWPF.src.view.Windows
             Settings.YMax = SettingsForm.Ymax;
 
             //Save new plotsettings
-            ViewModel.PlotSettings = Settings;
+            ViewModel.RepresentationParameters = Settings;
         }
 
         private void ChangeToAddFunctionTab(object sender, RoutedEventArgs e)
@@ -126,15 +128,26 @@ namespace IGUWPF.src.view.Windows
             Dispatcher.BeginInvoke((Action)(() => MainTabControl.SelectedIndex = 1));
         }
 
+        private void AddFunction(object sender, RoutedEventArgs e)
+        {
+            Function Function = TakeFunctionDataFromAddFunctionForm();
+            if (null != Function)
+                ViewModel.CreateElement(Function);
+        }
+
         private void DeleteFunction(object sender, RoutedEventArgs e)
         {
             Function Function = (Function)FunctionDataGrid.SelectedItem;
-            ViewModel.DeleteElement(Function);
+            if(null != Function)
+                ViewModel.DeleteElement(Function);
         }
 
         private void EditFunction(object sender, EventArgs e)
         {
             Function Function = (Function)FunctionDataGrid.SelectedItem;
+
+            if (null == Function)
+                return;
 
             //Display formulary
             ExpressionSelectorUI Form = new ExpressionSelectorUI();
@@ -152,11 +165,18 @@ namespace IGUWPF.src.view.Windows
             ViewModel.UpdateElement(Function);
         }
 
-        private void AddFunction(object sender, RoutedEventArgs e)
+        private void EditFunctionShowHideCValue(object sender, SelectionChangedEventArgs e)
         {
-            Function Function = TakeFunctionDataFromAddFunctionForm();
-            if(null != Function)
-                ViewModel.CreateElement(Function);
+            if (FunctionComboBox.SelectedIndex == 6)
+            {
+                CValueTextBox.Visibility = Visibility.Visible;
+                CLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CValueTextBox.Visibility = Visibility.Hidden;
+                CLabel.Visibility = Visibility.Hidden;
+            }
         }
 
         private void GeneratePreview(object sender, RoutedEventArgs e)
@@ -170,10 +190,10 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             PreviewPanel.Children.Clear();
-            Axys = PlotServices.GetAxys(PreviewPanel.ActualWidth, PreviewPanel.ActualHeight, ViewModel.PlotSettings);
+            Axys = PlotServices.GetAxys(PreviewPanel.ActualWidth, PreviewPanel.ActualHeight, ViewModel.RepresentationParameters);
             PreviewPanel.Children.Add(Axys[0]);
             PreviewPanel.Children.Add(Axys[1]);
-            CalculationResult = PlotServices.CalculatePlot(Function.Calculator, PreviewPanel.ActualWidth,PreviewPanel.ActualHeight, ViewModel.PlotSettings);
+            CalculationResult = PlotServices.CalculatePlot(Function.Calculator, PreviewPanel.ActualWidth,PreviewPanel.ActualHeight, ViewModel.RepresentationParameters);
             foreach (PointCollection Points in CalculationResult) {
                 Segment = new Polyline();
                 Segment.Stroke = new SolidColorBrush(Function.Color);

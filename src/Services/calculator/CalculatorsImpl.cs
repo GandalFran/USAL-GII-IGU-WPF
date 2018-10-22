@@ -11,7 +11,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)
@@ -34,7 +33,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)
@@ -57,7 +55,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)
@@ -80,7 +77,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)
@@ -103,7 +99,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = new double[1]{ 0 };
         }
 
         public override double Calculate(double x)
@@ -134,7 +129,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = 0;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)
@@ -157,7 +151,6 @@ namespace IGUWPF.src.services.calculator
             this.a = a;
             this.b = b;
             this.c = c;
-            this.SegmentationPoints = null;
         }
 
         public override double Calculate(double x)

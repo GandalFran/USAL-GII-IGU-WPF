@@ -15,15 +15,11 @@ namespace IGUWPF.src.services.plot
          If you are thinking that the filter will cause the deletion of a desired line when
          two points are to far away, you are mistaken. Because the distance between two points
          is 1 px in all cases*/
-
         public static PointCollection[] CalculatePlot(Calculator Calculator, double Width, double Height, RepresentationParameters RepresentationValues)
         {
             double ScreenX, ScreenY, RealX, RealY;
             PointCollection Plot = new PointCollection();
-            PointCollection Plot2 = new PointCollection();
             List<PointCollection> PointCollectionList = null;
-
-            PointCollectionList = new List<PointCollection>();
 
             for (int i = 0; i < Width; i++)
             {
@@ -32,56 +28,31 @@ namespace IGUWPF.src.services.plot
                 ScreenX = i;
                 ScreenY = ParseYRealPointToScreenPoint(RealY, Height, RepresentationValues);
 
-                if (RealX < 0)
-                {
-                    Plot.Add(new Point(ScreenX, ScreenY));
-                }
-                if( RealX > 0)
-                {
-                    Plot2.Add(new Point(ScreenX, ScreenY));
-                }
-             
+                Plot.Add(new Point(ScreenX, ScreenY));
             }
 
-            PointCollectionList.Add(Plot);
-            PointCollectionList.Add(Plot2);
-            //PointCollectionList = PlotSplitter(Plot, Width, Height, RepresentationValues);
-
+            PointCollectionList = SlplitPlot(Plot, Width, Height, RepresentationValues);
 
             return PointCollectionList.ToArray();
         }
 
-        private static List<PointCollection> PlotSplitter(PointCollection Plot, double Width, double Height, RepresentationParameters RepresentationValues)
+        public static List<PointCollection> SlplitPlot(PointCollection Plot, double Width, double Height, RepresentationParameters RepresentationValues)
         {
             PointCollection CurrentSegment = new PointCollection();
             List<PointCollection> PointCollectionList = new List<PointCollection>();
 
-            Console.WriteLine("-------------------------------------\n Width, Height" + Width + "   " + Height);
-
             CurrentSegment.Add(Plot[0]);
             for (int i = 1; i < Width; i++) {
                 
-                if (Math.Abs(Plot[i - 1].Y - Plot[i].Y) >=Height )
+                if (Math.Abs(Plot[i - 1].Y - Plot[i].Y) > Height )
                 {
-                    if(Plot[i - 1].Y < 0)
-                        CurrentSegment.Add( new Point(Plot[i-1].X, 0) );
-                    else
-                        CurrentSegment.Add(new Point(Plot[i-1].X, Height));
-
-                    Console.WriteLine("NUEVA - BIG -> SMALL " + Plot[i - 1].X + ", " + Plot[i - 1].Y + " -- " + Plot[i].X + ", " + Plot[i].Y);
                     PointCollectionList.Add(CurrentSegment);
                     CurrentSegment = new PointCollection();
-
-                    if (Plot[i].Y < 0)
-                        CurrentSegment.Add(new Point(Plot[i].X, 0));
-                    else
-                        CurrentSegment.Add(new Point(Plot[i].X, Height));
                 }else
                     CurrentSegment.Add(Plot[i]);
             }
 
             PointCollectionList.Add(CurrentSegment);
-            Console.WriteLine("Number of segments " + PointCollectionList.Count );
 
             return PointCollectionList;
         }
@@ -100,7 +71,6 @@ namespace IGUWPF.src.services.plot
                 Y1 = PosY, 
                 Y2 = PosY
             };
-
             //Y Axys
             double PosX = ParseXRealPointToScreenPoint(0, Width, RepresentationValues);
             Axys[1] = new Line()
@@ -132,7 +102,7 @@ namespace IGUWPF.src.services.plot
 
         public static double ParseYScreenPointToRealPoint(double y, double Height, RepresentationParameters RepresentationValues)
         {
-            return -(((RepresentationValues.YMax - RepresentationValues.YMin) * y / Height) + RepresentationValues.YMin);
+            return RepresentationValues.YMin - ((RepresentationValues.YMax - RepresentationValues.YMin) * (y - Height) / Height);
         }
 
         public static string GetPlotName(int ID)

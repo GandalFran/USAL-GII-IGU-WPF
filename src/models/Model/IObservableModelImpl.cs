@@ -8,7 +8,7 @@ namespace IGUWPF.src.models.model
     {
 
         private int LastAssignedID;
-        private ObservableCollection<T> ElementList = null;
+        private ObservableCollection<T> ElementList;
 
         public IObservableModelImpl() {
             this.LastAssignedID = 0;
@@ -97,7 +97,7 @@ namespace IGUWPF.src.models.model
             this.ElementList.Clear();
         }
 
-        private int GetLastAssignedIDAndIncrement() {
+        protected int GetLastAssignedIDAndIncrement() {
             int IDtoReturn = this.LastAssignedID;
             this.LastAssignedID = this.LastAssignedID + 1;
             return IDtoReturn;

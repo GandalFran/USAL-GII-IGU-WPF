@@ -7,7 +7,20 @@
         Title="SettingsForm" Height="220" Width="200"
         Icon="/IGUWPF;component/Images/Icons/plot.png"
         ResizeMode="NoResize">
-    
+
+    <Window.Resources>
+        <Style x:Key="TextBoxStyle">
+            <Setter Property="TextBlock.Margin" Value="5"/>
+            <Setter Property="TextBlock.Width" Value="120"/>
+        </Style>
+        <Style x:Key="LabelStyle">
+            <Setter Property="Label.Margin" Value="5"/>
+        </Style>
+        <Style x:Key="ButtonStyle">
+            <Setter Property="Button.Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -18,36 +31,36 @@
         </Grid.RowDefinitions>
 
         <WrapPanel Grid.Row="0">
-            <Label Content="Xmin:" Margin="5" />
-            <TextBox Name="XMinTextBox" Margin="5" Width="120"/>
+            <Label Content="Xmin:" Style="{StaticResource LabelStyle}" />
+            <TextBox Name="XMinTextBox" Style="{StaticResource TextBoxStyle}"/>
         </WrapPanel>
-        
+
         <WrapPanel Grid.Row="1">
-            <Label Content="Xmax:" Margin="5" />
-            <TextBox Name="XMaxTextBox" Margin="5" Width="120"/>
+            <Label Content="Xmax:" Style="{StaticResource LabelStyle}" />
+            <TextBox Name="XMaxTextBox" Style="{StaticResource TextBoxStyle}"/>
         </WrapPanel>
-        
+
         <WrapPanel Grid.Row="2">
-            <Label Content="Ymin:" Margin="5" />
-            <TextBox Name="YMinTextBox" Margin="5" Width="120"/>
+            <Label Content="Ymin:" Style="{StaticResource LabelStyle}" />
+            <TextBox Name="YMinTextBox" Style="{StaticResource TextBoxStyle}"/>
         </WrapPanel>
-        
+
         <WrapPanel Grid.Row="3">
-            <Label Content="Ymax:" Margin="5" />
-            <TextBox Name="YMaxTextBox" Margin="5" Width="120"/>
+            <Label Content="Ymax:" Style="{StaticResource LabelStyle}" />
+            <TextBox Name="YMaxTextBox"  Style="{StaticResource TextBoxStyle}"/>
         </WrapPanel>
-        
+
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
-            <Button Name="SaveButton" Content = "Guardar"  Margin="5" Grid.Column="0"/>
-            <Button Name="CancelButton" Content= "Cancelar" Margin="5" Grid.Column="1"/>
-            
+
+            <Button Name="SaveButton" Content = "Guardar"  Style="{StaticResource ButtonStyle}" Grid.Column="0"/>
+            <Button Name="CancelButton" Content= "Cancelar" Style="{StaticResource ButtonStyle}" Grid.Column="1"/>
+
         </Grid>
-        
+
     </Grid>
-    
+
 </Window>

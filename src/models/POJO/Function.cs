@@ -129,7 +129,7 @@ namespace IGUWPF.src.models.POJO
             }
         }
 
-        public void OnPropertyChanged(string PropertyName)
+        protected void OnPropertyChanged(string PropertyName)
         {
             if (null != PropertyChanged) PropertyChanged(this,new PropertyChangedEventArgs(PropertyName));
         }

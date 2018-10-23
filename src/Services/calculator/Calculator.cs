@@ -1,6 +1,8 @@
-﻿namespace IGUWPF.src.services.calculator
+﻿using System;
+
+namespace IGUWPF.src.services.calculator
 {
-    public abstract class Calculator
+    public abstract class Calculator : ICloneable
     {
         public double a {get; set; }
         public double b { get; set; }
@@ -9,6 +11,7 @@
         public static string Operation { get; }
 
         public abstract double Calculate(double x);
+        public abstract object Clone();
     }
 
     //To let other programmers add more operations easily
@@ -37,6 +40,13 @@
             foreach (Calculator calc in OperationArray)
                 ToReturn = "(" + calc.ToString() + ")";
             return ToReturn;
+        }
+
+        public override object Clone()
+        {
+            MultipleOperationCalculator Cloned = new MultipleOperationCalculator();
+            Cloned.OperationArray = (Calculator[])this.OperationArray.Clone();
+            return Cloned;
         }
     }
 

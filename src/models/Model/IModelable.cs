@@ -1,10 +1,11 @@
 ﻿
+using System;
+
 namespace IGUWPF.src.models.model
 {
-    public interface IModelable<T>
+    public interface IModelable : ICloneable
     {
         int GetID();
         void SetID(int ID);
-        T Clone();
     }
 }

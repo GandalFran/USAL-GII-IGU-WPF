@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using IGUWPF.src.services.plot;
 using IGUWPF.src.models.ViewModel;
-using IGUWPF.src.models.POJO;
+using IGUWPF.src.models.bean;
 using IGUWPF.src.services.IO;
 using System.Windows.Threading;
 

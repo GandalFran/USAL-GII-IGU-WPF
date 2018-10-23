@@ -5,10 +5,11 @@ using IGUWPF.src.services.calculator;
 using System.ComponentModel;
 using IGUWPF.src.models.model;
 using IGUWPF.src.services.IO;
+using System;
 
-namespace IGUWPF.src.models.POJO
+namespace IGUWPF.src.models.bean
 {
-    public class Function : IModelable<Function>, INotifyPropertyChanged
+    public class Function : IModelable, INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -78,9 +79,9 @@ namespace IGUWPF.src.models.POJO
             this.InternalID = ID;
         }
 
-        public Function Clone()
+        public object Clone()
         {
-            Function ClonedFunction = new Function(this.Name, this.Calculator, this.Color,this.IsHidden);
+            Function ClonedFunction = new Function(this.Name, (Calculator) this.Calculator.Clone(), this.Color,this.IsHidden);
             ClonedFunction.InternalID = InternalID;
             return ClonedFunction;
         }

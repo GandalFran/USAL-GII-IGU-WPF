@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace IGUWPF.src.models.ViewModel
 {
-    public class IViewModelImpl<T> : IViewModel<T> where T:IModelable<T>, INotifyPropertyChanged
+    public class IViewModelImpl<T> : IViewModel<T> where T:IModelable, INotifyPropertyChanged
     {
         private IObservableModel<T> Model;
 

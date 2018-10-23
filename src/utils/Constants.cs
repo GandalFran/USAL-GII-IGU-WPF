@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace IGUWPF
 {
-    public class Constants
+    public abstract class Constants
     {
         public readonly static string ProjectFileExtension = "maclab";
         public readonly static string ApplicationName = "MacLab";

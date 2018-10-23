@@ -25,7 +25,7 @@ namespace IGUWPF.src.models.ViewModel
 
     }
 
-    public interface IViewModel<T> where T:IModelable<T>, INotifyPropertyChanged
+    public interface IViewModel<T> where T:IModelable, INotifyPropertyChanged
     {
         event ViewModelEventHandler ElementCreated;
         event ViewModelEventHandler ElementDeleted;

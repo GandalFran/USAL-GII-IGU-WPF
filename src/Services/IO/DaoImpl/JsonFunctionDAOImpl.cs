@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using IGUWPF.src.models.POJO;
+using IGUWPF.src.models.bean;
 
 namespace IGUWPF.src.services.IO
 {
@@ -154,5 +154,9 @@ namespace IGUWPF.src.services.IO
             return 0;
         }
 
+        public override object Clone()
+        {
+            return null;
+        }
     }
 }

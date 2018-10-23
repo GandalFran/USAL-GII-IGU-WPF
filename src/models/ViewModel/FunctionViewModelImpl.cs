@@ -1,4 +1,6 @@
-﻿using IGUWPF.src.models.POJO;
+﻿using IGUWPF.src.models.bean;
+using IGUWPF.src.services.IO;
+using System.Collections.Generic;
 
 namespace IGUWPF.src.models.ViewModel
 {
@@ -70,6 +72,29 @@ namespace IGUWPF.src.models.ViewModel
                 this.InternZoomPonderation = value;
                 OnRepresentationParametersChanged();
             }
+        }
+
+        public bool ExportModel(string DataPath)
+        {
+            IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
+            return FunctionDAO.ExportMultipleObject(DataPath, this.GetAllElements());
+        }
+
+        public bool ImportModel(string DataPath)
+        {
+            bool result;
+            IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
+            List<Function> FunctionListToFill = new List<Function>();
+
+            result = FunctionDAO.ImportMultipleObject(DataPath, FunctionListToFill);
+
+            if (result) {
+                this.Clear();
+                foreach (Function Function in FunctionListToFill)
+                    this.CreateElement(Function);
+            }
+
+            return result;
         }
 
         protected void OnRepresentationParametersChanged() {

@@ -106,7 +106,7 @@
     <Compile Include="src\models\model\IObservableModel.cs" />
     <Compile Include="src\models\model\IObservableModelImpl.cs" />
     <Compile Include="src\models\model\IModelable.cs" />
-    <Compile Include="src\models\POJO\Function.cs" />
+    <Compile Include="src\models\bean\Function.cs" />
     <Compile Include="src\utils\Constants.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

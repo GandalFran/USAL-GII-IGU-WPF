@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IGUWPF.src.models.model
 {
-    public class IObservableModelImpl<T> : IObservableModel<T> where T : IModelable<T>
+    public class IObservableModelImpl<T> : IObservableModel<T> where T : IModelable
     {
 
         private int LastAssignedID;
@@ -83,7 +83,10 @@ namespace IGUWPF.src.models.model
 
         public List<T> GetAllElements()
         {
-            return new List<T>(this.ElementList);
+            List<T> ElementListToReturn = new List<T>();
+            foreach (T Element in ElementList)
+                ElementListToReturn.Add((T)Element.Clone());
+            return ElementListToReturn;
         }
 
         public ObservableCollection<T> GetAllElementsForBinding()

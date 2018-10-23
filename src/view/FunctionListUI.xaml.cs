@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using IGUWPF.src.services.plot;
 using System.Windows.Shapes;
 using IGUWPF.src.models.ViewModel;
-using IGUWPF.src.models.POJO;
+using IGUWPF.src.models.bean;
 using IGUWPF.src.services.IO;
 using System.Windows.Controls;
 
@@ -60,8 +60,7 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Export the file
-            //Its neccesary to create a new list from the model list because the calculators are replaced in the parse process
-            result = IOServices.ExportModel(SaveFileForm.FileName, new List<Function>(ViewModel.GetAllElements()));
+            result = ViewModel.ExportModel(SaveFileForm.FileName);
             if (result == false)
             {
                 MessageBox.Show(Constants.IOErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -71,7 +70,6 @@ namespace IGUWPF.src.view.Windows
 
         private void OpenProject(object sender, RoutedEventArgs e)
         {
-            List<Function> ToImport = new List<Function>();
             //Show dialog to choose the project to import
             OpenFileDialog OpenFileForm = new OpenFileDialog();
             OpenFileForm.FileName = "Open project";
@@ -85,16 +83,12 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Import the project
-            result = IOServices.ImportModel(OpenFileForm.FileName, ToImport);
+            result = ViewModel.ImportModel(OpenFileForm.FileName);
             if (result == false)
             {
                 MessageBox.Show(Constants.IOErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            ViewModel.Clear();
-            foreach (Function Function in ToImport)
-                ViewModel.CreateElement(Function);
         }
 
         private void EditSettings(object sender, RoutedEventArgs e)

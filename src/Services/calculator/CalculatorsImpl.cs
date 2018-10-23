@@ -22,6 +22,11 @@ namespace IGUWPF.src.services.calculator
         {
             return a + "*cos(" + b + "*x)";
         }
+
+        public override object Clone()
+        {
+            return new CosXCalculator(this.a, this.b);
+        }
     }
 
     public class SinXCalculator : Calculator
@@ -43,6 +48,11 @@ namespace IGUWPF.src.services.calculator
         public override string ToString()
         {
             return a + "*sin(" + b + "*x)";
+        }
+
+        public override object Clone()
+        {
+            return new SinXCalculator(this.a, this.b);
         }
     }
 
@@ -66,6 +76,11 @@ namespace IGUWPF.src.services.calculator
         {
             return a + "*x^" + b;
         }
+
+        public override object Clone()
+        {
+            return new XExpNCalculator(this.a, this.b);
+        }
     }
 
     public class NExpXCalculator : Calculator
@@ -87,6 +102,11 @@ namespace IGUWPF.src.services.calculator
         public override string ToString()
         {
             return a + "*" + b + "^x";
+        }
+
+        public override object Clone()
+        {
+            return new NExpXCalculator(this.a, this.b);
         }
     }
 
@@ -118,6 +138,11 @@ namespace IGUWPF.src.services.calculator
         {
             return a + "/(x*" + b + ")";
         }
+
+        public override object Clone()
+        {
+            return new NDividedXCalculator(this.a, this.b);
+        }
     }
 
    public class X1Calculator : Calculator
@@ -140,6 +165,11 @@ namespace IGUWPF.src.services.calculator
         {
             return a + " + (x*" + b + ")";
         }
+
+        public override object Clone()
+        {
+            return new X1Calculator(this.a, this.b);
+        }
     }
 
     public class X2Calculator : Calculator
@@ -161,6 +191,11 @@ namespace IGUWPF.src.services.calculator
         public override string ToString()
         {
             return a + "x^2 + " + b + "x + " + c;
+        }
+
+        public override object Clone()
+        {
+            return new X2Calculator(this.a, this.b, this.c);
         }
     }
 

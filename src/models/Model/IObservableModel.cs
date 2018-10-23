@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace IGUWPF.src.models.model
 {
-    public interface IObservableModel<T> where T:IModelable<T>
+    public interface IObservableModel<T> where T:IModelable
     {
         int CreateElement( T Element );
         bool UpdateElement( T Element);

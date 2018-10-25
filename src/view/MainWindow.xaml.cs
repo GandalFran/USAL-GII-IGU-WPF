@@ -36,8 +36,10 @@ namespace IGUWPF
             ViewModel = new FunctionViewModelImpl();
 
             //Timer to improve the refresh of the plot panel performance
-            RefreshPlotPanelTimer = new DispatcherTimer();
-            RefreshPlotPanelTimer.Interval = TimeSpan.FromMilliseconds(Constants.NumberOfMsBeforePlotRecalculation);
+            RefreshPlotPanelTimer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromMilliseconds(Constants.NumberOfMsBeforePlotRecalculation)
+            };
 
             //Give default values
             RepresentationParameters RepresentationValues;
@@ -258,6 +260,7 @@ namespace IGUWPF
         }
 
         private void SetRefreshPlotPanelTimer(object sender, EventArgs e) {
+            RefreshPlotPanelTimer.Stop();
             RefreshPlotPanelTimer.Start();
         }
 
@@ -279,11 +282,11 @@ namespace IGUWPF
 
                     for (int i = 0; i < Segments.Length; i++)
                     {
-                        Polyline = new Polyline();
-
-                        Polyline.Points = Segments[i];
-                        Polyline.Name = PlotServices.GetPlotName(Function.ID) + i;
-                        Polyline.Stroke = new SolidColorBrush(Function.Color);
+                        Polyline = new Polyline() {
+                            Points = Segments[i],
+                            Name = PlotServices.GetPlotName(Function.ID) + i,
+                            Stroke = new SolidColorBrush(Function.Color)
+                        };
                         PlotPanel.Children.Add(Polyline);
                     }
                 }
@@ -298,12 +301,13 @@ namespace IGUWPF
         private void ExportImage(object sender, RoutedEventArgs e)
         {
             //Show dialog to choose the path to export
-            SaveFileDialog SaveFileForm = new SaveFileDialog();
-            SaveFileForm.Title = "Export plot";
-            SaveFileForm.FileName = "Desktop";
-            SaveFileForm.DefaultExt = ".png";
-            SaveFileForm.Filter = "PNG image (.png)|*.png";
-            SaveFileForm.AddExtension = true;
+            SaveFileDialog SaveFileForm = new SaveFileDialog() {
+                Title = "Export plot",
+                FileName = "Desktop",
+                DefaultExt = ".png",
+                Filter = "PNG image (.png)|*.png",
+                AddExtension = true
+            };
 
             Nullable<bool> result = SaveFileForm.ShowDialog();
             if (null == result)

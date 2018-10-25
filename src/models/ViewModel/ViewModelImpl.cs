@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace IGUWPF.src.models.ViewModel
 {
-    public class IViewModelImpl<T> : IViewModel<T> where T:IModelable, INotifyPropertyChanged
+    public class ViewModelImpl<T> : IViewModel<T> where T:IModelable, INotifyPropertyChanged
     {
         private IObservableModel<T> Model;
 
@@ -14,11 +14,11 @@ namespace IGUWPF.src.models.ViewModel
         public event ViewModelEventHandler ElementUpdated;
         public event ViewModelEventHandler ModelCleaned;
 
-        public IViewModelImpl() {
-            Model = new IObservableModelImpl<T>();
+        public ViewModelImpl() {
+            Model = new ObservableModelImpl<T>();
         }
 
-        public IViewModelImpl(IObservableModel<T> Model)
+        public ViewModelImpl(IObservableModel<T> Model)
         {
             this.Model = Model;
         }

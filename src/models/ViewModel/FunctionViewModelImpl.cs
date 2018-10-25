@@ -9,7 +9,7 @@ namespace IGUWPF.src.models.ViewModel
         public double XMin, XMax, YMin, YMax;
     };
 
-    public class FunctionViewModelImpl : IViewModelImpl<Function>
+    public class FunctionViewModelImpl : ViewModelImpl<Function>
     {
         public event ViewModelEventHandler RepresentationParametersChanged;
 

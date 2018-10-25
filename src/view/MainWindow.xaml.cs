@@ -20,10 +20,10 @@ namespace IGUWPF
     {
         private double PlotWidth  { get => PlotPanel.ActualWidth;  }
         private double PlotHeight { get => PlotPanel.ActualHeight; }
-        
+
+        private Label ZoomLabel;
         private Line[] CursorAxys;
         private Label XYMouseCoordinates;
-        private Label ZoomLabel;
 
         private FunctionLitsUI FunctionListUI;
         private FunctionViewModelImpl ViewModel;
@@ -110,6 +110,7 @@ namespace IGUWPF
             FunctionListUI.Show();
         }
 
+        #region ViewModelEvents
         private void ViewModelCreateElementEvent(object sender, ViewModelEventArgs e) {
             PointCollection [] Segments = null;
             Function Function = (Function)e.Element;
@@ -125,7 +126,7 @@ namespace IGUWPF
                     {
                         Points = Points,
                         Stroke = new SolidColorBrush(Function.Color),
-                        Name = PlotServices.GetPlotName(Function.ID) + "S" + (i++),
+                        Name = PlotServices.GetPlotName(Function.ID) + "S" + (i++)
                     });
                 }
             }
@@ -200,6 +201,7 @@ namespace IGUWPF
             PlotPanel.Children.Clear();
             AddPlotPanelBasics();
         }
+        #endregion
 
         private void ShowCursorPositionElements(object sender, MouseEventArgs e)
         {

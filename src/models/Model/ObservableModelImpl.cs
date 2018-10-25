@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace IGUWPF.src.models.model
 {
-    public class IObservableModelImpl<T> : IObservableModel<T> where T : IModelable
+    public class ObservableModelImpl<T> : IObservableModel<T> where T : IModelable
     {
 
         private int LastAssignedID;
         private ObservableCollection<T> ElementList;
 
-        public IObservableModelImpl() {
+        public ObservableModelImpl() {
             this.LastAssignedID = 0;
             this.ElementList = new ObservableCollection<T>();
         }

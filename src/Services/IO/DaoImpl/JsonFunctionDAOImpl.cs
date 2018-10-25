@@ -39,7 +39,6 @@ namespace IGUWPF.src.services.IO
 
         public bool ExportMultipleObject(string FilePath, List<Function> toExport)
         {
-
             //Parse each calculator into a serializable calculator
             foreach (Function Function in toExport)
             {
@@ -63,9 +62,8 @@ namespace IGUWPF.src.services.IO
         }
 
     }
-    
-    //To make possible the Calculator Serialization and Deserialization
 
+    #region SerializeCalculator
     public enum TypeOfCalculator { COS, SIN, XEXPN, NEXPX, NDIVEDX, X1, X2 };
 
     public class SerializableCalculator : Calculator
@@ -159,4 +157,5 @@ namespace IGUWPF.src.services.IO
             return null;
         }
     }
+    #endregion
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MacLab" 
-        Height="450" Width="800" MinHeight="450" MinWidth="800"
+        Height="450" Width="800"
         Background="WhiteSmoke"
         Icon="/IGUWPF;component/Images/Icons/plot.png">
 

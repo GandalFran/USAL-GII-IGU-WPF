@@ -71,7 +71,7 @@
             <TabItem Name="FunctionListTab" Header="Lista de funciones">
 
                 <ScrollViewer BorderBrush="DodgerBlue" BorderThickness="1" VerticalScrollBarVisibility="Auto">
-                    <DataGrid Name="FunctionDataGrid" AutoGenerateColumns="False" SelectionMode="Single">
+                    <DataGrid Name="FunctionDataGrid" AutoGenerateColumns="False" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False">
                         <DataGrid.Columns>
 
                             <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Mode=TwoWay, Path=NameProperty, UpdateSourceTrigger=PropertyChanged}"/>

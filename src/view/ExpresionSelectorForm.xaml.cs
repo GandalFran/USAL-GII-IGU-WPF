@@ -1,17 +1,6 @@
 ﻿using IGUWPF.src.services.calculator;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace IGUWPF.src.view
 {
@@ -23,9 +12,9 @@ namespace IGUWPF.src.view
             get {
                 double a, b, c;
 
-                double.TryParse(AValueTextBox.Text, out a);
-                double.TryParse(BValueTextBox.Text, out b);
-                double.TryParse(CValueTextBox.Text, out c);
+                double.TryParse(AValueTextBox.Text.Replace('.', ','), out a);
+                double.TryParse(BValueTextBox.Text.Replace('.', ','), out b);
+                double.TryParse(CValueTextBox.Text.Replace('.', ','), out c);
 
                 switch (FunctionComboBox.SelectedIndex) {
                     case 0: return new CosXCalculator(a,b);
@@ -90,7 +79,7 @@ namespace IGUWPF.src.view
 
         private void ShowHideCValue(object sender, SelectionChangedEventArgs e)
         {
-            if (FunctionComboBox.SelectedIndex == 6)
+            if (FunctionComboBox.SelectedIndex == 6) //Is selected the second grade ecuation
             {
                 CValueTextBox.Visibility = Visibility.Visible;
                 CLabel.Visibility = Visibility.Visible;
@@ -111,9 +100,9 @@ namespace IGUWPF.src.view
         {
             double toTest;
 
-            if (!double.TryParse(AValueTextBox.Text, out toTest) ||
-                !double.TryParse(BValueTextBox.Text, out toTest) ||
-                !double.TryParse(CValueTextBox.Text, out toTest) ||
+            if (!double.TryParse(AValueTextBox.Text.Replace('.', ','), out toTest) ||
+                !double.TryParse(BValueTextBox.Text.Replace('.', ','), out toTest) ||
+                !double.TryParse(CValueTextBox.Text.Replace('.', ','), out toTest) ||
                 FunctionComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);

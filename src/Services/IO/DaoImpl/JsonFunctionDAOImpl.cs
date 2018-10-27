@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using IGUWPF.src.models.bean;
+using IGUWPF.src.bean;
 
 namespace IGUWPF.src.services.IO
 {

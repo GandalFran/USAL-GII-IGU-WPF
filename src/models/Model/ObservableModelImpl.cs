@@ -51,7 +51,11 @@ namespace IGUWPF.src.models.model
 
         public T GetElementByID(int ID)
         {
-           return this.ElementList.SingleOrDefault(Element => (ID == Element.GetID()));
+           T Element = ElementList.SingleOrDefault(ElementFound => (ID == ElementFound.GetID()));
+            if (null != Element)
+                return (T)Element.Clone();
+            else
+                return default(T);
         }
 
         public bool UpdateElement(T NewElement)

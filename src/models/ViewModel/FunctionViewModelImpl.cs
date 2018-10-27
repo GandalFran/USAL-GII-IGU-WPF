@@ -1,4 +1,4 @@
-﻿using IGUWPF.src.models.bean;
+﻿using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
 using System.Collections.Generic;
 
@@ -34,7 +34,7 @@ namespace IGUWPF.src.models.ViewModel
             }
         }
 
-        public RepresentationParameters PonderedPlotSettings
+        public RepresentationParameters PonderedRepresentationParameters
         {
             get {
                 RepresentationParameters ToReturn;
@@ -97,7 +97,7 @@ namespace IGUWPF.src.models.ViewModel
             return result;
         }
 
-        protected void OnRepresentationParametersChanged() {
+        protected virtual void OnRepresentationParametersChanged() {
             if (null != RepresentationParametersChanged) RepresentationParametersChanged(this, new ViewModelEventArgs());
         }
 

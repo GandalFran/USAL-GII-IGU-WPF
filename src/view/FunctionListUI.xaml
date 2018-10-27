@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Icon="/IGUWPF;component/Images/Icons/plot.png"
-        Title="MacLab" Height="450" Width="600" MinHeight="450" MinWidth="600">
+        Title="WinLab" Height="450" Width="600" MinHeight="450" MinWidth="600">
 
     <Window.Resources>
         <Style x:Key="ToolBarButtonStyle">

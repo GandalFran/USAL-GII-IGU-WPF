@@ -7,8 +7,6 @@ using System.ComponentModel;
 namespace IGUWPF.src.models.ViewModel
 {
 
-    public delegate void ViewModelEventHandler(object sender, ViewModelEventArgs e);
-
     public class ViewModelEventArgs : EventArgs{
 
         public object Element { get; set; }
@@ -24,6 +22,8 @@ namespace IGUWPF.src.models.ViewModel
         }
 
     }
+
+    public delegate void ViewModelEventHandler(object sender, ViewModelEventArgs e);
 
     public interface IViewModel<T> where T:IModelable, INotifyPropertyChanged
     {

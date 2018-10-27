@@ -14,7 +14,7 @@ namespace IGUWPF.src.services.calculator
         public abstract object Clone();
     }
 
-    //To let other programmers add more operations easily
+    //To let other programmers add complex operations easily
     public class MultipleOperationCalculator : Calculator
     {
         public Calculator[] OperationArray { get; set; }

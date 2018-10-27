@@ -5,16 +5,11 @@ using IGUWPF.src.services.calculator;
 using System.ComponentModel;
 using IGUWPF.src.models.model;
 using IGUWPF.src.services.IO;
-using System;
 
-namespace IGUWPF.src.models.bean
+namespace IGUWPF.src.bean
 {
     public class Function : IModelable, INotifyPropertyChanged
     {
-
-        [JsonIgnore]
-        public int ID { get; private set; }
-
         public string Name { get; private set; }
         public Calculator Calculator { get; set; }
         public bool IsHidden { get; private set; }
@@ -44,18 +39,8 @@ namespace IGUWPF.src.models.bean
         }
 
         public override int GetHashCode()
-        {
-            var hashCode = -878180465;
-            hashCode = hashCode * -1521134295 + ID.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Calculator>.Default.GetHashCode(Calculator);
-            hashCode = hashCode * -1521134295 + IsHidden.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(Color);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(NameProperty);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CalculatorProperty);
-            hashCode = hashCode * -1521134295 + IsVissibleProperty.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Color>.Default.GetHashCode(ColorProperty);
-            return hashCode;
+        {  //Its needed to return the ID, because if not, there is a failure adding, and delting on datagrid
+            return ID;
         }
 
         #region JsonSerializer
@@ -70,6 +55,9 @@ namespace IGUWPF.src.models.bean
         #endregion
 
         #region IModelable
+        [JsonIgnore]
+        public int ID { get; private set; }
+
         public int GetID()
         {
             return ID;
@@ -82,9 +70,9 @@ namespace IGUWPF.src.models.bean
 
         public object Clone()
         {
-            Function ClonedFunction = new Function(this.Name, (Calculator)this.Calculator.Clone(), this.Color, this.IsHidden)
+            Function ClonedFunction = new Function((string)this.Name.Clone(), (Calculator)this.Calculator.Clone(), Color.FromRgb(this.Color.R,this.Color.G,this.Color.B), this.IsHidden)
             {
-                ID = ID
+                ID = this.ID
             };
             return ClonedFunction;
         }

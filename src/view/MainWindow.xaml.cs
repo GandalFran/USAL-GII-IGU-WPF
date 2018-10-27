@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Win32;
 using IGUWPF.src.services.plot;
 using IGUWPF.src.models.ViewModel;
-using IGUWPF.src.models.bean;
+using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
 using System.Windows.Threading;
 
@@ -57,25 +57,6 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
-            CursorAxys = new Line[2];
-            CursorAxys[0] = new Line()
-            {
-                X1 = 0, 
-                X2 = 0,
-                Y1 = 0,
-                Y2 = 0,
-                Visibility = Visibility.Hidden,
-                Stroke = Brushes.DodgerBlue
-            };
-            CursorAxys[1] = new Line()
-            {
-                X1 = 0,
-                X2 = 0,
-                Y1 = 0,
-                Y2 = 0,
-                Visibility = Visibility.Hidden,
-                Stroke = Brushes.DodgerBlue
-            };
             ZoomLabel = new Label()
             {
                 BorderThickness = new Thickness(1),
@@ -84,9 +65,18 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
+            CursorAxys = PlotServices.GetAxys(PlotWidth,PlotHeight,ViewModel.RepresentationParameters);
+            CursorAxys[0].Stroke = CursorAxys[1].Stroke = Brushes.DodgerBlue;
+            CursorAxys[0].Visibility = CursorAxys[1].Visibility = Visibility.Hidden;
 
+            //ViewModel events
+            ViewModel.ModelCleaned += ViewModel_ModelCleaned;
+            ViewModel.ElementCreated += ViewModel_ElementCreated;
+            ViewModel.ElementDeleted += ViewModel_ElementDeleted;
+            ViewModel.ElementUpdated += ViewModel_ElementUpdated;
+            ViewModel.RepresentationParametersChanged += RefreshPlotPanel;
             //Reload panel if size changes
-            this.SizeChanged += SetRefreshPlotPanelTimer;
+            this.SizeChanged += ResetRefreshPlotPanelTimer;
             RefreshPlotPanelTimer.Tick += RefreshPlotPanel;
             //Mouse position events
             PlotPanel.MouseEnter += ShowCursorPositionElements;
@@ -94,12 +84,6 @@ namespace IGUWPF
             PlotPanel.MouseMove += CalculateMousePosition;
             PlotPanel.MouseWheel += MakeZoom;
             PlotPanel.MouseWheel += CalculateMousePosition;
-            //ViewModel events
-            ViewModel.ModelCleaned += ViewModelClearEvent;
-            ViewModel.ElementCreated += ViewModelCreateElementEvent;
-            ViewModel.ElementDeleted += ViewModelDeleteElementEvent;
-            ViewModel.ElementUpdated += ViewModelUpdateElementEvent;
-            ViewModel.RepresentationParametersChanged += RefreshPlotPanel;
             //Contextual menus events
             WindowContextMenu_ExportImage.Click += ExportImage;
             //Closing event
@@ -111,13 +95,13 @@ namespace IGUWPF
         }
 
         #region ViewModelEvents
-        private void ViewModelCreateElementEvent(object sender, ViewModelEventArgs e) {
+        private void ViewModel_ElementCreated(object sender, ViewModelEventArgs e) {
             PointCollection [] Segments = null;
             Function Function = (Function)e.Element;
 
             if (!Function.IsHidden)
             {
-                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
 
                 int i = 0;
                 foreach (PointCollection Points in Segments)
@@ -132,7 +116,7 @@ namespace IGUWPF
             }
         }
 
-        private void ViewModelDeleteElementEvent(object sender, ViewModelEventArgs e)
+        private void ViewModel_ElementDeleted(object sender, ViewModelEventArgs e)
         {
             string PlotName = null;
             Polyline Polyline = null;
@@ -154,7 +138,7 @@ namespace IGUWPF
                 PlotPanel.Children.Remove(Element);
         }
 
-        private void ViewModelUpdateElementEvent(object sender, ViewModelEventArgs e)
+        private void ViewModel_ElementUpdated(object sender, ViewModelEventArgs e)
         {
             string PlotName = null;
             Polyline Polyline = null;
@@ -181,7 +165,7 @@ namespace IGUWPF
             if (!Function.IsHidden)
             {
                 //Get new plot
-                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
+                Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
 
                 int i = 0;
                 foreach(PointCollection Points in Segments)
@@ -196,7 +180,7 @@ namespace IGUWPF
             }
         }
 
-        private void ViewModelClearEvent(object sender, ViewModelEventArgs e)
+        private void ViewModel_ModelCleaned(object sender, ViewModelEventArgs e)
         {
             PlotPanel.Children.Clear();
             AddPlotPanelBasics();
@@ -235,16 +219,18 @@ namespace IGUWPF
             //Calculate real points
             ScreenX = p.X;
             ScreenY = p.Y;
-            RealX = double.Parse(string.Format("{0:n2}", (PlotServices.ParseXScreenPointToRealPoint(ScreenX, MousePanel.ActualWidth, ViewModel.PonderedPlotSettings) * 100) / 100));
-            RealY = double.Parse(string.Format("{0:n2}", (PlotServices.ParseYScreenPointToRealPoint(ScreenY, MousePanel.ActualHeight, ViewModel.PonderedPlotSettings) * 100) / 100));
+            RealX = double.Parse(string.Format("{0:n2}", (PlotServices.ParseXScreenPointToRealPoint(ScreenX, MousePanel.ActualWidth, ViewModel.PonderedRepresentationParameters) * 100) / 100));
+            RealY = double.Parse(string.Format("{0:n2}", (PlotServices.ParseYScreenPointToRealPoint(ScreenY, MousePanel.ActualHeight, ViewModel.PonderedRepresentationParameters) * 100) / 100));
 
             //Update label
             if (null != XYMouseCoordinates)
                 XYMouseCoordinates.Content = "X: " + RealX + " Y: " + RealY;
 
             //Update cursor axys
+            CursorAxys[0].X1 = 0;
             CursorAxys[0].X2 = PlotWidth;
             CursorAxys[0].Y1 = CursorAxys[0].Y2 = ScreenY;
+            CursorAxys[1].Y1 = 0;
             CursorAxys[1].Y2 = PlotHeight;
             CursorAxys[1].X1 = CursorAxys[1].X2 = ScreenX;
         }
@@ -261,7 +247,7 @@ namespace IGUWPF
             ZoomLabel.Content = "Zoom: " + ZoomValue + "%";
         }
 
-        private void SetRefreshPlotPanelTimer(object sender, EventArgs e) {
+        private void ResetRefreshPlotPanelTimer(object sender, EventArgs e) {
             RefreshPlotPanelTimer.Stop();
             RefreshPlotPanelTimer.Start();
         }
@@ -270,6 +256,9 @@ namespace IGUWPF
         {
             Polyline Polyline = null;
             PointCollection[] Segments = null;
+
+            //Stop the timer
+            RefreshPlotPanelTimer.Stop();
 
             //Clear the panel
             PlotPanel.Children.Clear();
@@ -280,7 +269,7 @@ namespace IGUWPF
             {
                 if (!Function.IsHidden)
                 {
-                    Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
+                    Segments = PlotServices.CalculatePlot(Function.Calculator, this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
 
                     for (int i = 0; i < Segments.Length; i++)
                     {
@@ -336,7 +325,7 @@ namespace IGUWPF
                 Canvas.SetLeft(ZoomLabel, 0);
                 Canvas.SetTop(ZoomLabel, 0);
 
-            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PonderedPlotSettings);
+            Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
                 PlotPanel.Children.Add(Axys[0]);
                 PlotPanel.Children.Add(Axys[1]);
         }

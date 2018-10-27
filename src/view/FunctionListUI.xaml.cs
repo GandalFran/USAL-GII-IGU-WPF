@@ -3,12 +3,10 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Win32;
-using System.Collections.Generic;
 using IGUWPF.src.services.plot;
 using System.Windows.Shapes;
 using IGUWPF.src.models.ViewModel;
-using IGUWPF.src.models.bean;
-using IGUWPF.src.services.IO;
+using IGUWPF.src.bean;
 using System.Windows.Controls;
 
 namespace IGUWPF.src.view.Windows
@@ -29,7 +27,7 @@ namespace IGUWPF.src.view.Windows
 
             //Add function selection combobox items
             FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
-            FunctionComboBox.SelectionChanged += EditFunctionShowHideCValue;
+            FunctionComboBox.SelectionChanged += EditFunction_ShowAndHideCValue;
 
             //Add handlers 
             //Handlers for button events
@@ -93,27 +91,27 @@ namespace IGUWPF.src.view.Windows
 
         private void EditSettings(object sender, RoutedEventArgs e)
         {
-            RepresentationParameters Settings = ViewModel.RepresentationParameters;
+            RepresentationParameters RepresentationParamters = ViewModel.RepresentationParameters;
 
             //Show dialog to edit de properties
             SettingsForm SettingsForm = new SettingsForm();
             //Load older values
-            SettingsForm.Xmin = Settings.XMin;
-            SettingsForm.Xmax = Settings.XMax;
-            SettingsForm.Ymin = Settings.YMin;
-            SettingsForm.Ymax = Settings.YMax;
+            SettingsForm.Xmin = RepresentationParamters.XMin;
+            SettingsForm.Xmax = RepresentationParamters.XMax;
+            SettingsForm.Ymin = RepresentationParamters.YMin;
+            SettingsForm.Ymax = RepresentationParamters.YMax;
 
             SettingsForm.ShowDialog();
             if (false == SettingsForm.DialogResult)
                 return;
 
-            Settings.XMin = SettingsForm.Xmin;
-            Settings.XMax = SettingsForm.Xmax;
-            Settings.YMin = SettingsForm.Ymin;
-            Settings.YMax = SettingsForm.Ymax;
+            RepresentationParamters.XMin = SettingsForm.Xmin;
+            RepresentationParamters.XMax = SettingsForm.Xmax;
+            RepresentationParamters.YMin = SettingsForm.Ymin;
+            RepresentationParamters.YMax = SettingsForm.Ymax;
 
             //Save new plotsettings
-            ViewModel.RepresentationParameters = Settings;
+            ViewModel.RepresentationParameters = RepresentationParamters;
         }
 
         private void ChangeToAddFunctionTab(object sender, RoutedEventArgs e)
@@ -159,7 +157,7 @@ namespace IGUWPF.src.view.Windows
             ViewModel.UpdateElement(Function);
         }
 
-        private void EditFunctionShowHideCValue(object sender, SelectionChangedEventArgs e)
+        private void EditFunction_ShowAndHideCValue(object sender, SelectionChangedEventArgs e)
         {
             if (FunctionComboBox.SelectedIndex == 6)
             {
@@ -176,7 +174,6 @@ namespace IGUWPF.src.view.Windows
         private void GeneratePreview(object sender, RoutedEventArgs e)
         {
             Line[] Axys = null;
-            Polyline Segment = null;
             PointCollection[] CalculationResult = null;
             Function Function = TakeFunctionDataFromAddFunctionForm();
 
@@ -184,15 +181,20 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             PreviewPanel.Children.Clear();
+
             Axys = PlotServices.GetAxys(PreviewPanel.ActualWidth, PreviewPanel.ActualHeight, ViewModel.RepresentationParameters);
             PreviewPanel.Children.Add(Axys[0]);
             PreviewPanel.Children.Add(Axys[1]);
+
             CalculationResult = PlotServices.CalculatePlot(Function.Calculator, PreviewPanel.ActualWidth,PreviewPanel.ActualHeight, ViewModel.RepresentationParameters);
-            foreach (PointCollection Points in CalculationResult) {
-                Segment = new Polyline();
-                Segment.Stroke = new SolidColorBrush(Function.Color);
-                Segment.Points = Points;
-                PreviewPanel.Children.Add(Segment);
+            foreach (PointCollection Points in CalculationResult)
+            {
+                PreviewPanel.Children.Add( 
+                    new Polyline(){
+                        Stroke = new SolidColorBrush(Function.Color),
+                        Points = Points
+                    }
+                );
             }
         }
 
@@ -215,9 +217,9 @@ namespace IGUWPF.src.view.Windows
             Color FunctionColor = (Color)ColorSelector.SelectedColor;
             Calculator FunctionCalculator = null;
 
-            a = double.Parse(AValueTextBox.Text);
-            b = double.Parse(BValueTextBox.Text);
-            c = double.Parse(CValueTextBox.Text);
+            a = double.Parse(AValueTextBox.Text.Replace('.',','));
+            b = double.Parse(BValueTextBox.Text.Replace('.', ','));
+            c = double.Parse(CValueTextBox.Text.Replace('.', ','));
 
             switch (FunctionComboBox.SelectedIndex)
             {

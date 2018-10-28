@@ -10,22 +10,82 @@ namespace IGUWPF.src.bean
 {
     public class Function : IModelable, INotifyPropertyChanged
     {
-        public string Name { get; private set; }
-        public Calculator Calculator { get; set; }
-        public bool IsHidden { get; private set; }
-        public Color Color { get; private set; }
+        private string InternName;
+        private Color InternColor;
+        private bool InternIsHidden;
+        private Calculator InternCalculator;
+
+
+        public string Name
+        {
+            get { return InternName; }
+            set
+            {
+                InternName = value;
+                OnPropertyChanged("Name");
+            }
+        }
+
+        public Calculator Calculator
+        {
+            get { return InternCalculator; }
+            set
+            {
+                InternCalculator = value;
+                OnPropertyChanged("Calculator");
+            }
+        }
+
+        public bool IsHidden
+        {
+            get { return InternIsHidden; }
+            set
+            {
+                InternIsHidden = value;
+                OnPropertyChanged("IsHidden");
+            }
+        }
+ 
+        public Color Color
+        {
+            get { return InternColor; }
+            set
+            {
+                InternColor = value;
+                OnPropertyChanged("Color");
+            }
+        }
+        [JsonIgnore]
+        public bool IsVissible
+        {
+            get { return !InternIsHidden; }
+            set
+            {
+                InternIsHidden = !value;
+                OnPropertyChanged("IsVissible");
+            }
+        }
+        [JsonIgnore]
+        public string CalculatorStr
+        {
+            get { return InternCalculator.ToString(); }
+            set
+            {
+                //This set, is only for compatibility with the datagrid, because it's established a two way link
+            }
+        }
 
         public Function(string Name, Calculator Calculator, Color Color, bool IsHidden)
         {
-            this.Name = Name;
-            this.Color = Color;
-            this.IsHidden = IsHidden;
-            this.Calculator = Calculator;
+            this.InternName = Name;
+            this.InternColor = Color;
+            this.InternIsHidden = IsHidden;
+            this.InternCalculator = Calculator;
         }
 
         public override string ToString()
         {
-            return "{ID=" + ID + ", Name= " + Name + ", Calculator=" + Calculator + ", Color=" + Color.ToString() + ", IsHidden=" + IsHidden.ToString() + "}";
+            return "{ID=" + ID + ", Name= " + InternName + ", Calculator=" + CalculatorStr + ", Color=" + InternColor.ToString() + ", IsHidden=" + InternIsHidden + "}";
         }
 
         public override bool Equals(object obj)
@@ -47,10 +107,10 @@ namespace IGUWPF.src.bean
         [JsonConstructor]
         public Function(string Name, SerializableCalculator Calculator, Color Color, bool IsHidden)
         {
-            this.Name = Name;
-            this.Color = Color;
-            this.IsHidden = IsHidden;
-            this.Calculator = Calculator.ToICalculator();
+            this.InternName = Name;
+            this.InternColor = Color;
+            this.InternIsHidden = IsHidden;
+            this.InternCalculator = Calculator.ToICalculator();
         }
         #endregion
 
@@ -81,51 +141,9 @@ namespace IGUWPF.src.bean
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string PropertyName)
+        protected virtual void OnPropertyChanged(string PropertyName)
         {
             if (null != PropertyChanged) PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
-        }
-
-        [JsonIgnore]
-        public string NameProperty
-        {
-            get { return Name; }
-            set
-            {
-                Name = value;
-                OnPropertyChanged("Name");
-            }
-        }
-
-        [JsonIgnore]
-        public string CalculatorProperty
-        {
-            get { return Calculator.ToString(); }
-            set {
-                OnPropertyChanged("Calculator");
-            }
-        }
-
-        [JsonIgnore]
-        public bool IsVissibleProperty
-        {
-            get { return !IsHidden; }
-            set
-            {
-                IsHidden = !value;
-                OnPropertyChanged("IsVissible");
-            }
-        }
-
-        [JsonIgnore]
-        public Color ColorProperty
-        {
-            get { return Color; }
-            set
-            {
-                Color = value;
-                OnPropertyChanged("color");
-            }
         }
         #endregion
     }

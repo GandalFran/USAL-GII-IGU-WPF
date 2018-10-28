@@ -231,7 +231,7 @@ namespace IGUWPF.src.view.Windows
                 case 5: FunctionCalculator = new X1Calculator(a, b); break;
                 case 6: FunctionCalculator = new X2Calculator(a, b, c); break;
             }
-
+            
             return new Function(FunctionName, FunctionCalculator, FunctionColor, false);
         }
 

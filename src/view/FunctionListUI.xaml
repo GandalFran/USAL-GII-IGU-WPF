@@ -74,14 +74,14 @@
                     <DataGrid Name="FunctionDataGrid" AutoGenerateColumns="False" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False">
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Mode=TwoWay, Path=NameProperty, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataGridTextColumn Header="Nombre" Width="3*" Binding="{Binding Mode=TwoWay, Path=Name, UpdateSourceTrigger=PropertyChanged}"/>
 
-                            <DataGridTextColumn Header="Expresion" IsReadOnly="True" Width="3*" Binding="{Binding Mode=TwoWay, Path=CalculatorProperty, UpdateSourceTrigger=LostFocus}"/>
+                            <DataGridTextColumn Header="Expresion" IsReadOnly="True" Width="3*" Binding="{Binding Mode=TwoWay, Path=CalculatorStr, UpdateSourceTrigger=LostFocus}"/>
 
                             <DataGridTemplateColumn Header="Color" Width="2*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate DataType="Function">
-                                        <xctk:ColorPicker SelectedColor="{Binding Mode=TwoWay, Path=ColorProperty, UpdateSourceTrigger=PropertyChanged}" />
+                                        <xctk:ColorPicker SelectedColor="{Binding Mode=TwoWay, Path=Color, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -89,7 +89,7 @@
                             <DataGridTemplateColumn  Header="Visibilidad" Width="2*" >
                                 <DataGridTemplateColumn.CellTemplate >
                                     <DataTemplate >
-                                        <CheckBox  IsChecked="{Binding Mode=TwoWay, Path=IsVissibleProperty, UpdateSourceTrigger=PropertyChanged}"   />
+                                        <CheckBox  IsChecked="{Binding Mode=TwoWay, Path=IsVissible, UpdateSourceTrigger=PropertyChanged}"   />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

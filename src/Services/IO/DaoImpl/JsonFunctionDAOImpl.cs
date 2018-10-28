@@ -25,7 +25,8 @@ namespace IGUWPF.src.services.IO
         public Boolean ImportMultipleObject(string FilePath, List<Function> ToFill)
         {
             try
-            {
+            {   
+                /*The following lines has been taken from Json.net samples https://www.newtonsoft.com/json/help/html/Samples.htm*/
                 string JsonSerializedArray = File.ReadAllText(FilePath, Encoding.UTF8);
                 ToFill.AddRange(JsonConvert.DeserializeObject<List<Function>>(@JsonSerializedArray));
             }
@@ -49,7 +50,7 @@ namespace IGUWPF.src.services.IO
 
             try
             {
-                /*The following line has been taken from Json.net samples https://www.newtonsoft.com/json/help/html/Samples.htm*/
+                /*The following lines has been taken from Json.net samples https://www.newtonsoft.com/json/help/html/Samples.htm*/
                 string output = JsonConvert.SerializeObject(toExport, Formatting.Indented);
                 File.WriteAllText(@FilePath, output);
             }

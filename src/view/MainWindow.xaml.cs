@@ -12,6 +12,7 @@ using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
 using System.Windows.Threading;
+using IGUWPF.src.utils;
 
 namespace IGUWPF
 {
@@ -41,13 +42,6 @@ namespace IGUWPF
                 Interval = TimeSpan.FromMilliseconds(Constants.NumberOfMsBeforePlotRecalculation)
             };
 
-            //Give default values
-            RepresentationParameters RepresentationValues;
-            RepresentationValues.XMin = RepresentationValues.YMin = -10;
-            RepresentationValues.XMax = RepresentationValues.YMax = 10;
-            ViewModel.RepresentationParameters = RepresentationValues;
-            ViewModel.ZoomPonderation = 1;
-
             //Create the UI elements which are changed during the execution
             XYMouseCoordinates = new Label()
             {
@@ -65,16 +59,26 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
+
+            //AQUI ESTA EL FALLO
+
+            Console.WriteLine("HELLO");
+            Console.WriteLine( ViewModel.XMin );
+            double test = ViewModel.XMin + ViewModel.XMax;
+            Console.WriteLine(test);
+
+            
+            
             CursorAxys = PlotServices.GetAxys(PlotWidth,PlotHeight,ViewModel.RepresentationParameters);
             CursorAxys[0].Stroke = CursorAxys[1].Stroke = Brushes.DodgerBlue;
             CursorAxys[0].Visibility = CursorAxys[1].Visibility = Visibility.Hidden;
 
             //ViewModel events
-            ViewModel.ModelCleaned += ViewModel_ModelCleaned;
+            ViewModel.DeleteAll += ViewModel_ModelCleaned;
             ViewModel.ElementCreated += ViewModel_ElementCreated;
             ViewModel.ElementDeleted += ViewModel_ElementDeleted;
             ViewModel.ElementUpdated += ViewModel_ElementUpdated;
-            ViewModel.RepresentationParametersChanged += RefreshPlotPanel;
+            ViewModel.UpdateAll += RefreshPlotPanel;
             //Reload panel if size changes
             this.SizeChanged += ResetRefreshPlotPanelTimer;
             RefreshPlotPanelTimer.Tick += RefreshPlotPanel;
@@ -308,7 +312,7 @@ namespace IGUWPF
             result = IOServices.ExportPlot(SaveFileForm.FileName, PlotPanel);
             if (result == false)
             {
-                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LanguageProperties.FunctionModelErrorMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }

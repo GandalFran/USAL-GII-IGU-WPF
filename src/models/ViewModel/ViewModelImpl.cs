@@ -12,7 +12,8 @@ namespace IGUWPF.src.models.ViewModel
         public event ViewModelEventHandler ElementCreated;
         public event ViewModelEventHandler ElementDeleted;
         public event ViewModelEventHandler ElementUpdated;
-        public event ViewModelEventHandler ModelCleaned;
+        public event ViewModelEventHandler DeleteAll;
+        public event ViewModelEventHandler UpdateAll;
 
         public ViewModelImpl() {
             Model = new ObservableModelImpl<T>();
@@ -26,7 +27,7 @@ namespace IGUWPF.src.models.ViewModel
         public int CreateElement(T Element)
         {
             int result = Model.CreateElement(Element);
-            Element.PropertyChanged += OnPropertyChanged;
+            Element.PropertyChanged += ElementPropertyChanged;
             OnElementCreated(Element);
             return result;
         }
@@ -36,7 +37,7 @@ namespace IGUWPF.src.models.ViewModel
             bool result = Model.UpdateElement(Element);
             if (result)
             {
-                Element.PropertyChanged += OnPropertyChanged;
+                Element.PropertyChanged += ElementPropertyChanged;
                 OnElementUpdated(Element);
             }
             return result;
@@ -68,7 +69,7 @@ namespace IGUWPF.src.models.ViewModel
         public void Clear()
         {
             Model.Clear();
-            OnModelCleaned();
+            OnDeleteAll();
         }
 
         protected virtual void OnElementCreated(T Element) {
@@ -85,12 +86,17 @@ namespace IGUWPF.src.models.ViewModel
             if (null != ElementUpdated) ElementUpdated(this, new ViewModelEventArgs(Element));
         }
 
-        protected virtual void OnModelCleaned()
+        protected virtual void OnDeleteAll()
         {
-            if (null != ModelCleaned) ModelCleaned(this, new ViewModelEventArgs());
+            if (null != DeleteAll) DeleteAll(this, new ViewModelEventArgs());
         }
 
-        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+        protected virtual void OnUpdateAll()
+        {
+            if (null != UpdateAll) UpdateAll(this, new ViewModelEventArgs());
+        }
+
+        protected virtual void ElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
             OnElementUpdated((T)sender);
         }
     }

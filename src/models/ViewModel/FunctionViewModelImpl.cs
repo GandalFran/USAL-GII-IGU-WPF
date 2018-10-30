@@ -1,6 +1,12 @@
 ﻿using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
+using IniParser;
+using IniParser.Model;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
 
 namespace IGUWPF.src.models.ViewModel
 {
@@ -11,68 +17,70 @@ namespace IGUWPF.src.models.ViewModel
 
     public class FunctionViewModelImpl : ViewModelImpl<Function>
     {
-        public event ViewModelEventHandler RepresentationParametersChanged;
+        private double InternZoomPonderation = 1;
+        private PropertiesDAO PropertiesDAO = new PropertiesDAO();
 
-        private double InternZoomPonderation;
-        private RepresentationParameters InternRepresentationParameters;
+
+
 
         public RepresentationParameters RepresentationParameters
         {
-            get
+            get => new RepresentationParameters()
             {
-                RepresentationParameters ToReturn;
-                ToReturn.XMin = InternRepresentationParameters.XMin;
-                ToReturn.XMax = InternRepresentationParameters.XMax;
-                ToReturn.YMin = InternRepresentationParameters.YMin;
-                ToReturn.YMax = InternRepresentationParameters.YMax;
-                return ToReturn;
-            }
+                XMin = PropertiesDAO.XMin,
+                XMax = PropertiesDAO.XMax,
+                YMin = PropertiesDAO.YMin,
+                YMax = PropertiesDAO.YMax
+            };
             set
             {
-                InternRepresentationParameters = value;
-                OnRepresentationParametersChanged();
+                PropertiesDAO.XMin = value.XMin;
+                PropertiesDAO.XMax = value.XMax;
+                PropertiesDAO.YMin = value.YMin;
+                PropertiesDAO.YMax = value.YMax;
+                OnUpdateAll();
+            }
+        }
+
+        public double ZoomPonderation
+        {
+            get { return InternZoomPonderation; }
+            set
+            {
+                this.InternZoomPonderation = value;
+                OnUpdateAll();
             }
         }
 
         public RepresentationParameters PonderedRepresentationParameters
         {
-            get {
-                RepresentationParameters ToReturn;
-                ToReturn.XMin = InternRepresentationParameters.XMin * InternZoomPonderation;
-                ToReturn.XMax = InternRepresentationParameters.XMax * InternZoomPonderation;
-                ToReturn.YMin = InternRepresentationParameters.YMin * InternZoomPonderation;
-                ToReturn.YMax = InternRepresentationParameters.YMax * InternZoomPonderation;
-                return ToReturn;
-            }
+            get  => new RepresentationParameters() {
+                        XMin = PropertiesDAO.XMin * InternZoomPonderation,
+                        XMax = PropertiesDAO.XMax * InternZoomPonderation,
+                        YMin = PropertiesDAO.YMin * InternZoomPonderation,
+                        YMax = PropertiesDAO.YMax * InternZoomPonderation
+            };
         }
 
         public double XMin {
-            get { return InternRepresentationParameters.XMin * ZoomPonderation; }
+            get { return PropertiesDAO.XMin * ZoomPonderation; }
         }
 
         public double XMax
         {
-            get { return InternRepresentationParameters.XMax * ZoomPonderation; }
+            get { return PropertiesDAO.XMax * ZoomPonderation; }
         }
 
         public double YMin
         {
-            get { return InternRepresentationParameters.YMin * ZoomPonderation; }
+            get { return PropertiesDAO.YMin * ZoomPonderation; }
         }
 
         public double YMax
         {
-            get { return InternRepresentationParameters.YMax * ZoomPonderation; }
+            get { return PropertiesDAO.YMax * ZoomPonderation; }
         }
 
-        public double ZoomPonderation {
-            get { return InternZoomPonderation; }
-            set
-            {
-                this.InternZoomPonderation = value;
-                OnRepresentationParametersChanged();
-            }
-        }
 
         public bool ExportModel(string DataPath)
         {
@@ -97,9 +105,79 @@ namespace IGUWPF.src.models.ViewModel
             return result;
         }
 
-        protected virtual void OnRepresentationParametersChanged() {
-            if (null != RepresentationParametersChanged) RepresentationParametersChanged(this, new ViewModelEventArgs());
+    }
+
+     class PropertiesDAO{
+
+        private readonly IniData Properties;
+        private readonly FileIniDataParser Parser;
+        private readonly string PropertiesFilePath = Constants.RepresentationParametersPropertiesFilePath;
+
+        public PropertiesDAO()
+        {
+            Parser = new FileIniDataParser();
+            Properties = Parser.ReadFile(PropertiesFilePath);
         }
 
+        public double XMin
+        {
+            get {
+                string toParse = Properties["DOMAINVALUES"]["XMin"];
+                double toReturn = double.Parse(toParse);
+                return toReturn;
+            }
+            set {
+                Properties["DOMAINVALUES"]["XMin"] = value.ToString();
+                Parser.WriteFile(PropertiesFilePath, Properties);
+            }
+        }
+
+        public double XMax
+        {
+
+            get
+            {
+                string toParse = Properties["DOMAINVALUES"]["XMax"];
+                double toReturn = double.Parse(toParse);
+                return toReturn;
+            }
+            set
+            {
+                Properties["DOMAINVALUES"]["XMax"] = value.ToString();
+                Parser.WriteFile(PropertiesFilePath, Properties);
+            }
+        }
+
+        public double YMin
+        {
+
+            get
+            {
+                string toParse = Properties["DOMAINVALUES"]["YMin"];
+                double toReturn = double.Parse(toParse);
+                return toReturn;
+            }
+            set
+            {
+                Properties["DOMAINVALUES"]["YMin"] = value.ToString();
+                Parser.WriteFile(PropertiesFilePath, Properties);
+            }
+        }
+
+        public double YMax
+        {
+
+            get
+            {
+                string toParse = Properties["DOMAINVALUES"]["YMax"];
+                double toReturn = double.Parse(toParse);
+                return toReturn;
+            }
+            set
+            {
+                Properties["DOMAINVALUES"]["YMax"] = value.ToString();
+                Parser.WriteFile(PropertiesFilePath, Properties);
+            }
+        }
     }
 }

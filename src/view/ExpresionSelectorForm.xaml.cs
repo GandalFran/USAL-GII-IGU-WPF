@@ -1,4 +1,5 @@
 ﻿using IGUWPF.src.services.calculator;
+using IGUWPF.src.utils;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,11 +11,9 @@ namespace IGUWPF.src.view
         public Calculator Calculator {
 
             get {
-                double a, b, c;
-
-                double.TryParse(AValueTextBox.Text.Replace('.', ','), out a);
-                double.TryParse(BValueTextBox.Text.Replace('.', ','), out b);
-                double.TryParse(CValueTextBox.Text.Replace('.', ','), out c);
+                double.TryParse(AValueTextBox.Text.Replace('.', ','), out double a);
+                double.TryParse(BValueTextBox.Text.Replace('.', ','), out double b);
+                double.TryParse(CValueTextBox.Text.Replace('.', ','), out double c);
 
                 switch (FunctionComboBox.SelectedIndex) {
                     case 0: return new CosXCalculator(a,b);
@@ -98,14 +97,12 @@ namespace IGUWPF.src.view
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            double toTest;
-
-            if (!double.TryParse(AValueTextBox.Text.Replace('.', ','), out toTest) ||
+            if (!double.TryParse(AValueTextBox.Text.Replace('.', ','), out double toTest) ||
                 !double.TryParse(BValueTextBox.Text.Replace('.', ','), out toTest) ||
                 !double.TryParse(CValueTextBox.Text.Replace('.', ','), out toTest) ||
                 FunctionComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LanguageProperties.IncorrectDataMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

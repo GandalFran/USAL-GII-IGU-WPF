@@ -30,7 +30,8 @@ namespace IGUWPF.src.models.ViewModel
         event ViewModelEventHandler ElementCreated;
         event ViewModelEventHandler ElementDeleted;
         event ViewModelEventHandler ElementUpdated;
-        event ViewModelEventHandler ModelCleaned;
+        event ViewModelEventHandler DeleteAll;
+        event ViewModelEventHandler UpdateAll;
 
         int CreateElement(T Element);
         bool UpdateElement(T Element);

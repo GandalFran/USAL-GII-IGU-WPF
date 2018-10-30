@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using IGUWPF.src.utils;
+using System.Windows;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -24,15 +25,13 @@ namespace IGUWPF.src.view.Windows
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            double toTest;
-
-            if (!double.TryParse(XMinTextBox.Text.Replace('.', ','), out toTest) ||
+            if (!double.TryParse(XMinTextBox.Text.Replace('.', ','), out double toTest) ||
                 !double.TryParse(XMaxTextBox.Text.Replace('.', ','), out toTest) ||
                 !double.TryParse(YMinTextBox.Text.Replace('.', ','), out toTest) ||
                 !double.TryParse(YMaxTextBox.Text.Replace('.', ','), out toTest) ||
                 Xmin >= Xmax || Ymin >= Ymax)
             {
-                MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(LanguageProperties.IncorrectDataMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

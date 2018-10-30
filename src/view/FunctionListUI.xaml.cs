@@ -46,14 +46,15 @@ namespace IGUWPF.src.view.Windows
         private void SaveProject(object sender, RoutedEventArgs e)
         {
             //Show dialog to choose the path to save the project
-            SaveFileDialog SaveFileForm = new SaveFileDialog();
-            SaveFileForm.Title = "Save project";
-            SaveFileForm.FileName = "Desktop"; // Default file name
-            SaveFileForm.DefaultExt = ".maclab"; // Default file extension
-            SaveFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            SaveFileForm.AddExtension = true;
+            SaveFileDialog SaveFileForm = new SaveFileDialog() {
+                Title = "Guardar proyecto",
+                FileName = "Desktop", // Default file name
+                DefaultExt = ".maclab", // Default file extension
+                Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension,
+                AddExtension = true
+            };
 
-            Nullable<bool> result = SaveFileForm.ShowDialog();
+            bool result = (bool)SaveFileForm.ShowDialog();
             if (false == result)
                 return;
 
@@ -69,14 +70,15 @@ namespace IGUWPF.src.view.Windows
         private void OpenProject(object sender, RoutedEventArgs e)
         {
             //Show dialog to choose the project to import
-            OpenFileDialog OpenFileForm = new OpenFileDialog();
-            OpenFileForm.FileName = "Open project";
-            OpenFileForm.FileName = "Desktop"; // Default file name
-            OpenFileForm.DefaultExt = ".maclab"; // Default file extension
-            OpenFileForm.Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension;
-            OpenFileForm.Multiselect = false;
+            OpenFileDialog OpenFileForm = new OpenFileDialog() {
+                Title = "Abrir proyecto",
+                FileName = "Desktop", // Default file name
+                DefaultExt = ".maclab", // Default file extension
+                Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension,
+                Multiselect = false
+            };
 
-            Nullable<bool> result = OpenFileForm.ShowDialog();
+            bool result = (bool)OpenFileForm.ShowDialog();
             if (false == result)
                 return;
 
@@ -94,12 +96,13 @@ namespace IGUWPF.src.view.Windows
             RepresentationParameters RepresentationParamters = ViewModel.RepresentationParameters;
 
             //Show dialog to edit de properties
-            SettingsForm SettingsForm = new SettingsForm();
-            //Load older values
-            SettingsForm.Xmin = RepresentationParamters.XMin;
-            SettingsForm.Xmax = RepresentationParamters.XMax;
-            SettingsForm.Ymin = RepresentationParamters.YMin;
-            SettingsForm.Ymax = RepresentationParamters.YMax;
+            SettingsForm SettingsForm = new SettingsForm() {
+                //Load older values
+                Xmin = RepresentationParamters.XMin,
+                Xmax = RepresentationParamters.XMax,
+                Ymin = RepresentationParamters.YMin,
+                Ymax = RepresentationParamters.YMax
+            };
 
             SettingsForm.ShowDialog();
             if (false == SettingsForm.DialogResult)
@@ -142,10 +145,11 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Display formulary
-            ExpressionSelectorUI Form = new ExpressionSelectorUI();
-            Form.Title = "Editar expresion";
+            ExpressionSelectorUI Form = new ExpressionSelectorUI() {
+                Title = "Editar expresion",
+                Calculator = Function.Calculator
+            };
             Form.FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
-            Form.Calculator = Function.Calculator;
 
             Form.ShowDialog();
             if (false == Form.DialogResult)
@@ -199,9 +203,8 @@ namespace IGUWPF.src.view.Windows
         }
 
         private Function TakeFunctionDataFromAddFunctionForm() {
-            double toTest;
 
-            if (!double.TryParse(AValueTextBox.Text, out toTest) ||
+            if (!double.TryParse(AValueTextBox.Text, out double toTest) ||
                 !double.TryParse(BValueTextBox.Text, out toTest) ||
                 !double.TryParse(CValueTextBox.Text, out toTest) ||
                 FunctionNameTextBox.Text.Length == 0 ||

@@ -42,10 +42,12 @@ namespace IGUWPF
             };
 
             //Give default values
-            RepresentationParameters RepresentationValues;
-            RepresentationValues.XMin = RepresentationValues.YMin = -10;
-            RepresentationValues.XMax = RepresentationValues.YMax = 10;
-            ViewModel.RepresentationParameters = RepresentationValues;
+            ViewModel.RepresentationParameters = new RepresentationParameters() {
+                XMin = -10,
+                XMax = 10,
+                YMin = -10,
+                YMax = 10
+            };
             ViewModel.ZoomPonderation = 1;
 
             //Create the UI elements which are changed during the execution
@@ -55,7 +57,7 @@ namespace IGUWPF
                 BorderBrush = Brushes.DodgerBlue,
                 Foreground = Brushes.DodgerBlue,
                 Background = Brushes.AliceBlue,
-                Visibility = Visibility.Hidden
+                Visibility = Visibility.Hidden,
             };
             ZoomLabel = new Label()
             {
@@ -66,15 +68,15 @@ namespace IGUWPF
                 Visibility = Visibility.Hidden
             };
             CursorAxys = PlotServices.GetAxys(PlotWidth,PlotHeight,ViewModel.RepresentationParameters);
-            CursorAxys[0].Stroke = CursorAxys[1].Stroke = Brushes.DodgerBlue;
-            CursorAxys[0].Visibility = CursorAxys[1].Visibility = Visibility.Hidden;
+                CursorAxys[0].Stroke = CursorAxys[1].Stroke = Brushes.DodgerBlue;
+                CursorAxys[0].Visibility = CursorAxys[1].Visibility = Visibility.Hidden;
 
             //ViewModel events
-            ViewModel.ModelCleaned += ViewModel_ModelCleaned;
             ViewModel.ElementCreated += ViewModel_ElementCreated;
             ViewModel.ElementDeleted += ViewModel_ElementDeleted;
             ViewModel.ElementUpdated += ViewModel_ElementUpdated;
-            ViewModel.RepresentationParametersChanged += RefreshPlotPanel;
+            ViewModel.DeleteAll += ViewModel_DeleteAll;
+            ViewModel.UpdateAll += RefreshPlotPanel;
             //Reload panel if size changes
             this.SizeChanged += ResetRefreshPlotPanelTimer;
             RefreshPlotPanelTimer.Tick += RefreshPlotPanel;
@@ -113,6 +115,7 @@ namespace IGUWPF
                         Name = PlotServices.GetPlotName(Function.ID) + "S" + (i++)
                     });
                 }
+
             }
         }
 
@@ -180,7 +183,7 @@ namespace IGUWPF
             }
         }
 
-        private void ViewModel_ModelCleaned(object sender, ViewModelEventArgs e)
+        private void ViewModel_DeleteAll(object sender, ViewModelEventArgs e)
         {
             PlotPanel.Children.Clear();
             AddPlotPanelBasics();
@@ -300,8 +303,8 @@ namespace IGUWPF
                 AddExtension = true
             };
 
-            Nullable<bool> result = SaveFileForm.ShowDialog();
-            if (null == result)
+            bool result = (bool)SaveFileForm.ShowDialog();
+            if (false == result)
                 return;
             
             //Export the image
@@ -320,10 +323,14 @@ namespace IGUWPF
             PlotPanel.Children.Add(XYMouseCoordinates);
                 Canvas.SetRight(XYMouseCoordinates, 0);
                 Canvas.SetBottom(XYMouseCoordinates, 0);
+            //Give a high zIndex to ensure that is over all functions
+            Canvas.SetZIndex(XYMouseCoordinates, 300); 
 
             PlotPanel.Children.Add(ZoomLabel);
                 Canvas.SetLeft(ZoomLabel, 0);
                 Canvas.SetTop(ZoomLabel, 0);
+            //Give a high zIndex to ensure that is over all functions
+            Canvas.SetZIndex(ZoomLabel, 300); 
 
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
                 PlotPanel.Children.Add(Axys[0]);

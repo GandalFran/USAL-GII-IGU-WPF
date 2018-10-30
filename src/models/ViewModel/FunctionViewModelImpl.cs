@@ -11,10 +11,18 @@ namespace IGUWPF.src.models.ViewModel
 
     public class FunctionViewModelImpl : ViewModelImpl<Function>
     {
-        public event ViewModelEventHandler RepresentationParametersChanged;
-
         private double InternZoomPonderation;
         private RepresentationParameters InternRepresentationParameters;
+
+        public double ZoomPonderation
+        {
+            get { return InternZoomPonderation; }
+            set
+            {
+                this.InternZoomPonderation = value;
+                OnUpdateAll();
+            }
+        }
 
         public RepresentationParameters RepresentationParameters
         {
@@ -30,7 +38,7 @@ namespace IGUWPF.src.models.ViewModel
             set
             {
                 InternRepresentationParameters = value;
-                OnRepresentationParametersChanged();
+                OnUpdateAll();
             }
         }
 
@@ -65,15 +73,6 @@ namespace IGUWPF.src.models.ViewModel
             get { return InternRepresentationParameters.YMax * ZoomPonderation; }
         }
 
-        public double ZoomPonderation {
-            get { return InternZoomPonderation; }
-            set
-            {
-                this.InternZoomPonderation = value;
-                OnRepresentationParametersChanged();
-            }
-        }
-
         public bool ExportModel(string DataPath)
         {
             IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
@@ -95,10 +94,6 @@ namespace IGUWPF.src.models.ViewModel
             }
 
             return result;
-        }
-
-        protected virtual void OnRepresentationParametersChanged() {
-            if (null != RepresentationParametersChanged) RepresentationParametersChanged(this, new ViewModelEventArgs());
         }
 
     }

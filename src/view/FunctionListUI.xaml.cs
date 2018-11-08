@@ -8,7 +8,6 @@ using System.Windows.Shapes;
 using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.bean;
 using System.Windows.Controls;
-using IGUWPF.src.utils;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -29,8 +28,6 @@ namespace IGUWPF.src.view.Windows
             //Add function selection combobox items
             FunctionComboBox.ItemsSource = InitializeFunctionComboBox();
             FunctionComboBox.SelectionChanged += EditFunction_ShowAndHideCValue;
-
-            Console.WriteLine(ViewModel.XMin);
 
             //Add handlers 
             //Handlers for button events
@@ -65,7 +62,7 @@ namespace IGUWPF.src.view.Windows
             result = ViewModel.ExportModel(SaveFileForm.FileName);
             if (result == false)
             {
-                MessageBox.Show(LanguageProperties.IOErrorMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(Constants.IOErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -89,7 +86,7 @@ namespace IGUWPF.src.view.Windows
             result = ViewModel.ImportModel(OpenFileForm.FileName);
             if (result == false)
             {
-                MessageBox.Show(LanguageProperties.IOErrorMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(Constants.IOErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -136,12 +133,8 @@ namespace IGUWPF.src.view.Windows
         private void DeleteFunction(object sender, RoutedEventArgs e)
         {
             Function Function = (Function)FunctionDataGrid.SelectedItem;
-            if (null != Function)
-            {
-                MessageBoxResult Result = MessageBox.Show(LanguageProperties.DeleteConfirmationMsg, LanguageProperties.DeleteConfirmationWindowTitle,MessageBoxButton.OKCancel,MessageBoxImage.Warning);
-                if(Result == MessageBoxResult.OK)
-                    ViewModel.DeleteElement(Function);
-            }
+            if(null != Function)
+                ViewModel.DeleteElement(Function);
         }
 
         private void EditFunction(object sender, EventArgs e)
@@ -218,7 +211,7 @@ namespace IGUWPF.src.view.Windows
                 ColorSelector.SelectedColor == null ||
                 FunctionComboBox.SelectedIndex == -1)
             {
-                MessageBox.Show(LanguageProperties.IncorrectDataMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 

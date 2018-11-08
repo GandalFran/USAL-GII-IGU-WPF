@@ -12,7 +12,6 @@ using IGUWPF.src.models.ViewModel;
 using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
 using System.Windows.Threading;
-using IGUWPF.src.utils;
 
 namespace IGUWPF
 {
@@ -68,16 +67,6 @@ namespace IGUWPF
                 Background = Brushes.AliceBlue,
                 Visibility = Visibility.Hidden
             };
-
-            //AQUI ESTA EL FALLO
-
-            Console.WriteLine("HELLO");
-            Console.WriteLine( ViewModel.XMin );
-            double test = ViewModel.XMin + ViewModel.XMax;
-            Console.WriteLine(test);
-
-            
-            
             CursorAxys = PlotServices.GetAxys(PlotWidth,PlotHeight,ViewModel.RepresentationParameters);
                 CursorAxys[0].Stroke = CursorAxys[1].Stroke = Brushes.DodgerBlue;
                 CursorAxys[0].Visibility = CursorAxys[1].Visibility = Visibility.Hidden;
@@ -307,7 +296,7 @@ namespace IGUWPF
         {
             //Show dialog to choose the path to export
             SaveFileDialog SaveFileForm = new SaveFileDialog() {
-                Title = "Export plot",
+                Title = "Exportar representacion",
                 FileName = "Desktop",
                 DefaultExt = ".png",
                 Filter = "PNG image (.png)|*.png",
@@ -322,7 +311,7 @@ namespace IGUWPF
             result = IOServices.ExportPlot(SaveFileForm.FileName, PlotPanel);
             if (result == false)
             {
-                MessageBox.Show(LanguageProperties.FunctionModelErrorMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(Constants.FunctionModelErrorMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
         }
@@ -335,13 +324,13 @@ namespace IGUWPF
                 Canvas.SetRight(XYMouseCoordinates, 0);
                 Canvas.SetBottom(XYMouseCoordinates, 0);
             //Give a high zIndex to ensure that is over all functions
-            Canvas.SetZIndex(XYMouseCoordinates, 300); 
+            Panel.SetZIndex(XYMouseCoordinates, 300); 
 
             PlotPanel.Children.Add(ZoomLabel);
                 Canvas.SetLeft(ZoomLabel, 0);
                 Canvas.SetTop(ZoomLabel, 0);
             //Give a high zIndex to ensure that is over all functions
-            Canvas.SetZIndex(ZoomLabel, 300); 
+            Panel.SetZIndex(ZoomLabel, 300); 
 
             Line[] Axys = PlotServices.GetAxys(this.PlotWidth, this.PlotHeight, ViewModel.PonderedRepresentationParameters);
                 PlotPanel.Children.Add(Axys[0]);

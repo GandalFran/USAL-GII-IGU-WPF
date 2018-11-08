@@ -28,7 +28,7 @@ namespace IGUWPF.src.models.ViewModel
         public int CreateElement(T Element)
         {
             int result = Model.CreateElement(Element);
-            Element.PropertyChanged += ElementPropertyChanged;
+            Element.PropertyChanged += PropertyChanged;
             OnElementCreated(Element);
             return result;
         }
@@ -38,7 +38,7 @@ namespace IGUWPF.src.models.ViewModel
             bool result = Model.UpdateElement(Element);
             if (result)
             {
-                Element.PropertyChanged += ElementPropertyChanged;
+                Element.PropertyChanged += PropertyChanged;
                 OnElementUpdated(Element);
             }
             return result;
@@ -92,12 +92,12 @@ namespace IGUWPF.src.models.ViewModel
             if (null != DeleteAll) DeleteAll(this, new ViewModelEventArgs());
         }
 
-        {
         protected virtual void OnUpdateAll()
+        {
             if (null != UpdateAll) UpdateAll(this, new ViewModelEventArgs());
         }
 
-        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
+        protected virtual void PropertyChanged(object sender, PropertyChangedEventArgs e) {
             OnElementUpdated((T)sender);
         }
     }

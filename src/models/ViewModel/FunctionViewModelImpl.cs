@@ -1,12 +1,6 @@
 ﻿using IGUWPF.src.bean;
 using IGUWPF.src.services.IO;
-using IniParser;
-using IniParser.Model;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
 
 namespace IGUWPF.src.models.ViewModel
 {
@@ -32,26 +26,15 @@ namespace IGUWPF.src.models.ViewModel
 
         public RepresentationParameters RepresentationParameters
         {
-            get => new RepresentationParameters()
+            get
             {
-                XMin = PropertiesDAO.XMin,
-                XMax = PropertiesDAO.XMax,
-                YMin = PropertiesDAO.YMin,
-                YMax = PropertiesDAO.YMax
-            };
-            set
-            {
-                PropertiesDAO.XMin = value.XMin;
-                PropertiesDAO.XMax = value.XMax;
-                PropertiesDAO.YMin = value.YMin;
-                PropertiesDAO.YMax = value.YMax;
-                OnUpdateAll();
+                RepresentationParameters ToReturn;
+                ToReturn.XMin = InternRepresentationParameters.XMin;
+                ToReturn.XMax = InternRepresentationParameters.XMax;
+                ToReturn.YMin = InternRepresentationParameters.YMin;
+                ToReturn.YMax = InternRepresentationParameters.YMax;
+                return ToReturn;
             }
-        }
-
-        public double ZoomPonderation
-        {
-            get { return InternZoomPonderation; }
             set
             {
                 InternRepresentationParameters = value;
@@ -61,31 +44,33 @@ namespace IGUWPF.src.models.ViewModel
 
         public RepresentationParameters PonderedRepresentationParameters
         {
-            get  => new RepresentationParameters() {
-                        XMin = PropertiesDAO.XMin * InternZoomPonderation,
-                        XMax = PropertiesDAO.XMax * InternZoomPonderation,
-                        YMin = PropertiesDAO.YMin * InternZoomPonderation,
-                        YMax = PropertiesDAO.YMax * InternZoomPonderation
-            };
+            get {
+                RepresentationParameters ToReturn;
+                ToReturn.XMin = InternRepresentationParameters.XMin * InternZoomPonderation;
+                ToReturn.XMax = InternRepresentationParameters.XMax * InternZoomPonderation;
+                ToReturn.YMin = InternRepresentationParameters.YMin * InternZoomPonderation;
+                ToReturn.YMax = InternRepresentationParameters.YMax * InternZoomPonderation;
+                return ToReturn;
+            }
         }
 
         public double XMin {
-            get { return PropertiesDAO.XMin * ZoomPonderation; }
+            get { return InternRepresentationParameters.XMin * ZoomPonderation; }
         }
 
         public double XMax
         {
-            get { return PropertiesDAO.XMax * ZoomPonderation; }
+            get { return InternRepresentationParameters.XMax * ZoomPonderation; }
         }
 
         public double YMin
         {
-            get { return PropertiesDAO.YMin * ZoomPonderation; }
+            get { return InternRepresentationParameters.YMin * ZoomPonderation; }
         }
 
         public double YMax
         {
-            get { return PropertiesDAO.YMax * ZoomPonderation; }
+            get { return InternRepresentationParameters.YMax * ZoomPonderation; }
         }
 
         public bool ExportModel(string DataPath)

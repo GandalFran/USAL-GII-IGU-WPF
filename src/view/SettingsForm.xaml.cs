@@ -1,5 +1,4 @@
-﻿using IGUWPF.src.utils;
-using System.Windows;
+﻿using System.Windows;
 
 namespace IGUWPF.src.view.Windows
 {
@@ -31,7 +30,7 @@ namespace IGUWPF.src.view.Windows
                 !double.TryParse(YMaxTextBox.Text.Replace('.', ','), out toTest) ||
                 Xmin >= Xmax || Ymin >= Ymax)
             {
-                MessageBox.Show(LanguageProperties.IncorrectDataMsg, LanguageProperties.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(Constants.IncorrectDataMsg, Constants.ErrorWindowTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

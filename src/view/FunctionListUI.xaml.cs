@@ -49,16 +49,15 @@ namespace IGUWPF.src.view.Windows
         private void SaveProject(object sender, RoutedEventArgs e)
         {
             //Show dialog to choose the path to save the project
-            SaveFileDialog SaveFileForm = new SaveFileDialog()
-            {
-                Title = "Save project",
-                FileName = "Desktop",
-                DefaultExt = ".maclab",
+            SaveFileDialog SaveFileForm = new SaveFileDialog() {
+                Title = "Guardar proyecto",
+                FileName = "Desktop", // Default file name
+                DefaultExt = ".maclab", // Default file extension
                 Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension,
                 AddExtension = true
             };
 
-            Nullable<bool> result = SaveFileForm.ShowDialog();
+            bool result = (bool)SaveFileForm.ShowDialog();
             if (false == result)
                 return;
 
@@ -74,16 +73,15 @@ namespace IGUWPF.src.view.Windows
         private void OpenProject(object sender, RoutedEventArgs e)
         {
             //Show dialog to choose the project to import
-            OpenFileDialog OpenFileForm = new OpenFileDialog()
-            {
-                Title = "Open project",
-                FileName = "Desktop",
-                DefaultExt = ".maclab",
+            OpenFileDialog OpenFileForm = new OpenFileDialog() {
+                Title = "Abrir proyecto",
+                FileName = "Desktop", // Default file name
+                DefaultExt = ".maclab", // Default file extension
                 Filter = "MacLab Project (." + Constants.ProjectFileExtension + ")|*." + Constants.ProjectFileExtension,
                 Multiselect = false
             };
 
-            Nullable<bool> result = OpenFileForm.ShowDialog();
+            bool result = (bool)OpenFileForm.ShowDialog();
             if (false == result)
                 return;
 
@@ -101,8 +99,7 @@ namespace IGUWPF.src.view.Windows
             RepresentationParameters RepresentationParamters = ViewModel.RepresentationParameters;
 
             //Show dialog to edit de properties
-            SettingsForm SettingsForm = new SettingsForm()
-            {
+            SettingsForm SettingsForm = new SettingsForm() {
                 //Load older values
                 Xmin = RepresentationParamters.XMin,
                 Xmax = RepresentationParamters.XMax,
@@ -155,8 +152,7 @@ namespace IGUWPF.src.view.Windows
                 return;
 
             //Display formulary
-            ExpressionSelectorUI Form = new ExpressionSelectorUI()
-            {
+            ExpressionSelectorUI Form = new ExpressionSelectorUI() {
                 Title = "Editar expresion",
                 Calculator = Function.Calculator
             };

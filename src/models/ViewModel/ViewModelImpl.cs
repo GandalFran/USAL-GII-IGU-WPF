@@ -15,7 +15,8 @@ namespace IGUWPF.src.models.ViewModel
         public event ViewModelEventHandler DeleteAll;
         public event ViewModelEventHandler UpdateAll;
 
-        public ViewModelImpl() {
+        public ViewModelImpl()
+        {
             Model = new ObservableModelImpl<T>();
         }
 
@@ -91,12 +92,12 @@ namespace IGUWPF.src.models.ViewModel
             if (null != DeleteAll) DeleteAll(this, new ViewModelEventArgs());
         }
 
-        protected virtual void OnUpdateAll()
         {
+        protected virtual void OnUpdateAll()
             if (null != UpdateAll) UpdateAll(this, new ViewModelEventArgs());
         }
 
-        protected virtual void ElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
+        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e) {
             OnElementUpdated((T)sender);
         }
     }

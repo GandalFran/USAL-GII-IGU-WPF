@@ -19,11 +19,9 @@ D:\Repos\IGU-WPF\bin\Release\ro\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Release\ru\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Release\sv\Xceed.Wpf.AvalonDock.resources.dll
 D:\Repos\IGU-WPF\bin\Release\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-D:\Repos\IGU-WPF\obj\Release\MainWindow.baml
 D:\Repos\IGU-WPF\obj\Release\src\view\ExpresionSelectorForm.baml
 D:\Repos\IGU-WPF\obj\Release\src\view\FunctionListUI.baml
 D:\Repos\IGU-WPF\obj\Release\src\view\SettingsForm.baml
-D:\Repos\IGU-WPF\obj\Release\MainWindow.g.cs
 D:\Repos\IGU-WPF\obj\Release\src\view\ExpresionSelectorForm.g.cs
 D:\Repos\IGU-WPF\obj\Release\src\view\FunctionListUI.g.cs
 D:\Repos\IGU-WPF\obj\Release\src\view\SettingsForm.g.cs
@@ -37,3 +35,5 @@ D:\Repos\IGU-WPF\obj\Release\IGUWPF.csproj.CopyComplete
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.exe
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.pdb
 D:\Repos\IGU-WPF\obj\Release\IGUWPF.csprojAssemblyReference.cache
+D:\Repos\IGU-WPF\obj\Release\src\view\MainWindow.baml
+D:\Repos\IGU-WPF\obj\Release\src\view\MainWindow.g.cs

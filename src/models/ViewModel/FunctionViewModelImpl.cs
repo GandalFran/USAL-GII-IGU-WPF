@@ -17,11 +17,18 @@ namespace IGUWPF.src.models.ViewModel
 
     public class FunctionViewModelImpl : ViewModelImpl<Function>
     {
-        private double InternZoomPonderation = 1;
-        private PropertiesDAO PropertiesDAO = new PropertiesDAO();
+        private double InternZoomPonderation;
+        private RepresentationParameters InternRepresentationParameters;
 
-
-
+        public double ZoomPonderation
+        {
+            get { return InternZoomPonderation; }
+            set
+            {
+                this.InternZoomPonderation = value;
+                OnUpdateAll();
+            }
+        }
 
         public RepresentationParameters RepresentationParameters
         {
@@ -47,7 +54,7 @@ namespace IGUWPF.src.models.ViewModel
             get { return InternZoomPonderation; }
             set
             {
-                this.InternZoomPonderation = value;
+                InternRepresentationParameters = value;
                 OnUpdateAll();
             }
         }
@@ -81,7 +88,6 @@ namespace IGUWPF.src.models.ViewModel
             get { return PropertiesDAO.YMax * ZoomPonderation; }
         }
 
-
         public bool ExportModel(string DataPath)
         {
             IDAO<Function> FunctionDAO = new JsonFunctionDAOImpl();
@@ -105,79 +111,5 @@ namespace IGUWPF.src.models.ViewModel
             return result;
         }
 
-    }
-
-     class PropertiesDAO{
-
-        private readonly IniData Properties;
-        private readonly FileIniDataParser Parser;
-        private readonly string PropertiesFilePath = Constants.RepresentationParametersPropertiesFilePath;
-
-        public PropertiesDAO()
-        {
-            Parser = new FileIniDataParser();
-            Properties = Parser.ReadFile(PropertiesFilePath);
-        }
-
-        public double XMin
-        {
-            get {
-                string toParse = Properties["DOMAINVALUES"]["XMin"];
-                double toReturn = double.Parse(toParse);
-                return toReturn;
-            }
-            set {
-                Properties["DOMAINVALUES"]["XMin"] = value.ToString();
-                Parser.WriteFile(PropertiesFilePath, Properties);
-            }
-        }
-
-        public double XMax
-        {
-
-            get
-            {
-                string toParse = Properties["DOMAINVALUES"]["XMax"];
-                double toReturn = double.Parse(toParse);
-                return toReturn;
-            }
-            set
-            {
-                Properties["DOMAINVALUES"]["XMax"] = value.ToString();
-                Parser.WriteFile(PropertiesFilePath, Properties);
-            }
-        }
-
-        public double YMin
-        {
-
-            get
-            {
-                string toParse = Properties["DOMAINVALUES"]["YMin"];
-                double toReturn = double.Parse(toParse);
-                return toReturn;
-            }
-            set
-            {
-                Properties["DOMAINVALUES"]["YMin"] = value.ToString();
-                Parser.WriteFile(PropertiesFilePath, Properties);
-            }
-        }
-
-        public double YMax
-        {
-
-            get
-            {
-                string toParse = Properties["DOMAINVALUES"]["YMax"];
-                double toReturn = double.Parse(toParse);
-                return toReturn;
-            }
-            set
-            {
-                Properties["DOMAINVALUES"]["YMax"] = value.ToString();
-                Parser.WriteFile(PropertiesFilePath, Properties);
-            }
-        }
     }
 }
